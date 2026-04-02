@@ -16,6 +16,19 @@
         .menu-open { transform: translateX(0); }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 90; }
         .show-overlay { display: block; }
+        
+        /* Swipe Card Layout */
+        .card-container { position: relative; width: 90%; max-width: 360px; height: 520px; display: none; }
+        .swipe-card { 
+            position: absolute; width: 100%; height: 100%; 
+            border-radius: 28px; overflow: hidden; 
+            background: #111; border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        .card-info { 
+            position: absolute; bottom: 0; width: 100%; padding: 40px 24px;
+            background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+        }
     </style>
 </head>
 <body>
@@ -25,14 +38,13 @@
     <nav class="flex justify-between items-center px-6 py-8 absolute top-0 w-full z-50">
         <div class="flex items-center space-x-3 cursor-pointer group">
             <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-zinc-900 group-hover:border-pink-600 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500 group-hover:text-pink-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
             </div>
-            <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase group-hover:text-white transition">My Account</span>
         </div>
 
-        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/50 p-2.5 rounded-xl border border-white/5 hover:bg-pink-600/10 transition">
+        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/50 p-2.5 rounded-xl border border-white/5">
             <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
             </svg>
@@ -41,50 +53,62 @@
 
     <div id="side-menu" class="side-drawer flex flex-col p-8 justify-between">
         <div class="space-y-12">
-            <div class="pb-6 border-b border-white/5">
-                <h3 class="text-[9px] tracking-[0.5em] text-gray-600 uppercase font-bold">The Elite Circle</h3>
-            </div>
-            
+            <h3 class="text-[9px] tracking-[0.5em] text-gray-600 uppercase font-bold border-b border-white/5 pb-4">The Elite Circle</h3>
             <ul class="space-y-8">
-                <li class="group flex items-center justify-between cursor-pointer">
-                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500 transition">Profile Gallery</span>
-                    <svg class="w-4 h-4 text-gray-800 group-hover:text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
-                </li>
-                <li class="group flex items-center justify-between cursor-pointer">
-                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500 transition">Discovery Filter</span>
-                    <svg class="w-4 h-4 text-gray-800 group-hover:text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
-                </li>
-                <li class="group flex items-center justify-between cursor-pointer p-4 bg-pink-600/5 border border-pink-600/10 rounded-2xl">
+                <li class="group flex justify-between cursor-pointer"><span class="text-sm font-medium group-hover:text-pink-500 transition">Profile Gallery</span></li>
+                <li class="group flex justify-between cursor-pointer"><span class="text-sm font-medium group-hover:text-pink-500 transition">Discovery Filter</span></li>
+                <li class="group flex justify-between p-4 bg-pink-600/5 border border-pink-600/10 rounded-2xl cursor-pointer">
                     <span class="text-sm font-bold text-pink-500">Luvantrely Luxe</span>
-                    <span class="text-[8px] bg-pink-600 text-white px-2 py-1 rounded font-bold uppercase">Unlock</span>
                 </li>
             </ul>
         </div>
-
-        <div class="space-y-8">
-            <div class="space-y-3 pb-6 border-b border-white/5">
-                <p class="text-[9px] text-gray-600 hover:text-white transition cursor-pointer uppercase tracking-widest">Privacy Policy</p>
-                <p class="text-[9px] text-gray-600 hover:text-white transition cursor-pointer uppercase tracking-widest">Terms of Use</p>
-            </div>
-            
-            <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">
-                Since 2026 | Luvantrely
-            </div>
-            
-            <div onclick="alert('Signed Out')" class="text-red-900 text-[10px] font-bold cursor-pointer hover:text-red-500 transition uppercase tracking-widest">
-                Log Out
-            </div>
+        <div class="space-y-6">
+            <p class="text-[9px] text-gray-600 uppercase tracking-widest">Privacy Policy</p>
+            <p class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</p>
+            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Log Out</div>
         </div>
     </div>
 
-    <main class="h-screen flex flex-col items-center justify-center text-center px-6">
+    <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6 transition-all duration-700">
         <h2 class="text-6xl font-bold tracking-tight text-white mb-2 uppercase">Luvantrely</h2>
         <p class="text-[10px] tracking-[0.8em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
-        
-        <button class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition-all duration-700">
+        <button onclick="startApp()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition-all duration-500">
             Enter The Circle
         </button>
     </main>
+
+    <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
+        <div class="card-container" id="card-box" style="display: block;">
+            <div class="swipe-card">
+                <div class="w-full h-full bg-zinc-900 flex items-center justify-center">
+                    <p class="text-zinc-800 text-[10px] uppercase tracking-widest">Elite Profile Photo</p>
+                </div>
+                <div class="card-info">
+                    <div class="flex items-center space-x-2">
+                        <h3 class="text-3xl font-bold text-white">Ananya</h3>
+                        <span class="text-2xl font-light text-gray-400">22</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1 uppercase tracking-widest font-semibold">Patna • 5 km away</p>
+                    <div class="mt-6 flex space-x-2">
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[8px] uppercase tracking-tighter text-gray-400">Music</span>
+                        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[8px] uppercase tracking-tighter text-gray-400">Travel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-8 mt-12">
+            <button onclick="alert('Next Profile')" class="w-14 h-14 rounded-full border border-white/5 flex items-center justify-center text-red-500 bg-zinc-900/50 hover:bg-red-500/10 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <button onclick="alert('Luxe Feature')" class="w-12 h-12 rounded-full border border-white/5 flex items-center justify-center text-blue-400 bg-zinc-900/50 hover:bg-blue-400/10 transition">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+            </button>
+            <button onclick="alert('Liked!')" class="w-14 h-14 rounded-full border border-pink-500/10 flex items-center justify-center text-pink-500 bg-zinc-900/50 hover:bg-pink-500/10 transition shadow-lg shadow-pink-500/5">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+            </button>
+        </div>
+    </div>
 
     <script>
         let isOpen = false;
@@ -92,13 +116,14 @@
             const menu = document.getElementById('side-menu');
             const overlay = document.getElementById('overlay');
             isOpen = !isOpen;
-            if(isOpen) {
-                menu.classList.add('menu-open');
-                overlay.classList.add('show-overlay');
-            } else {
-                menu.classList.remove('menu-open');
-                overlay.classList.remove('show-overlay');
-            }
+            menu.classList.toggle('menu-open', isOpen);
+            overlay.classList.toggle('show-overlay', isOpen);
+        }
+
+        // Logic to switch between Landing and Swipe Page
+        function startApp() {
+            document.getElementById('landing-page').style.display = 'none';
+            document.getElementById('swipe-section').classList.remove('hidden');
         }
     </script>
 </body>
