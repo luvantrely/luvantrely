@@ -3,42 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luvantrely | Ved Parkash Edition</title>
+    <title>Luvantrely | Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; overflow: hidden; touch-action: none; }
-        .side-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 290px; background: #0a0a0a; border-left: 1px solid #1a1a1a; transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000; }
+        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; overflow: hidden; touch-action: none; margin: 0; }
+        .side-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 300px; background: #0a0a0a; border-left: 1px solid #1a1a1a; transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000; }
         .menu-open { transform: translateX(0) !important; }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 1500; }
         .show-overlay { display: block !important; }
         
-        /* V5 KING CORE STYLE - NO CHANGES */
-        .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; }
+        /* THE V5 KING CORE - DO NOT TOUCH */
+        .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; margin-top: 20px; }
         .swipe-card { position: absolute; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #111; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.1s ease, opacity 0.3s ease; cursor: grab; }
         .swipe-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-        .card-info { position: absolute; bottom: 0; width: 100%; padding: 60px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 40%, transparent); pointer-events: none; }
+        .card-info { position: absolute; bottom: 0; width: 100%; padding: 60px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 45%, transparent); pointer-events: none; }
         
         .badge { position: absolute; top: 40px; padding: 10px 20px; border: 4px solid; border-radius: 12px; font-size: 32px; font-weight: 900; text-transform: uppercase; opacity: 0; transition: opacity 0.1s; z-index: 10; }
         .badge-like { left: 30px; border-color: #22c55e; color: #22c55e; transform: rotate(-15deg); }
         .badge-nope { right: 30px; border-color: #ef4444; color: #ef4444; transform: rotate(15deg); }
 
-        /* ALL PANELS - 7XL SAFE */
-        #onboarding-screen, #luxe-panel, #matches-panel, #boost-panel, #legal-panel, #discovery-panel { position: fixed; inset: 0; background: #000; z-index: 2500; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
-        .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 18px; padding: 18px; font-size: 14px; color: white; margin-bottom: 20px; outline: none; }
+        #onboarding-screen, #luxe-panel, #matches-panel, #boost-panel, #discovery-panel, #legal-panel { position: fixed; inset: 0; background: #000; z-index: 2500; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
+        .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 20px; padding: 18px; font-size: 14px; color: white; margin-bottom: 20px; outline: none; }
         .step-panel { display: none; width: 100%; max-width: 400px; margin: auto; }
-        .active-step { display: block; }
+        .active-step { display: block !important; }
         
-        /* 7XL MATCH STYLE - NO CHANGES */
+        .luxe-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(219, 39, 119, 0.2); border-radius: 24px; padding: 25px; margin-bottom: 20px; }
+        
+        /* 7XL MATCH - V5 PERSISTENCE */
         #match-screen { position: fixed; inset: 0; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px; background: rgba(0,0,0,0.98); backdrop-filter: blur(10px); }
         .match-text { background: linear-gradient(to right, #db2777, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .match-avatar { width: 100%; aspect-ratio: 1; border-radius: 20px; object-fit: cover; border: 1px solid #db2777; }
 
-        #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 82%; background: #0a0a0a; border-top: 1px solid #db2777; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2600; padding: 40px 30px; }
+        #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 82%; background: #0a0a0a; border-top: 1px solid #db2777; border-top-left-radius: 45px; border-top-right-radius: 45px; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2600; padding: 45px 30px; }
         .detail-open { transform: translateY(0) !important; }
         
-        /* NEW UI ELEMENTS */
-        .phone-container { display: flex; background: #111; border: 1px solid #222; border-radius: 18px; overflow: hidden; margin-bottom: 20px; }
-        .country-code { padding: 18px; background: #1a1a1a; color: #db2777; font-weight: bold; border-right: 1px solid #222; }
+        /* SMART PHONE UI */
+        .phone-box { display: flex; background: #111; border: 1px solid #222; border-radius: 20px; overflow: hidden; margin-bottom: 20px; }
+        .prefix { padding: 18px; background: #1a1a1a; color: #db2777; font-weight: 800; border-right: 1px solid #222; }
+        
+        .boost-glow { animation: pulse-pink 2s infinite; }
+        @keyframes pulse-pink { 0% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(219, 39, 119, 0); } 100% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0); } }
     </style>
 </head>
 <body>
@@ -46,137 +53,152 @@
     <div id="overlay" onclick="closeAll()" class="overlay"></div>
 
     <div id="onboarding-screen">
-        <div class="flex justify-between items-center mb-10">
-            <span class="text-pink-600 font-bold text-lg tracking-tighter uppercase">Luvantrely</span>
+        <div class="flex justify-between items-center mb-12">
+            <span class="text-pink-600 font-bold text-xl tracking-tighter uppercase">Luvantrely</span>
             <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/3</span>
         </div>
         <div id="step-1" class="step-panel active-step">
-            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Verify.</h2>
-            <div class="phone-container">
-                <div class="country-code">+91</div>
-                <input type="tel" id="user-phone" placeholder="10 DIGIT NUMBER" maxlength="10" class="w-full bg-transparent p-4 outline-none text-white">
+            <h2 class="text-5xl font-bold mb-6 tracking-tighter uppercase text-white">Verify.</h2>
+            <div class="phone-box">
+                <div class="prefix">+91</div>
+                <input type="tel" id="user-phone" placeholder="10 DIGIT NUMBER" maxlength="10" class="w-full bg-transparent p-4 outline-none text-white font-bold">
             </div>
-            <p class="text-[8px] text-gray-600 uppercase tracking-widest mb-8">By continuing, you agree to our <span onclick="openLegal('terms')" class="underline text-pink-600">Terms</span> & <span onclick="openLegal('privacy')" class="underline text-pink-600">Privacy</span>.</p>
-            <button onclick="checkPhone()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-2xl">Send Code</button>
+            <p class="text-[9px] text-gray-600 uppercase tracking-widest mb-10">By joining, you agree to our <span onclick="openLegal('terms')" class="text-pink-600 underline">Terms</span> & <span onclick="openLegal('privacy')" class="text-pink-600 underline">Privacy</span>.</p>
+            <button onclick="validatePhone()" class="w-full py-6 bg-pink-600 rounded-full font-bold text-[11px] tracking-[0.3em] uppercase shadow-2xl">Send SMS Code</button>
         </div>
         <div id="step-2" class="step-panel">
-            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Identity.</h2>
-            <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase">
-            <label class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 block ml-2">Date of Birth</label>
+            <h2 class="text-5xl font-bold mb-6 tracking-tighter uppercase text-white">Identity.</h2>
+            <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase font-bold">
+            <label class="text-[10px] text-gray-600 uppercase tracking-widest mb-2 block ml-3">Date of Birth</label>
             <input type="date" id="user-dob" class="input-field">
             <select id="user-gender" class="input-field"><option value="">GENDER</option><option value="Male">MALE</option><option value="Female">FEMALE</option></select>
-            <button onclick="goToStep(3)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Continue</button>
+            <button onclick="goToStep(3)" class="w-full py-6 bg-pink-600 rounded-full font-bold text-[11px] tracking-[0.3em] uppercase">Continue</button>
         </div>
         <div id="step-3" class="step-panel">
-            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Bio.</h2>
-            <textarea id="user-bio" placeholder="TELL THE CIRCLE YOUR STORY..." class="input-field h-36 resize-none uppercase text-[10px]"></textarea>
-            <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Finalize</button>
+            <h2 class="text-5xl font-bold mb-6 tracking-tighter uppercase text-white">Bio.</h2>
+            <textarea id="user-bio" placeholder="TELL THE CIRCLE YOUR ELITE STORY..." class="input-field h-40 resize-none uppercase text-[11px]"></textarea>
+            <button onclick="finalizeUser()" class="w-full py-6 bg-pink-600 rounded-full font-bold text-[11px] tracking-[0.3em] uppercase shadow-2xl">Finalize Profile</button>
         </div>
     </div>
 
     <div id="discovery-panel">
-        <button onclick="closeAll()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">← Close</button>
-        <h2 class="text-4xl font-bold uppercase mb-8 tracking-tighter text-white text-center">Discovery.</h2>
-        <div class="space-y-10">
-            <div>
-                <div class="flex justify-between mb-4"><span class="text-[10px] font-bold uppercase tracking-widest">Maximum Distance</span><span id="dist-val" class="text-pink-600 font-bold">50km</span></div>
-                <input type="range" min="1" max="150" value="50" oninput="document.getElementById('dist-val').innerText = this.value + 'km'" class="w-full accent-pink-600">
+        <button onclick="closeAll()" class="text-pink-600 text-[11px] font-bold uppercase mb-12">← Close</button>
+        <h1 class="text-5xl font-bold italic match-text mb-12 uppercase tracking-tighter">Discovery.</h1>
+        <div class="space-y-12">
+            <div class="luxe-item">
+                <div class="flex justify-between mb-6"><span class="text-[11px] font-bold uppercase tracking-widest">Max Distance</span><span id="dist-val" class="text-pink-600 font-bold">50km</span></div>
+                <input type="range" min="1" max="160" value="50" oninput="document.getElementById('dist-val').innerText = this.value + 'km'" class="w-full accent-pink-600">
             </div>
-            <div>
-                <div class="flex justify-between mb-4"><span class="text-[10px] font-bold uppercase tracking-widest">Age Range</span><span class="text-pink-600 font-bold">18 - 35</span></div>
-                <input type="range" min="18" max="60" value="25" class="w-full accent-pink-600">
+            <div class="luxe-item">
+                <div class="flex justify-between mb-6"><span class="text-[11px] font-bold uppercase tracking-widest">Preferred Age</span><span class="text-pink-600 font-bold">18-30</span></div>
+                <input type="range" min="18" max="60" value="24" class="w-full accent-pink-600">
             </div>
-            <button onclick="closeAll()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase mt-10">Save Preferences</button>
+            <button onclick="closeAll()" class="w-full py-5 border border-pink-600 rounded-full text-[10px] font-bold uppercase tracking-widest">Save Settings</button>
         </div>
     </div>
 
+    <div id="luxe-panel">
+        <button onclick="closeAll()" class="text-pink-600 text-[11px] font-bold uppercase mb-12">← Back</button>
+        <h1 class="text-6xl font-bold italic match-text mb-2">Luxe.</h1>
+        <p class="text-gray-500 text-[10px] uppercase tracking-[0.5em] mb-12 italic">Experience Pure Intimacy</p>
+        <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[12px] uppercase tracking-widest mb-1">Unlimited Likes</h4><p class="text-gray-500 text-[10px]">Swipe without any limits.</p></div>
+        <div class="luxe-item" style="border-color: rgba(234, 179, 8, 0.3);"><h4 class="text-yellow-500 font-bold text-[12px] uppercase tracking-widest mb-1">Global Passport</h4><p class="text-gray-500 text-[10px]">Connect across the world.</p></div>
+        <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[12px] uppercase tracking-widest mb-1">See Who Likes You</h4><p class="text-gray-500 text-[10px]">Instant access to admirers.</p></div>
+    </div>
+
     <div id="legal-panel">
-        <button onclick="document.getElementById('legal-panel').style.display='none'" class="text-pink-600 text-[10px] font-bold uppercase mb-8">← Close</button>
-        <h1 id="legal-title" class="text-4xl font-bold uppercase mb-6 text-white italic">Terms.</h1>
-        <div id="legal-content" class="text-gray-400 text-[10px] leading-relaxed uppercase tracking-widest space-y-4">
+        <button onclick="document.getElementById('legal-panel').style.display='none'" class="text-pink-600 text-[11px] font-bold uppercase mb-10">← Back</button>
+        <h1 id="legal-title" class="text-5xl font-bold uppercase mb-8 italic">Terms.</h1>
+        <div id="legal-content" class="text-gray-400 text-[11px] leading-loose uppercase tracking-[0.1em] space-y-6">
             </div>
     </div>
 
     <div id="detail-panel">
-        <div class="w-12 h-1.5 bg-zinc-800 rounded-full mx-auto mb-10" onclick="closeDetail()"></div>
-        <h2 id="det-name" class="text-4xl font-bold uppercase mb-2 tracking-tighter text-white"></h2>
-        <p id="det-loc" class="text-pink-600 text-xs font-bold tracking-[0.3em] uppercase mb-10"></p>
-        <div class="space-y-6">
-            <div><h4 class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 font-bold italic text-white">The Story</h4><p id="det-bio" class="text-gray-300 text-sm italic leading-relaxed"></p></div>
+        <div class="w-16 h-1.5 bg-zinc-800 rounded-full mx-auto mb-12" onclick="closeDetail()"></div>
+        <h2 id="det-name" class="text-5xl font-bold uppercase mb-3 tracking-tighter text-white"></h2>
+        <p id="det-loc" class="text-pink-600 text-sm font-bold tracking-[0.4em] uppercase mb-12"></p>
+        <div class="space-y-8">
+            <div><h4 class="text-[10px] text-gray-600 uppercase tracking-widest mb-3 font-bold italic">The Persona</h4><p id="det-bio" class="text-gray-300 text-base italic leading-relaxed"></p></div>
         </div>
-        <div class="flex space-x-4 mt-12">
-            <button onclick="closeDetail()" class="flex-1 py-5 bg-white text-black font-bold text-[10px] tracking-widest uppercase rounded-full">Return</button>
-            <button onclick="alert('User Blocked & Reported'); closeDetail();" class="px-8 py-5 border border-red-900 text-red-900 font-bold text-[10px] tracking-widest uppercase rounded-full">Block</button>
+        <div class="flex space-x-6 mt-16">
+            <button onclick="closeDetail()" class="flex-1 py-6 bg-white text-black font-bold text-[11px] tracking-widest uppercase rounded-full shadow-2xl">Return</button>
+            <button onclick="alert('User Blocked & Hidden'); closeDetail();" class="px-10 py-6 border border-red-900 text-red-900 font-bold text-[11px] tracking-widest uppercase rounded-full">Block</button>
         </div>
     </div>
 
-    <nav class="flex justify-between items-center px-6 py-8 absolute top-0 w-full z-[1000]">
+    <nav class="flex justify-between items-center px-6 py-10 absolute top-0 w-full z-[1000]">
         <div class="flex flex-col">
-            <div class="flex items-center space-x-2 bg-zinc-900/40 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-md">
-                <div class="w-6 h-6 rounded-full bg-pink-600 flex items-center justify-center text-[8px] font-bold uppercase text-white" id="nav-initial">L</div>
-                <span id="match-count" class="text-[9px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
+            <div onclick="location.reload()" class="flex items-center space-x-3 bg-zinc-900/60 px-4 py-2.5 rounded-full border border-white/5 backdrop-blur-xl">
+                <div class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-[10px] font-bold uppercase" id="nav-initial">L</div>
+                <span id="match-count" class="text-[11px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
             </div>
-            <span id="server-time" class="text-[7px] text-gray-500 font-bold uppercase tracking-[0.2em] ml-2 mt-1">12:00:00 PM</span>
+            <span id="server-time" class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.3em] ml-3 mt-2">12:00:00 PM</span>
         </div>
-        <div class="flex space-x-2">
-            <div onclick="document.getElementById('boost-panel').style.display='flex'" class="cursor-pointer bg-zinc-900/60 p-2.5 rounded-xl border border-yellow-500/20 text-yellow-500 shadow-xl"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-            <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-2.5 rounded-xl border border-white/10 text-pink-600 shadow-xl"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
+        <div class="flex space-x-3">
+            <div onclick="document.getElementById('boost-panel').style.display='flex'" class="cursor-pointer bg-zinc-900/60 p-3.5 rounded-2xl border border-yellow-500/20 text-yellow-500 shadow-2xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+            <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3.5 rounded-2xl border border-white/10 text-pink-600 shadow-2xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M4 8h16M4 16h16"></path></svg></div>
         </div>
     </nav>
 
     <div id="side-menu" class="side-drawer flex flex-col p-10 justify-between">
         <div class="space-y-12">
-            <div class="flex items-center space-x-4 border-b border-white/5 pb-8">
-                <div class="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center font-bold text-2xl uppercase text-white" id="menu-initial">L</div>
-                <div><p class="text-sm font-bold tracking-tight uppercase text-white" id="display-name">Guest</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase italic">Elite Member</p></div>
+            <div class="flex items-center space-x-5 border-b border-white/5 pb-10">
+                <div class="w-16 h-16 rounded-full bg-pink-600 flex items-center justify-center font-bold text-3xl uppercase shadow-2xl" id="menu-initial">L</div>
+                <div><p class="text-base font-bold tracking-tight uppercase" id="display-name">Guest</p><p class="text-[9px] text-pink-600 font-bold tracking-[0.2em] uppercase italic">Elite Circle</p></div>
             </div>
-            <ul class="space-y-6">
-                <li onclick="document.getElementById('discovery-panel').style.display='flex'; closeAll();" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">Discovery Settings</li>
-                <li onclick="document.getElementById('luxe-panel').style.display='flex'; closeAll();" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
+            <ul class="space-y-8">
+                <li onclick="document.getElementById('discovery-panel').style.display='flex'; closeAll();" class="cursor-pointer text-sm font-bold hover:text-pink-500 transition uppercase tracking-[0.1em]">Discovery Settings</li>
+                <li onclick="document.getElementById('matches-panel').style.display='flex'; closeAll();" class="cursor-pointer text-sm font-bold hover:text-pink-500 transition uppercase tracking-[0.1em]">My Connections</li>
+                <li onclick="document.getElementById('luxe-panel').style.display='flex'; closeAll();" class="p-5 bg-pink-600/5 border border-pink-600/20 rounded-3xl text-center cursor-pointer font-bold text-pink-600 uppercase text-[11px] tracking-widest">Luvantrely Luxe</li>
             </ul>
         </div>
-        <div class="space-y-8">
-            <div class="flex space-x-4 text-[8px] text-gray-500 font-bold uppercase tracking-widest">
-                <span onclick="openLegal('terms')">Terms</span><span onclick="openLegal('privacy')">Privacy</span>
+        <div class="space-y-10">
+            <div class="flex space-x-6 text-[9px] text-gray-500 font-bold uppercase tracking-widest">
+                <span onclick="openLegal('terms')" class="cursor-pointer hover:text-white">Terms</span>
+                <span onclick="openLegal('privacy')" class="cursor-pointer hover:text-white">Privacy</span>
             </div>
-            <div onclick="signOut()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
-            <div class="text-[8px] text-gray-700 tracking-[0.4em] font-bold uppercase">Since 2026 | Ved Parkash</div>
+            <div onclick="signOut()" class="text-red-900 text-[11px] font-bold cursor-pointer uppercase tracking-widest">Sign Out Account</div>
+            <div class="text-[9px] text-gray-700 tracking-[0.3em] font-bold uppercase leading-relaxed">Since 2026 Luvantrely<br>- Ved Parkash</div>
         </div>
     </div>
 
-    <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6">
-        <h2 class="text-6xl font-bold tracking-tighter mb-2 uppercase text-white">Luvantrely</h2>
-        <p class="text-[8px] tracking-[0.8em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
-        <button onclick="startOnboarding()" class="px-12 py-4 rounded-full border border-white/10 text-white text-[9px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
+    <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-8">
+        <h2 onclick="location.reload()" class="text-7xl font-bold tracking-tighter mb-3 uppercase text-white">Luvantrely</h2>
+        <p class="text-[10px] tracking-[1.2em] text-pink-600 uppercase font-bold mb-20 ml-4">Pure Intimacy</p>
+        <button onclick="startOnboarding()" class="px-16 py-5 rounded-full border border-white/10 text-white text-[11px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-700 shadow-2xl">Join The Circle</button>
     </main>
 
-    <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
+    <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#030303]">
         <div class="card-stack" id="card-stack"></div>
         <div id="empty-state" class="hidden text-center">
-            <button onclick="location.reload()" class="px-8 py-3 border border-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest text-white">Refresh Circle</button>
+            <div class="w-16 h-16 border-4 border-pink-600 border-t-transparent rounded-full animate-spin mx-auto mb-10"></div>
+            <p class="text-gray-600 text-sm tracking-[0.4em] uppercase italic mb-10 font-bold">Scanning Elite Data...</p>
+            <button onclick="location.reload()" class="px-12 py-4 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest">Refresh Circle</button>
         </div>
-        <div id="controls" class="flex items-center space-x-14 mt-12">
-            <button onclick="manualSwipe('left')" class="w-14 h-14 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center shadow-2xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <button onclick="manualSwipe('right')" class="w-14 h-14 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center shadow-xl shadow-pink-900/10"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+        <div id="controls" class="flex items-center space-x-16 mt-16">
+            <button onclick="manualSwipe('left')" class="w-18 h-18 p-5 rounded-full border border-white/5 text-red-600 bg-zinc-900/40 flex items-center justify-center shadow-2xl transition active:scale-90"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="manualSwipe('right')" class="w-18 h-18 p-5 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center shadow-2xl transition active:scale-90"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         </div>
     </div>
 
     <div id="match-screen">
-        <h1 class="text-7xl font-bold italic match-text mb-4 animate-pulse">It's a Match!</h1>
-        <div class="flex space-x-6 mb-24 mt-12 text-white">
-            <div class="w-28 h-28 rounded-full border-2 border-pink-600 flex items-center justify-center bg-zinc-900 text-xs font-bold shadow-2xl" id="user-initial">YOU</div>
-            <div class="w-28 h-28 rounded-full border-2 border-pink-600 p-1 shadow-2xl"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
+        <h1 class="text-8xl font-bold italic match-text mb-6 animate-pulse text-center tracking-tighter">It's a Match!</h1>
+        <div class="flex space-x-8 mb-28 mt-16">
+            <div class="w-32 h-32 rounded-full border-4 border-pink-600 flex items-center justify-center bg-zinc-900 text-sm font-bold shadow-2xl" id="user-initial">YOU</div>
+            <div class="w-32 h-32 rounded-full border-4 border-pink-600 p-1 shadow-2xl"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
         </div>
-        <button onclick="closeMatch()" class="w-full max-w-xs py-5 rounded-full bg-white text-black font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
+        <button onclick="closeMatch()" class="w-full max-w-xs py-6 rounded-full bg-white text-black font-bold text-[11px] tracking-[0.4em] uppercase shadow-2xl">Keep Swiping</button>
     </div>
 
     <script>
-        // MASTER LOGIC - 100% PERSISTENCE
+        // MASTER CONFIGURATION
         const profiles = [
-            { id: 4, name: 'Zara', age: 23, loc: 'Delhi', bio: 'Architecture and minimalist soul.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9' },
-            { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Deep conversations over black coffee.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e' },
-            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Art and life enthusiast.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb' },
-            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Pure intimacy and high-class vibe.', img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1' }
+            { id: 6, name: 'Zara', age: 23, loc: 'Delhi', bio: 'Architecture and minimalist soul.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000' },
+            { id: 5, name: 'Mehak', age: 22, loc: 'Mumbai', bio: 'Classical dancer and travel enthusiast.', img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1000' },
+            { id: 4, name: 'Riya', age: 25, loc: 'Bangalore', bio: 'AI researcher looking for an elite connection.', img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1000' },
+            { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Deep conversations over black coffee.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1000' },
+            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Art and life enthusiast.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000' },
+            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Pure intimacy and high-class vibe.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000' }
         ];
         let currentIdx = profiles.length - 1;
         let matchesCount = 0;
@@ -192,10 +214,10 @@
             }
         };
 
-        function checkPhone() {
-            const ph = document.getElementById('user-phone').value;
-            if(ph.length === 10) goToStep(2);
-            else alert("Enter exact 10 digits.");
+        function validatePhone() {
+            const val = document.getElementById('user-phone').value;
+            if(val.length === 10) goToStep(2);
+            else alert("Error: Please enter a valid 10-digit number.");
         }
 
         function openLegal(type) {
@@ -205,16 +227,16 @@
             panel.style.display = 'flex';
             if(type === 'terms') {
                 title.innerText = "Terms.";
-                content.innerHTML = "<p>1. Must be 18+ to join.</p><p>2. No harassment or fake profiles.</p><p>3. Ved Parkash reserves rights to block users.</p>";
+                content.innerHTML = "<p>1. Members must be 18+.</p><p>2. Zero tolerance for fake data.</p><p>3. Ved Parkash Edition reserves all rights.</p>";
             } else {
                 title.innerText = "Privacy.";
-                content.innerHTML = "<p>1. Your phone number is encrypted.</p><p>2. Data is never shared with third parties.</p><p>3. High-level elite security.</p>";
+                content.innerHTML = "<p>1. Data is encrypted by Elite standards.</p><p>2. We never share contacts.</p><p>3. High-tier cloud security.</p>";
             }
         }
 
         function finalizeUser() {
             const name = document.getElementById('user-name').value;
-            if(!name) return alert("Enter name.");
+            if(!name) return alert("Identify yourself.");
             localStorage.setItem('luvUser', JSON.stringify({name}));
             setUserData(name);
             document.getElementById('onboarding-screen').style.display = 'none';
@@ -237,7 +259,7 @@
                 const card = document.createElement('div');
                 card.className = 'swipe-card';
                 card.id = `card-${index}`;
-                card.innerHTML = `<div class="badge badge-like">LIKE</div><div class="badge badge-nope">NOPE</div><img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc} • Tap for details</p></div>`;
+                card.innerHTML = `<div class="badge badge-like">LIKE</div><div class="badge badge-nope">NOPE</div><img src="${p.img}"><div class="card-info"><h3 class="text-4xl font-bold tracking-tight">${p.name}, ${p.age}</h3><p class="text-[11px] tracking-[0.4em] text-gray-500 uppercase mt-2">${p.loc} • Elite Status</p></div>`;
                 card.onclick = (e) => { e.stopPropagation(); openDetail(p); };
                 setupDraggable(card, index);
                 stack.appendChild(card);
@@ -249,17 +271,17 @@
             const lb = card.querySelector('.badge-like');
             const nb = card.querySelector('.badge-nope');
             card.addEventListener('touchstart', (e) => { if(index !== currentIdx) return; startX = e.touches[0].clientX; });
-            card.addEventListener('touchmove', (e) => { if(index !== currentIdx) return; moveX = e.touches[0].clientX - startX; card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`; lb.style.opacity = moveX > 20 ? (moveX / 100) : 0; nb.style.opacity = moveX < -20 ? (Math.abs(moveX) / 100) : 0; });
-            card.addEventListener('touchend', () => { if (Math.abs(moveX) > 100) dismiss(card, moveX > 0 ? 'right' : 'left'); else { card.style.transform = ''; lb.style.opacity = 0; nb.style.opacity = 0; } moveX = 0; });
+            card.addEventListener('touchmove', (e) => { if(index !== currentIdx) return; moveX = e.touches[0].clientX - startX; card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`; lb.style.opacity = moveX > 25 ? (moveX / 100) : 0; nb.style.opacity = moveX < -25 ? (Math.abs(moveX) / 100) : 0; });
+            card.addEventListener('touchend', () => { if (Math.abs(moveX) > 110) dismiss(card, moveX > 0 ? 'right' : 'left'); else { card.style.transform = ''; lb.style.opacity = 0; nb.style.opacity = 0; } moveX = 0; });
         }
 
         function dismiss(card, dir) {
-            card.style.transition = '0.5s';
-            card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
+            card.style.transition = '0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+            card.style.transform = `translateX(${dir === 'right' ? 1200 : -1200}px) rotate(${dir === 'right' ? 45 : -45}deg)`;
             if(dir === 'right') { 
                 matchesCount++; document.getElementById('match-count').innerText = matchesCount + ' Matches';
                 document.getElementById('matched-img').src = card.querySelector('img').src;
-                setTimeout(() => document.getElementById('match-screen').style.display='flex', 300);
+                setTimeout(() => document.getElementById('match-screen').style.display='flex', 350);
             }
             currentIdx--;
             if (currentIdx < 0) document.getElementById('empty-state').classList.remove('hidden');
@@ -267,7 +289,7 @@
 
         function openDetail(p) {
             document.getElementById('det-name').innerText = p.name + ', ' + p.age;
-            document.getElementById('det-loc').innerText = p.loc + ' • Elite Member';
+            document.getElementById('det-loc').innerText = p.loc + ' • Elite Circle';
             document.getElementById('det-bio').innerText = p.bio;
             document.getElementById('detail-panel').classList.add('detail-open');
             document.getElementById('overlay').classList.add('show-overlay');
@@ -276,8 +298,8 @@
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
         function goToStep(step) { document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step')); document.getElementById('step-' + step).classList.add('active-step'); document.getElementById('step-indicator').innerText = "Step " + step + "/3"; }
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
-        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); document.querySelectorAll('#luxe-panel, #boost-panel, #discovery-panel, #legal-panel').forEach(p => p.style.display='none'); closeDetail(); }
-        function manualSwipe(dir) { const card = document.getElementById(`card-${currentIdx}`); if(card) dismiss(card, dir); }
+        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); document.querySelectorAll('#luxe-panel, #boost-panel, #discovery-panel, #legal-panel, #matches-panel').forEach(p => p.style.display='none'); closeDetail(); }
+        function manualSwipe(dir) { const card = document.querySelectorAll('.swipe-card')[currentIdx]; if(card) dismiss(card, dir); }
         function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
         function closeDetail() { document.getElementById('detail-panel').classList.remove('detail-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
         function signOut() { localStorage.removeItem('luvUser'); location.reload(); }
