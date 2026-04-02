@@ -13,7 +13,7 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 90; }
         .show-overlay { display: block; }
         
-        /* Advanced Swipe Card Stack */
+        /* Swipe Card Stack */
         .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; }
         .swipe-card { 
             position: absolute; width: 100%; height: 100%; 
@@ -25,60 +25,52 @@
         }
         .swipe-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .card-info { position: absolute; bottom: 0; width: 100%; padding: 50px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 30%, transparent); pointer-events: none; }
-        .swipe-card:active { cursor: grabbing; }
+        
+        /* Match Alert Style */
+        #match-alert { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); z-index: 200; display: none; }
     </style>
 </head>
 <body>
 
     <div id="overlay" onclick="toggleMenu()" class="overlay"></div>
 
+    <div id="match-alert" class="bg-pink-600 text-white px-8 py-4 rounded-full font-bold text-sm tracking-widest shadow-2xl shadow-pink-500/50 animate-bounce">
+        IT'S A MATCH! ❤️
+    </div>
+
     <nav class="flex justify-between items-center px-6 py-8 absolute top-0 w-full z-50">
-        <div class="flex items-center space-x-3 cursor-pointer group">
-            <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-zinc-900 group-hover:border-pink-600 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-            </div>
-        </div>
-        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/50 p-2.5 rounded-xl border border-white/5">
-            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg>
-        </div>
+        <div class="flex items-center space-x-3 cursor-pointer"><div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-zinc-900"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg></div></div>
+        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/50 p-2.5 rounded-xl border border-white/5"><svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
     </nav>
 
     <div id="side-menu" class="side-drawer flex flex-col p-8 justify-between">
         <div class="space-y-12">
             <h3 class="text-[9px] tracking-[0.5em] text-gray-600 uppercase font-bold border-b border-white/5 pb-4">The Elite Circle</h3>
-            <ul class="space-y-8">
-                <li class="group flex justify-between cursor-pointer"><span class="text-sm font-medium group-hover:text-pink-500 transition">Profile Gallery</span></li>
-                <li class="group flex justify-between cursor-pointer"><span class="text-sm font-medium group-hover:text-pink-500 transition">Discovery Filter</span></li>
-                <li class="group flex justify-between p-4 bg-pink-600/5 border border-pink-600/10 rounded-2xl cursor-pointer"><span class="text-sm font-bold text-pink-500">Luvantrely Luxe</span></li>
+            <ul class="space-y-8 text-sm">
+                <li class="cursor-pointer hover:text-pink-500 transition">Profile Gallery</li>
+                <li class="cursor-pointer hover:text-pink-500 transition">Discovery Filter</li>
+                <li class="p-4 bg-pink-600/5 border border-pink-600/10 rounded-2xl cursor-pointer font-bold text-pink-500 text-center">Luvantrely Luxe</li>
             </ul>
         </div>
-        <div class="space-y-6">
-            <p class="text-[9px] text-gray-600 uppercase tracking-widest">Privacy Policy</p>
+        <div class="space-y-4">
             <p class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</p>
-            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Log Out</div>
+            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase">Log Out</div>
         </div>
     </div>
 
     <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6">
         <h2 class="text-6xl font-bold tracking-tight text-white mb-2 uppercase">Luvantrely</h2>
         <p class="text-[10px] tracking-[0.8em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
-        <button onclick="startApp()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition-all duration-700">Enter The Circle</button>
+        <button onclick="startApp()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Enter The Circle</button>
     </main>
 
-    <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505] p-4">
-        <div class="card-stack" id="card-stack">
-            </div>
-
-        <div id="empty-state" class="hidden text-center">
-            <div class="w-16 h-16 border-2 border-pink-600 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-            <p class="text-gray-500 text-xs tracking-widest uppercase italic">Finding Elite Matches...</p>
-        </div>
-
-        <div id="controls" class="flex items-center space-x-10 mt-12 z-50">
-            <button onclick="manualSwipe('left')" class="w-14 h-14 rounded-full border border-white/5 flex items-center justify-center text-red-500 bg-zinc-900/40 hover:bg-red-500/10 transition shadow-xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <button onclick="manualSwipe('right')" class="w-14 h-14 rounded-full border border-pink-500/20 flex items-center justify-center text-pink-500 bg-zinc-900/40 hover:bg-pink-500/10 transition shadow-xl shadow-pink-900/10"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+    <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
+        <div class="card-stack" id="card-stack"></div>
+        <div id="empty-state" class="hidden text-center"><p class="text-gray-500 text-xs tracking-widest uppercase italic">Searching for Elite Matches...</p></div>
+        
+        <div id="controls" class="flex items-center space-x-10 mt-12">
+            <button onclick="manualSwipe('left')" class="w-14 h-14 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 hover:bg-red-500/10 transition flex items-center justify-center"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="manualSwipe('right')" class="w-14 h-14 rounded-full border border-pink-500/20 text-pink-500 bg-zinc-900/40 hover:bg-pink-500/10 transition flex items-center justify-center shadow-xl shadow-pink-900/10"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         </div>
     </div>
 
@@ -93,17 +85,11 @@
 
         function renderCards() {
             const stack = document.getElementById('card-stack');
-            profiles.forEach((p, i) => {
+            profiles.forEach((p) => {
                 const card = document.createElement('div');
                 card.className = 'swipe-card';
                 card.id = `card-${p.id}`;
-                card.innerHTML = `
-                    <img src="${p.img}" alt="${p.name}">
-                    <div class="card-info">
-                        <h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3>
-                        <p class="text-[10px] tracking-widest text-gray-400 uppercase mt-1">${p.loc} • Elite Member</p>
-                    </div>
-                `;
+                card.innerHTML = `<img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-400 uppercase mt-1">${p.loc} • Elite Member</p></div>`;
                 setupDraggable(card);
                 stack.appendChild(card);
             });
@@ -111,30 +97,25 @@
 
         function setupDraggable(card) {
             let startX, moveX;
-            card.addEventListener('mousedown', start);
-            card.addEventListener('touchstart', start);
+            card.addEventListener('mousedown', s => start(s));
+            card.addEventListener('touchstart', s => start(s));
 
             function start(e) {
                 startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-                document.addEventListener('mousemove', move);
-                document.addEventListener('touchmove', move);
-                document.addEventListener('mouseup', end);
-                document.addEventListener('touchend', end);
-            }
-
-            function move(e) {
-                moveX = (e.type === 'touchmove' ? e.touches[0].clientX : e.clientX) - startX;
-                card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`;
-            }
-
-            function end() {
-                if (Math.abs(moveX) > 100) {
-                    dismiss(card, moveX > 0 ? 'right' : 'left');
-                } else {
-                    card.style.transform = '';
-                }
-                document.removeEventListener('mousemove', move);
-                document.removeEventListener('touchmove', move);
+                const moveFunc = (me) => {
+                    moveX = (me.type === 'touchmove' ? me.touches[0].clientX : me.clientX) - startX;
+                    card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`;
+                };
+                const endFunc = () => {
+                    if (Math.abs(moveX) > 100) dismiss(card, moveX > 0 ? 'right' : 'left');
+                    else card.style.transform = '';
+                    document.removeEventListener('mousemove', moveFunc);
+                    document.removeEventListener('touchmove', moveFunc);
+                };
+                document.addEventListener('mousemove', moveFunc);
+                document.addEventListener('touchmove', moveFunc);
+                document.addEventListener('mouseup', endFunc, {once: true});
+                document.addEventListener('touchend', endFunc, {once: true});
             }
         }
 
@@ -142,6 +123,7 @@
             card.style.transition = '0.5s';
             card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
             card.style.opacity = '0';
+            if(dir === 'right') showMatch();
             currentIdx--;
             if (currentIdx < 0) {
                 setTimeout(() => {
@@ -152,9 +134,15 @@
             }
         }
 
+        function showMatch() {
+            const alert = document.getElementById('match-alert');
+            alert.style.display = 'block';
+            setTimeout(() => { alert.style.display = 'none'; }, 2000);
+        }
+
         function manualSwipe(dir) {
-            const card = document.querySelectorAll('.swipe-card')[currentIdx];
-            if (card) dismiss(card, dir);
+            const cards = document.querySelectorAll('.swipe-card');
+            if (currentIdx >= 0) dismiss(cards[currentIdx], dir);
         }
 
         function startApp() {
