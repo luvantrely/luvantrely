@@ -13,28 +13,24 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 90; }
         .show-overlay { display: block; }
         
-        /* Swipe Card Stack */
         .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; }
         .swipe-card { position: absolute; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #111; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.1s ease, opacity 0.3s ease; cursor: grab; }
         .swipe-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .card-info { position: absolute; bottom: 0; width: 100%; padding: 60px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 40%, transparent); pointer-events: none; }
         
-        /* Onboarding & Luxe Panels */
+        /* Swipe Overlays (Like/Nope Stickers) */
+        .badge { position: absolute; top: 40px; padding: 10px 20px; border: 4px solid; border-radius: 12px; font-size: 32px; font-weight: 900; text-transform: uppercase; opacity: 0; transform: rotate(-20deg); transition: opacity 0.1s; }
+        .badge-like { left: 30px; border-color: #22c55e; color: #22c55e; transform: rotate(-15deg); }
+        .badge-nope { right: 30px; border-color: #ef4444; color: #ef4444; transform: rotate(15deg); }
+
         #onboarding-screen, #luxe-panel, #matches-panel { position: fixed; inset: 0; background: #000; z-index: 600; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
         .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 18px; padding: 18px; font-size: 14px; color: white; margin-bottom: 20px; outline: none; transition: 0.3s; }
-        .input-field:focus { border-color: #db2777; }
         .step-panel { display: none; width: 100%; max-width: 400px; margin: auto; }
         .active-step { display: block; }
         
-        /* Premium Luxe Cards */
-        .luxe-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(219, 39, 119, 0.2); border-radius: 24px; padding: 20px; margin-bottom: 15px; transition: 0.3s; }
-        .luxe-item:hover { border-color: #db2777; background: rgba(219, 39, 119, 0.05); }
-
-        /* Match Experience */
+        .luxe-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(219, 39, 119, 0.2); border-radius: 24px; padding: 20px; margin-bottom: 15px; }
         #match-screen { position: fixed; inset: 0; z-index: 700; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px; background: rgba(0,0,0,0.98); backdrop-filter: blur(10px); }
         .match-text { background: linear-gradient(to right, #db2777, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        /* Matches Grid */
         .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
         .match-avatar { width: 100%; aspect-ratio: 1; border-radius: 20px; object-fit: cover; border: 1px solid #db2777; }
     </style>
@@ -45,72 +41,58 @@
 
     <div id="onboarding-screen">
         <div class="flex justify-between items-center mb-12">
-            <span class="text-pink-600 font-bold text-xl tracking-tighter uppercase">Luvantrely</span>
+            <span class="text-pink-600 font-bold text-xl uppercase tracking-tighter">Luvantrely</span>
             <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/3</span>
         </div>
         <div id="step-1" class="step-panel active-step">
             <h2 class="text-4xl font-bold mb-4 tracking-tighter">Verify.</h2>
-            <p class="text-gray-500 text-[10px] uppercase tracking-[0.3em] mb-12">Elite Verification</p>
             <input type="tel" id="user-phone" placeholder="MOBILE NUMBER" class="input-field">
             <button onclick="goToStep(2)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Next Section</button>
         </div>
         <div id="step-2" class="step-panel">
             <h2 class="text-4xl font-bold mb-4 tracking-tighter">Identity.</h2>
             <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase">
-            <label class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 block ml-2">Date of Birth</label>
             <input type="date" id="user-dob" class="input-field">
-            <select id="user-gender" class="input-field">
-                <option value="">GENDER</option>
-                <option value="Male">MALE</option>
-                <option value="Female">FEMALE</option>
-            </select>
+            <select id="user-gender" class="input-field"><option value="">GENDER</option><option value="Male">MALE</option><option value="Female">FEMALE</option></select>
             <button onclick="goToStep(3)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Continue</button>
         </div>
         <div id="step-3" class="step-panel">
             <h2 class="text-4xl font-bold mb-4 tracking-tighter">Bio.</h2>
             <textarea id="user-bio" placeholder="WRITE YOUR STORY..." class="input-field h-36 resize-none"></textarea>
-            <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-2xl">Enter Circle</button>
+            <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Enter Circle</button>
         </div>
     </div>
 
     <div id="luxe-panel">
-        <button onclick="closeLuxe()" class="text-pink-600 text-[10px] font-bold tracking-[0.4em] uppercase mb-12">← Back</button>
-        <h1 class="text-6xl font-bold italic match-text mb-2">Luxe.</h1>
-        <p class="text-gray-500 text-[9px] uppercase tracking-[0.5em] mb-12">Pure Premium Access</p>
-        <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[11px] uppercase tracking-widest mb-1">Unlimited Likes</h4><p class="text-gray-500 text-[9px]">Swipe without limits and find connections faster.</p></div>
-        <div class="luxe-item" style="border-color: rgba(234, 179, 8, 0.2);"><h4 class="text-yellow-500 font-bold text-[11px] uppercase tracking-widest mb-1">Global Passport</h4><p class="text-gray-500 text-[9px]">Match with elite members in any city worldwide.</p></div>
-        <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[11px] uppercase tracking-widest mb-1">See Who Likes You</h4><p class="text-gray-500 text-[9px]">Instantly see who already swiped right on you.</p></div>
-        <button onclick="alert('Payment Portal coming in V3')" class="w-full py-5 bg-pink-600 rounded-full mt-10 text-[10px] font-bold tracking-widest uppercase">Upgrade to Luxe</button>
+        <button onclick="closeLuxe()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">← Back</button>
+        <h1 class="text-6xl font-bold italic match-text mb-12">Luxe.</h1>
+        <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[11px] uppercase tracking-widest mb-1">Unlimited Likes</h4></div>
+        <div class="luxe-item" style="border-color: rgba(234, 179, 8, 0.2);"><h4 class="text-yellow-500 font-bold text-[11px] uppercase tracking-widest mb-1">Global Passport</h4></div>
+        <button class="w-full py-5 bg-pink-600 rounded-full mt-10 text-[10px] font-bold tracking-widest uppercase">Upgrade Now</button>
     </div>
 
     <div id="matches-panel">
-        <button onclick="closeMatches()" class="text-pink-600 text-[10px] font-bold tracking-[0.4em] uppercase mb-12">← Back to Swipe</button>
-        <h1 class="text-4xl font-bold italic match-text mb-2">My Matches.</h1>
-        <p class="text-gray-500 text-[9px] uppercase tracking-[0.5em] mb-8">Your Elite Connections</p>
-        <div id="match-list" class="match-grid">
-            </div>
+        <button onclick="closeMatches()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">← Back</button>
+        <h1 class="text-4xl font-bold italic match-text mb-8">My Matches.</h1>
+        <div id="match-list" class="match-grid"></div>
     </div>
 
     <div id="match-screen">
         <h1 class="text-7xl font-bold italic match-text mb-4 animate-pulse">It's a Match!</h1>
-        <p class="text-gray-500 text-[10px] tracking-[0.4em] uppercase mb-20 italic text-center">Your souls have connected in the circle</p>
-        <div class="flex space-x-6 mb-24">
-            <div class="w-28 h-28 rounded-full border-2 border-pink-600 flex items-center justify-center bg-zinc-900 text-xs font-bold shadow-2xl shadow-pink-600/20" id="user-initial">YOU</div>
-            <div class="w-28 h-28 rounded-full border-2 border-pink-600 p-1 shadow-2xl shadow-pink-600/20"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
+        <div class="flex space-x-6 mb-24 mt-12">
+            <div class="w-28 h-28 rounded-full border-2 border-pink-600 flex items-center justify-center bg-zinc-900 text-xs font-bold" id="user-initial">YOU</div>
+            <div class="w-28 h-28 rounded-full border-2 border-pink-600 p-1"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
         </div>
-        <div class="space-y-4 w-full max-w-xs">
-            <button onclick="closeMatch()" class="w-full py-5 rounded-full bg-white text-black font-bold text-[10px] tracking-widest uppercase">Send Message</button>
-            <button onclick="closeMatch()" class="w-full py-5 rounded-full border border-white/10 text-white font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
-        </div>
+        <button onclick="closeMatch()" class="w-full max-w-xs py-5 rounded-full bg-white text-black font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
     </div>
 
     <nav class="flex justify-between items-center px-8 py-8 absolute top-0 w-full z-50">
-        <div class="flex flex-col space-y-1">
+        <div class="flex flex-col">
             <div class="flex items-center space-x-3 bg-zinc-900/40 px-4 py-2 rounded-full border border-white/5">
                 <div class="w-7 h-7 rounded-full bg-pink-600 flex items-center justify-center text-[9px] font-bold uppercase" id="nav-initial">L</div>
                 <span id="match-count" class="text-[10px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
             </div>
-            <span id="server-time" class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.2em] ml-2">12:00:00 PM</span>
+            <span id="server-time" class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.2em] ml-2 mt-1">12:00:00 PM</span>
         </div>
         <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-white/10 text-pink-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
     </nav>
@@ -118,19 +100,18 @@
     <div id="side-menu" class="side-drawer flex flex-col p-10 justify-between">
         <div class="space-y-12">
             <div class="flex items-center space-x-4 border-b border-white/5 pb-8">
-                <div class="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center font-bold text-2xl uppercase shadow-xl" id="menu-initial">L</div>
+                <div class="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center font-bold text-2xl uppercase" id="menu-initial">L</div>
                 <div><p class="text-sm font-bold tracking-tight uppercase" id="display-name">Guest</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase">Elite Member</p></div>
             </div>
             <ul class="space-y-8">
                 <li onclick="openMatches()" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition">My Matches</li>
                 <li class="cursor-pointer text-sm font-medium hover:text-pink-500 transition">Discovery Filter</li>
-                <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 hover:bg-pink-600/10 transition uppercase text-[10px]">Luvantrely Luxe</li>
+                <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
             </ul>
         </div>
         <div class="space-y-8">
             <div class="text-[9px] text-gray-600 uppercase tracking-widest space-y-3 pb-6 border-b border-white/5 font-medium">
-                <p class="hover:text-white cursor-pointer transition">Privacy Policy</p>
-                <p class="hover:text-white cursor-pointer transition">Terms of Use</p>
+                <p>Privacy Policy</p><p>Terms of Use</p>
             </div>
             <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
             <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
@@ -147,11 +128,11 @@
         <div class="card-stack" id="card-stack"></div>
         <div id="empty-state" class="hidden text-center">
             <div class="w-14 h-14 border-2 border-pink-600 border-t-transparent rounded-full animate-spin mx-auto mb-8"></div>
-            <p class="text-gray-500 text-xs tracking-[0.4em] uppercase italic">Scanning the Elite Circle...</p>
+            <p class="text-gray-500 text-xs tracking-[0.4em] uppercase italic">Scanning Circle...</p>
         </div>
         <div id="controls" class="flex items-center space-x-14 mt-12">
-            <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center hover:bg-red-500/10 transition shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center hover:bg-pink-500/10 transition shadow-xl shadow-pink-900/10"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+            <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center shadow-xl shadow-pink-900/10"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         </div>
     </div>
 
@@ -167,16 +148,11 @@
         let currentIdx = profiles.length - 1;
         let matchesCount = 0;
 
-        // Elite Timer
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('server-time').innerText = now.toLocaleTimeString();
-        }, 1000);
+        setInterval(() => { document.getElementById('server-time').innerText = new Date().toLocaleTimeString(); }, 1000);
 
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
         function goToStep(step) {
             if(step === 2 && document.getElementById('user-phone').value.length < 10) return alert("Enter valid phone.");
-            if(step === 3 && !document.getElementById('user-name').value) return alert("Enter your name.");
             document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
             document.getElementById('step-' + step).classList.add('active-step');
             document.getElementById('step-indicator').innerText = "Step " + step + "/3";
@@ -197,13 +173,15 @@
                 const card = document.createElement('div');
                 card.className = 'swipe-card';
                 card.id = `card-${index}`;
-                card.innerHTML = `<img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc} • Elite</p></div>`;
+                card.innerHTML = `<div class="badge badge-like">LIKE</div><div class="badge badge-nope">NOPE</div><img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc}</p></div>`;
                 setupDraggable(card, index);
                 stack.appendChild(card);
             });
         }
         function setupDraggable(card, index) {
             let startX, moveX = 0;
+            const likeBadge = card.querySelector('.badge-like');
+            const nopeBadge = card.querySelector('.badge-nope');
             card.addEventListener('mousedown', s => start(s));
             card.addEventListener('touchstart', s => start(s));
             function start(e) {
@@ -212,10 +190,12 @@
                 const moveFunc = (me) => {
                     moveX = (me.type === 'touchmove' ? me.touches[0].clientX : me.clientX) - startX;
                     card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`;
+                    likeBadge.style.opacity = moveX > 20 ? (moveX / 100) : 0;
+                    nopeBadge.style.opacity = moveX < -20 ? (Math.abs(moveX) / 100) : 0;
                 };
                 const endFunc = () => {
                     if (Math.abs(moveX) > 100) dismiss(card, moveX > 0 ? 'right' : 'left');
-                    else card.style.transform = '';
+                    else { card.style.transform = ''; likeBadge.style.opacity = 0; nopeBadge.style.opacity = 0; }
                     document.removeEventListener('mousemove', moveFunc);
                     document.removeEventListener('touchmove', moveFunc);
                 };
@@ -230,11 +210,9 @@
             card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
             card.style.opacity = '0';
             if(dir === 'right') { 
-                matchesCount++; 
-                document.getElementById('match-count').innerText = matchesCount + ' Matches'; 
+                matchesCount++; document.getElementById('match-count').innerText = matchesCount + ' Matches'; 
                 const img = card.querySelector('img').src;
-                addToMatchList(img);
-                triggerMatchUI(img); 
+                addToMatchList(img); triggerMatchUI(img); 
             }
             currentIdx--;
             if (currentIdx < 0) setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
