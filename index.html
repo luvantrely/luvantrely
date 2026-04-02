@@ -5,18 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luvantrely | Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #000; color: white; overflow: hidden; }
-        /* Menu Width Control (Not Full Screen) */
         .side-drawer { 
             position: fixed; top: 0; right: 0; height: 100%; 
-            width: 300px; /* Sirf itna bada khulega */
-            background: #0a0a0a; border-left: 1px solid #1a1a1a;
-            transform: translateX(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100;
+            width: 320px; background: #0a0a0a; border-left: 1px solid #1a1a1a;
+            transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100;
         }
         .menu-open { transform: translateX(0); }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 90; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 90; }
         .show-overlay { display: block; }
     </style>
 </head>
@@ -24,50 +22,66 @@
 
     <div id="overlay" onclick="toggleMenu()" class="overlay"></div>
 
-    <nav class="flex justify-between items-center px-8 py-8 absolute top-0 w-full z-50">
-        <div class="text-pink-600 font-bold text-xl tracking-tighter">L.</div>
-        <div onclick="toggleMenu()" class="cursor-pointer group">
-            <svg class="w-7 h-7 text-white group-hover:text-pink-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16m-7 6h7"></path>
+    <nav class="flex justify-between items-center px-6 py-8 absolute top-0 w-full z-50">
+        <div class="flex items-center space-x-3 cursor-pointer group">
+            <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-zinc-900 group-hover:border-pink-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500 group-hover:text-pink-500">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+            </div>
+            <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase group-hover:text-white transition">My Account</span>
+        </div>
+
+        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/50 p-2.5 rounded-xl border border-white/5 hover:bg-pink-600/10 transition">
+            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
             </svg>
         </div>
     </nav>
 
-    <div id="side-menu" class="side-drawer flex flex-col p-10 justify-between">
+    <div id="side-menu" class="side-drawer flex flex-col p-8 justify-between">
         <div class="space-y-12">
-            <h3 class="text-[10px] tracking-[0.4em] text-gray-600 uppercase font-bold">Preferences</h3>
+            <div class="pb-6 border-b border-white/5">
+                <h3 class="text-[9px] tracking-[0.5em] text-gray-600 uppercase font-bold">The Elite Circle</h3>
+            </div>
             
             <ul class="space-y-8">
-                <li class="flex items-center space-x-4 cursor-pointer hover:text-pink-500 transition">
-                    <span class="text-sm tracking-wide">My Profile</span>
+                <li class="group flex items-center justify-between cursor-pointer">
+                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500 transition">Profile Gallery</span>
+                    <svg class="w-4 h-4 text-gray-800 group-hover:text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
                 </li>
-                <li class="flex items-center space-x-4 cursor-pointer hover:text-pink-500 transition">
-                    <span class="text-sm tracking-wide">Discovery Settings</span>
+                <li class="group flex items-center justify-between cursor-pointer">
+                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500 transition">Discovery Filter</span>
+                    <svg class="w-4 h-4 text-gray-800 group-hover:text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
                 </li>
-                <li class="flex items-center space-x-4 cursor-pointer hover:text-pink-500 transition">
-                    <span class="text-sm tracking-wide">Luvantrely Luxe</span>
-                </li>
-                <li class="flex items-center space-x-4 cursor-pointer hover:text-pink-500 transition text-gray-400">
-                    <span class="text-sm tracking-wide">App Settings</span>
+                <li class="group flex items-center justify-between cursor-pointer p-4 bg-pink-600/5 border border-pink-600/10 rounded-2xl">
+                    <span class="text-sm font-bold text-pink-500">Luvantrely Luxe</span>
+                    <span class="text-[8px] bg-pink-600 text-white px-2 py-1 rounded font-bold uppercase">Unlock</span>
                 </li>
             </ul>
         </div>
 
         <div class="space-y-8">
-            <div onclick="alert('Logged Out')" class="text-red-600 text-sm font-semibold cursor-pointer hover:opacity-70 transition border-t border-white/5 pt-6">
-                Logout
+            <div class="space-y-3 pb-6 border-b border-white/5">
+                <p class="text-[9px] text-gray-600 hover:text-white transition cursor-pointer uppercase tracking-widest">Privacy Policy</p>
+                <p class="text-[9px] text-gray-600 hover:text-white transition cursor-pointer uppercase tracking-widest">Terms of Use</p>
             </div>
-            <div class="text-[9px] text-gray-700 tracking-widest uppercase">
-                Since 2026 | Luvantrely-Ved Prakash
+            
+            <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">
+                Since 2026 | Luvantrely
+            </div>
+            
+            <div onclick="alert('Signed Out')" class="text-red-900 text-[10px] font-bold cursor-pointer hover:text-red-500 transition uppercase tracking-widest">
+                Log Out
             </div>
         </div>
     </div>
 
-    <main id="main-content" class="h-screen flex flex-col items-center justify-center text-center px-6">
-        <h2 class="text-5xl font-light tracking-tighter italic opacity-80 mb-2">Luvantrely</h2>
-        <p class="text-[10px] tracking-[0.6em] text-pink-600 uppercase font-bold mb-12">Pure Intimacy</p>
+    <main class="h-screen flex flex-col items-center justify-center text-center px-6">
+        <h2 class="text-6xl font-bold tracking-tight text-white mb-2 uppercase">Luvantrely</h2>
+        <p class="text-[10px] tracking-[0.8em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
         
-        <button class="px-12 py-4 rounded-full border border-white/10 text-white text-[9px] tracking-[0.4em] uppercase hover:bg-white hover:text-black transition-all">
+        <button class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition-all duration-700">
             Enter The Circle
         </button>
     </main>
