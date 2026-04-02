@@ -34,7 +34,6 @@
         .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
         .match-avatar { width: 100%; aspect-ratio: 1; border-radius: 20px; object-fit: cover; border: 1px solid #db2777; }
 
-        /* Detail Panel Slide Up */
         #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 80%; background: #0a0a0a; border-top: 1px solid #db2777; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 800; padding: 40px 30px; }
         .detail-open { transform: translateY(0) !important; }
 
@@ -87,7 +86,6 @@
         <p id="det-loc" class="text-pink-600 text-xs font-bold tracking-[0.3em] uppercase mb-10"></p>
         <div class="space-y-6">
             <div><h4 class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 font-bold italic">The Story</h4><p id="det-bio" class="text-gray-300 text-sm italic leading-relaxed"></p></div>
-            <div class="flex flex-wrap gap-2 pt-4"><div class="px-4 py-2 bg-zinc-900 rounded-full text-[9px] text-gray-400 font-bold uppercase">Travel</div><div class="px-4 py-2 bg-zinc-900 rounded-full text-[9px] text-gray-400 font-bold uppercase">Music</div><div class="px-4 py-2 bg-zinc-900 rounded-full text-[9px] text-gray-400 font-bold uppercase">Art</div></div>
         </div>
         <button onclick="closeDetail()" class="w-full py-5 bg-white text-black font-bold text-[10px] tracking-widest uppercase rounded-full mt-12">Return to Swipe</button>
     </div>
@@ -97,7 +95,7 @@
         <div class="flex flex-col items-center justify-center h-full text-center">
             <div class="w-32 h-32 bg-yellow-500/10 rounded-full flex items-center justify-center mb-8 boost-glow"><svg class="w-16 h-16 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
             <h1 class="text-4xl font-bold uppercase mb-4 tracking-tighter">Profile Boost</h1>
-            <p class="text-gray-500 text-sm mb-12 px-10">Get 10x more visibility in the Elite Circle.</p>
+            <p class="text-gray-500 text-sm mb-12 px-10">Get 10x more visibility.</p>
             <button onclick="alert('Boost Activated!'); document.getElementById('boost-panel').style.display='none'" class="w-full max-w-xs py-5 bg-yellow-500 text-black font-bold text-[10px] tracking-widest uppercase rounded-full">Activate</button>
         </div>
     </div>
@@ -137,10 +135,12 @@
                 <div class="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center font-bold text-2xl uppercase shadow-xl" id="menu-initial">L</div>
                 <div><p class="text-sm font-bold tracking-tight uppercase" id="display-name">Guest</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase italic">Elite Member</p></div>
             </div>
-            <ul class="space-y-8">
+            <ul class="space-y-6">
                 <li onclick="openMatches()" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide">My Matches</li>
-                <li class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide">Discovery Filter</li>
                 <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
+                <li onclick="shareApp()" class="p-4 bg-zinc-900 border border-white/5 rounded-2xl text-center cursor-pointer group hover:border-pink-600 transition">
+                    <span class="text-[10px] font-bold text-gray-400 group-hover:text-pink-500 uppercase tracking-widest">Share The Circle</span>
+                </li>
             </ul>
         </div>
         <div class="space-y-8">
@@ -272,12 +272,17 @@
         }
         function triggerMatchUI(imgSrc) { document.getElementById('matched-img').src = imgSrc; document.getElementById('match-screen').style.display = 'flex'; }
         function manualSwipe(dir) { const card = document.querySelectorAll('.swipe-card')[currentIdx]; if(card) dismiss(card, dir); }
-        function toggleMenu() { document.getElementById('side-drawer').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
+        function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
         function openLuxe() { document.getElementById('luxe-panel').style.display = 'flex'; }
         function closeLuxe() { document.getElementById('luxe-panel').style.display = 'none'; }
         function openMatches() { document.getElementById('matches-panel').style.display = 'flex'; }
         function closeMatches() { document.getElementById('matches-panel').style.display = 'none'; }
         function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({ title: 'Luvantrely', text: 'Join the elite circle.', url: window.location.href });
+            } else { alert("Link: " + window.location.href); }
+        }
         function closeAll() { 
             document.getElementById('side-menu').classList.remove('menu-open'); 
             document.getElementById('overlay').classList.remove('show-overlay'); 
