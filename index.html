@@ -114,7 +114,7 @@
         <button onclick="closeMatch()" class="w-full max-w-xs py-5 rounded-full bg-white text-black font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
     </div>
 
-    <nav class="flex justify-between items-center px-8 py-8 absolute top-0 w-full z-50">
+    <nav class="flex justify-between items-center px-6 py-8 absolute top-0 w-full z-50">
         <div class="flex flex-col">
             <div class="flex items-center space-x-3 bg-zinc-900/40 px-4 py-2 rounded-full border border-white/5">
                 <div class="w-7 h-7 rounded-full bg-pink-600 flex items-center justify-center text-[9px] font-bold uppercase text-white" id="nav-initial">L</div>
@@ -122,7 +122,7 @@
             </div>
             <span id="server-time" class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.2em] ml-2 mt-2">12:00:00 PM</span>
         </div>
-        <div class="flex space-x-4">
+        <div class="flex space-x-3">
             <div onclick="document.getElementById('boost-panel').style.display='flex'" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-yellow-500/20 text-yellow-500 shadow-xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
             <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-white/10 text-pink-600 shadow-xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
         </div>
@@ -178,7 +178,6 @@
         let currentIdx = profiles.length - 1;
         let matchesCount = 0;
 
-        // REAL PERSISTENCE LOGIC
         window.onload = function() {
             const savedUser = localStorage.getItem('luvUser');
             if (savedUser) {
@@ -190,13 +189,9 @@
             }
         };
 
-        setInterval(() => { document.getElementById('server-time').innerText = new Date().toLocaleTimeString(); }, 1000);
-
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
         
         function goToStep(step) {
-            if(step === 2 && document.getElementById('user-phone').value.length < 10) return alert("Enter valid phone.");
-            if(step === 3 && !document.getElementById('user-name').value) return alert("Enter your name.");
             document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
             document.getElementById('step-' + step).classList.add('active-step');
             document.getElementById('step-indicator').innerText = "Step " + step + "/3";
@@ -205,8 +200,7 @@
         function finalizeUser() {
             const name = document.getElementById('user-name').value;
             if(!name) return alert("Enter name.");
-            const userData = { name: name, phone: document.getElementById('user-phone').value };
-            localStorage.setItem('luvUser', JSON.stringify(userData));
+            localStorage.setItem('luvUser', JSON.stringify({name}));
             setUserData(name);
             document.getElementById('onboarding-screen').style.display = 'none';
             document.getElementById('swipe-section').classList.remove('hidden');
@@ -235,46 +229,28 @@
                 stack.appendChild(card);
             });
         }
+        
         function setupDraggable(card, index) {
             let startX, moveX = 0;
             const lb = card.querySelector('.badge-like');
             const nb = card.querySelector('.badge-nope');
-            card.addEventListener('mousedown', s => start(s));
-            card.addEventListener('touchstart', s => start(s));
-            function start(e) {
-                if(index !== currentIdx) return;
-                startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-                const moveFunc = (me) => {
-                    moveX = (me.type === 'touchmove' ? me.touches[0].clientX : me.clientX) - startX;
-                    card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`;
-                    lb.style.opacity = moveX > 20 ? (moveX / 100) : 0;
-                    nb.style.opacity = moveX < -20 ? (Math.abs(moveX) / 100) : 0;
-                };
-                const endFunc = () => {
-                    if (Math.abs(moveX) > 100) dismiss(card, moveX > 0 ? 'right' : 'left');
-                    else { card.style.transform = ''; lb.style.opacity = 0; nb.style.opacity = 0; }
-                    document.removeEventListener('mousemove', moveFunc);
-                    document.removeEventListener('touchmove', moveFunc);
-                };
-                document.addEventListener('mousemove', moveFunc);
-                document.addEventListener('touchmove', moveFunc);
-                document.addEventListener('mouseup', endFunc, {once: true});
-                document.addEventListener('touchend', endFunc, {once: true});
-            }
+            card.addEventListener('touchstart', (e) => { if(index !== currentIdx) return; startX = e.touches[0].clientX; });
+            card.addEventListener('touchmove', (e) => { if(index !== currentIdx) return; moveX = e.touches[0].clientX - startX; card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`; lb.style.opacity = moveX > 20 ? (moveX / 100) : 0; nb.style.opacity = moveX < -20 ? (Math.abs(moveX) / 100) : 0; });
+            card.addEventListener('touchend', () => { if (Math.abs(moveX) > 100) dismiss(card, moveX > 0 ? 'right' : 'left'); else { card.style.transform = ''; lb.style.opacity = 0; nb.style.opacity = 0; } moveX = 0; });
         }
+
         function dismiss(card, dir) {
             card.style.transition = '0.5s';
             card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
-            card.style.opacity = '0';
             if(dir === 'right') { 
-                matchesCount++; document.getElementById('match-count').innerText = matchesCount + ' Matches'; 
-                addToMatchList(card.querySelector('img').src); triggerMatchUI(card.querySelector('img').src); 
+                matchesCount++; document.getElementById('match-count').innerText = matchesCount + ' Matches';
+                document.getElementById('matched-img').src = card.querySelector('img').src;
+                setTimeout(() => document.getElementById('match-screen').style.display='flex', 300);
             }
             currentIdx--;
-            if (currentIdx < 0) {
-                setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
-            }
+            if (currentIdx < 0) document.getElementById('empty-state').classList.remove('hidden');
         }
+
         function openDetail(p) {
             document.getElementById('det-name').innerText = p.name + ', ' + p.age;
             document.getElementById('det-loc').innerText = p.loc + ' • Elite Member';
@@ -283,12 +259,6 @@
             document.getElementById('overlay').classList.add('show-overlay');
         }
         function closeDetail() { document.getElementById('detail-panel').classList.remove('detail-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
-        function addToMatchList(img) {
-            const list = document.getElementById('match-list');
-            const imgEl = document.createElement('img');
-            imgEl.className = 'match-avatar'; imgEl.src = img; list.appendChild(imgEl);
-        }
-        function triggerMatchUI(imgSrc) { document.getElementById('matched-img').src = imgSrc; document.getElementById('match-screen').style.display = 'flex'; }
         function manualSwipe(dir) { const card = document.querySelectorAll('.swipe-card')[currentIdx]; if(card) dismiss(card, dir); }
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
         function openLuxe() { document.getElementById('luxe-panel').style.display = 'flex'; }
@@ -296,11 +266,9 @@
         function openMatches() { document.getElementById('matches-panel').style.display = 'flex'; }
         function closeMatches() { document.getElementById('matches-panel').style.display = 'none'; }
         function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
-        function shareApp() {
-            if (navigator.share) navigator.share({ title: 'Luvantrely', text: 'Join the circle.', url: window.location.href });
-            else alert("URL: " + window.location.href);
-        }
-        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
+        function shareApp() { alert("URL: " + window.location.href); }
+        function closeAll() { document.getElementById('side-menu').classList.remove('remove-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
+        setInterval(() => { document.getElementById('server-time').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
 </html>
