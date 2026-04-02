@@ -13,21 +13,13 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 90; }
         .show-overlay { display: block; }
         
-        /* Swipe Card Stack */
         .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; }
-        .swipe-card { 
-            position: absolute; width: 100%; height: 100%; 
-            border-radius: 32px; overflow: hidden; background: #111; 
-            border: 1px solid rgba(255,255,255,0.1); transition: transform 0.1s ease, opacity 0.3s ease;
-            cursor: grab; touch-action: none;
-        }
+        .swipe-card { position: absolute; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #111; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.1s ease, opacity 0.3s ease; cursor: grab; }
         .swipe-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .card-info { position: absolute; bottom: 0; width: 100%; padding: 60px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 40%, transparent); pointer-events: none; }
         
-        /* Detail Panel Slide-up */
-        #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 70%; background: #0a0a0a; border-top: 1px solid #pink-600; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s ease; z-index: 150; padding: 40px 30px; box-shadow: 0 -20px 40px rgba(0,0,0,0.8); }
+        #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 75%; background: #0a0a0a; border-top: 1px solid #1a1a1a; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s ease; z-index: 150; padding: 40px 30px; }
         .detail-open { transform: translateY(0) !important; }
-
         #match-alert { position: fixed; top: 15%; left: 50%; transform: translateX(-50%); z-index: 200; display: none; }
     </style>
 </head>
@@ -39,64 +31,76 @@
 
     <div id="detail-panel">
         <div class="w-12 h-1.5 bg-zinc-800 rounded-full mx-auto mb-10" onclick="closeDetail()"></div>
-        <h2 id="detail-name" class="text-4xl font-bold mb-2">Name, Age</h2>
-        <p id="detail-loc" class="text-pink-600 text-xs font-bold tracking-widest uppercase mb-8">Location</p>
-        <h3 class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-4">About Me</h3>
-        <p id="detail-bio" class="text-gray-300 text-sm leading-relaxed mb-8 italic">"Bio data here..."</p>
-        <button onclick="closeDetail()" class="w-full py-4 rounded-2xl border border-white/5 bg-zinc-900 text-[10px] font-bold tracking-widest uppercase mt-4">Close Profile</button>
+        <h2 id="detail-name" class="text-4xl font-bold mb-2 uppercase tracking-tighter"></h2>
+        <p id="detail-loc" class="text-pink-600 text-xs font-bold tracking-[0.3em] uppercase mb-8"></p>
+        <div class="space-y-6">
+            <div><h3 class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 font-bold">About</h3><p id="detail-bio" class="text-gray-300 text-sm italic"></p></div>
+            <button onclick="closeDetail()" class="w-full py-5 rounded-2xl bg-white text-black text-[10px] font-bold tracking-[0.4em] uppercase mt-10">Return to Circle</button>
+        </div>
     </div>
 
-    <nav class="flex justify-between items-center px-6 py-8 absolute top-0 w-full z-50">
-        <div class="flex items-center space-x-3 bg-zinc-900/50 p-2 rounded-full border border-white/5">
-            <div class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-[10px] font-bold">V</div>
-            <span id="match-count" class="text-[9px] font-bold text-pink-500 px-2">0 MATCHES</span>
+    <nav class="flex justify-between items-center px-8 py-8 absolute top-0 w-full z-50">
+        <div class="flex items-center space-x-3 bg-zinc-900/40 px-4 py-2 rounded-full border border-white/5">
+            <span id="match-count" class="text-[10px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
         </div>
-        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/50 p-2.5 rounded-xl border border-white/5 text-pink-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
+        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-white/10 hover:bg-pink-600/10 transition">
+            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg>
+        </div>
     </nav>
 
-    <div id="side-menu" class="side-drawer p-10 flex flex-col justify-between">
+    <div id="side-menu" class="side-drawer flex flex-col p-10 justify-between">
         <div class="space-y-12">
             <h3 class="text-[9px] tracking-[0.5em] text-gray-600 uppercase font-bold border-b border-white/5 pb-4 italic">The Elite Circle</h3>
-            <div class="space-y-10">
-                <div class="space-y-4">
-                    <p class="text-[9px] text-gray-500 uppercase tracking-widest">Discovery Range</p>
-                    <input type="range" class="w-full h-1 bg-zinc-800 accent-pink-600 appearance-none rounded-full" oninput="document.getElementById('dist-val').innerText = this.value + ' KM'">
-                    <p id="dist-val" class="text-xs text-right font-bold text-pink-500">50 KM</p>
-                </div>
-                <ul class="space-y-6 text-sm font-medium">
-                    <li class="hover:text-pink-500 cursor-pointer transition">Luvantrely Luxe</li>
-                    <li class="hover:text-pink-500 cursor-pointer transition">Terms & Privacy</li>
-                </ul>
-            </div>
+            <ul class="space-y-8">
+                <li class="flex items-center justify-between group cursor-pointer">
+                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500">Profile Gallery</span>
+                    <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
+                </li>
+                <li class="flex items-center justify-between group cursor-pointer">
+                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500">Discovery Filter</span>
+                    <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
+                </li>
+                <li class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer group hover:bg-pink-600/10 transition">
+                    <span class="text-sm font-bold text-pink-500">Luvantrely Luxe</span>
+                </li>
+            </ul>
         </div>
-        <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase border-t border-white/5 pt-6 tracking-widest">Log Out</div>
+
+        <div class="space-y-8">
+            <div class="space-y-3 pb-6 border-b border-white/5 text-[9px] text-gray-600 uppercase tracking-widest font-medium">
+                <p class="hover:text-white cursor-pointer transition">Privacy Policy</p>
+                <p class="hover:text-white cursor-pointer transition">Terms of Use</p>
+            </div>
+            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest hover:text-red-500 transition">Log Out</div>
+            <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
+        </div>
     </div>
 
     <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6">
-        <h2 class="text-6xl font-bold tracking-tight mb-2 uppercase">Luvantrely</h2>
+        <h2 class="text-6xl font-bold tracking-tighter mb-2 uppercase">Luvantrely</h2>
         <p class="text-[10px] tracking-[0.8em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
         <button onclick="startApp()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Enter The Circle</button>
     </main>
 
     <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
         <div class="card-stack" id="card-stack"></div>
-        <div id="empty-state" class="hidden text-center"><p class="text-gray-500 text-xs tracking-widest uppercase animate-pulse italic">Finding More Elite Matches...</p></div>
+        <div id="empty-state" class="hidden text-center"><p class="text-gray-500 text-xs tracking-widest uppercase italic animate-pulse">Searching for Elite Matches...</p></div>
         
         <div id="controls" class="flex items-center space-x-12 mt-12">
-            <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center shadow-xl shadow-pink-900/10"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+            <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center hover:bg-red-500/10 transition shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center hover:bg-pink-500/10 transition shadow-xl shadow-pink-900/10"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         </div>
     </div>
 
     <script>
         const profiles = [
-            { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Looking for someone who appreciates high-class music and conversation.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1000&auto=format&fit=crop' },
-            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Art, Travel, and a bit of Chaos. Lets find an elite connection.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop' },
-            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Architecture student. Love for minimalist design and deep coffee talks.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop' }
+            { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Architecture enthusiast and lover of deep evening conversations.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1000&auto=format&fit=crop' },
+            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Traveling the world to find the perfect elite connection.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop' },
+            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Looking for a minimalist soul with a high-class vibe.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop' }
         ];
 
         let currentIdx = profiles.length - 1;
-        let matches = 0;
+        let matchesCount = 0;
 
         function renderCards() {
             const stack = document.getElementById('card-stack');
@@ -104,7 +108,7 @@
                 const card = document.createElement('div');
                 card.className = 'swipe-card';
                 card.id = `card-${p.id}`;
-                card.innerHTML = `<img src="${p.img}"><div class="card-info" onclick="event.stopPropagation()"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc} • Tap for details</p></div>`;
+                card.innerHTML = `<img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-[0.2em] text-gray-500 uppercase mt-1">${p.loc} • Tap for bio</p></div>`;
                 card.onclick = () => openDetail(p);
                 setupDraggable(card);
                 stack.appendChild(card);
@@ -139,8 +143,8 @@
             card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
             card.style.opacity = '0';
             if(dir === 'right') {
-                matches++;
-                document.getElementById('match-count').innerText = matches + ' MATCHES';
+                matchesCount++;
+                document.getElementById('match-count').innerText = matchesCount + ' Matches';
                 showMatch();
             }
             currentIdx--;
@@ -160,7 +164,7 @@
         function manualSwipe(dir) { const cards = document.querySelectorAll('.swipe-card'); if (currentIdx >= 0) dismiss(cards[currentIdx], dir); }
         function startApp() { document.getElementById('landing-page').classList.add('hidden'); document.getElementById('swipe-section').classList.remove('hidden'); renderCards(); }
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
-        function closeAll() { toggleMenu(); closeDetail(); }
+        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); closeDetail(); document.getElementById('overlay').classList.remove('show-overlay'); }
     </script>
 </body>
 </html>
