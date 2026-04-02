@@ -8,10 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #000; color: white; overflow: hidden; touch-action: none; }
-        .side-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 320px; background: #0a0a0a; border-left: 1px solid #1a1a1a; transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
-        .menu-open { transform: translateX(0); }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 90; }
-        .show-overlay { display: block; }
+        .side-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 280px; background: #0a0a0a; border-left: 1px solid #1a1a1a; transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000; }
+        .menu-open { transform: translateX(0) !important; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 1500; }
+        .show-overlay { display: block !important; }
         
         .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; }
         .swipe-card { position: absolute; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #111; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.1s ease, opacity 0.3s ease; cursor: grab; }
@@ -22,19 +22,19 @@
         .badge-like { left: 30px; border-color: #22c55e; color: #22c55e; transform: rotate(-15deg); }
         .badge-nope { right: 30px; border-color: #ef4444; color: #ef4444; transform: rotate(15deg); }
 
-        #onboarding-screen, #luxe-panel, #matches-panel, #boost-panel { position: fixed; inset: 0; background: #000; z-index: 600; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
+        #onboarding-screen, #luxe-panel, #matches-panel, #boost-panel { position: fixed; inset: 0; background: #000; z-index: 2500; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
         .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 18px; padding: 18px; font-size: 14px; color: white; margin-bottom: 20px; outline: none; }
         .step-panel { display: none; width: 100%; max-width: 400px; margin: auto; }
         .active-step { display: block; }
         
         .luxe-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(219, 39, 119, 0.2); border-radius: 24px; padding: 25px; margin-bottom: 20px; }
-        #match-screen { position: fixed; inset: 0; z-index: 700; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px; background: rgba(0,0,0,0.98); backdrop-filter: blur(10px); }
+        #match-screen { position: fixed; inset: 0; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px; background: rgba(0,0,0,0.98); backdrop-filter: blur(10px); }
         .match-text { background: linear-gradient(to right, #db2777, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
         .match-avatar { width: 100%; aspect-ratio: 1; border-radius: 20px; object-fit: cover; border: 1px solid #db2777; }
 
-        #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 80%; background: #0a0a0a; border-top: 1px solid #db2777; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 800; padding: 40px 30px; }
+        #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 80%; background: #0a0a0a; border-top: 1px solid #db2777; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2600; padding: 40px 30px; }
         .detail-open { transform: translateY(0) !important; }
         .boost-glow { animation: pulse-pink 2s infinite; }
         @keyframes pulse-pink { 0% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(219, 39, 119, 0); } 100% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0); } }
@@ -46,7 +46,7 @@
 
     <div id="onboarding-screen">
         <div class="flex justify-between items-center mb-12">
-            <span class="text-pink-600 font-bold text-xl tracking-tighter uppercase">Luvantrely</span>
+            <span class="text-pink-600 font-bold text-lg tracking-tighter uppercase">Luvantrely</span>
             <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/3</span>
         </div>
         <div id="step-1" class="step-panel active-step">
@@ -76,7 +76,6 @@
         <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[11px] uppercase tracking-widest mb-1">Unlimited Likes</h4><p class="text-gray-500 text-[9px]">Swipe without limits.</p></div>
         <div class="luxe-item" style="border-color: rgba(234, 179, 8, 0.2);"><h4 class="text-yellow-500 font-bold text-[11px] uppercase tracking-widest mb-1">Global Passport</h4><p class="text-gray-500 text-[9px]">Any city worldwide.</p></div>
         <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[11px] uppercase tracking-widest mb-1">See Who Likes You</h4><p class="text-gray-500 text-[9px]">Instant access.</p></div>
-        <button onclick="alert('Payment Portal Coming Soon')" class="w-full py-5 bg-pink-600 rounded-full mt-10 text-[10px] font-bold tracking-widest uppercase shadow-xl">Upgrade Now</button>
     </div>
 
     <div id="detail-panel">
@@ -114,17 +113,17 @@
         <button onclick="closeMatch()" class="w-full max-w-xs py-5 rounded-full bg-white text-black font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
     </div>
 
-    <nav class="flex justify-between items-center px-6 py-8 absolute top-0 w-full z-50">
+    <nav class="flex justify-between items-center px-4 py-8 absolute top-0 w-full z-[1000]">
         <div class="flex flex-col">
-            <div class="flex items-center space-x-3 bg-zinc-900/40 px-4 py-2 rounded-full border border-white/5">
-                <div class="w-7 h-7 rounded-full bg-pink-600 flex items-center justify-center text-[9px] font-bold uppercase text-white" id="nav-initial">L</div>
-                <span id="match-count" class="text-[10px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
+            <div class="flex items-center space-x-2 bg-zinc-900/40 px-3 py-1.5 rounded-full border border-white/5">
+                <div class="w-6 h-6 rounded-full bg-pink-600 flex items-center justify-center text-[8px] font-bold uppercase text-white" id="nav-initial">L</div>
+                <span id="match-count" class="text-[9px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
             </div>
-            <span id="server-time" class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.2em] ml-2 mt-2">12:00:00 PM</span>
+            <span id="server-time" class="text-[7px] text-gray-600 font-bold uppercase tracking-[0.2em] ml-1 mt-1">12:00:00 PM</span>
         </div>
-        <div class="flex space-x-3">
-            <div onclick="document.getElementById('boost-panel').style.display='flex'" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-yellow-500/20 text-yellow-500 shadow-xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-            <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-white/10 text-pink-600 shadow-xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
+        <div class="flex space-x-2">
+            <div onclick="document.getElementById('boost-panel').style.display='flex'" class="cursor-pointer bg-zinc-900/60 p-2.5 rounded-xl border border-yellow-500/20 text-yellow-500 shadow-xl"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+            <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-2.5 rounded-xl border border-white/10 text-pink-600 shadow-xl"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
         </div>
     </nav>
 
@@ -135,22 +134,21 @@
                 <div><p class="text-sm font-bold tracking-tight uppercase text-white" id="display-name">Guest</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase italic">Elite Member</p></div>
             </div>
             <ul class="space-y-6">
-                <li onclick="openMatches()" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">My Matches</li>
-                <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
-                <li onclick="shareApp()" class="p-4 bg-zinc-900 border border-white/5 rounded-2xl text-center cursor-pointer group hover:border-pink-600 transition"><span class="text-[10px] font-bold text-gray-400 group-hover:text-pink-500 uppercase tracking-widest">Share The Circle</span></li>
+                <li onclick="openMatches(); closeAll();" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">My Matches</li>
+                <li onclick="openLuxe(); closeAll();" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
+                <li onclick="shareApp(); closeAll();" class="p-4 bg-zinc-900 border border-white/5 rounded-2xl text-center cursor-pointer group hover:border-pink-600 transition"><span class="text-[10px] font-bold text-gray-400 group-hover:text-pink-500 uppercase tracking-widest">Share The Circle</span></li>
             </ul>
         </div>
         <div class="space-y-8">
-            <p class="text-[9px] text-gray-600 uppercase tracking-widest font-medium text-white">Privacy & Terms</p>
             <div onclick="signOut()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
             <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
         </div>
     </div>
 
     <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6">
-        <h2 class="text-7xl font-bold tracking-tighter mb-2 uppercase text-white">Luvantrely</h2>
-        <p class="text-[10px] tracking-[1em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
-        <button onclick="startOnboarding()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
+        <h2 class="text-6xl font-bold tracking-tighter mb-2 uppercase text-white">Luvantrely</h2>
+        <p class="text-[8px] tracking-[0.8em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
+        <button onclick="startOnboarding()" class="px-12 py-4 rounded-full border border-white/10 text-white text-[9px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
     </main>
 
     <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
@@ -161,8 +159,8 @@
             <button onclick="currentIdx=profiles.length-1; renderCards(); document.getElementById('empty-state').classList.add('hidden'); document.getElementById('card-stack').style.display='block'; document.getElementById('controls').style.display='flex';" class="px-8 py-3 border border-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest text-white">Refresh Circle</button>
         </div>
         <div id="controls" class="flex items-center space-x-14 mt-12">
-            <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center shadow-xl shadow-pink-900/10"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+            <button onclick="manualSwipe('left')" class="w-14 h-14 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center shadow-2xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="manualSwipe('right')" class="w-14 h-14 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center shadow-xl shadow-pink-900/10"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         </div>
     </div>
 
@@ -266,8 +264,8 @@
         function openMatches() { document.getElementById('matches-panel').style.display = 'flex'; }
         function closeMatches() { document.getElementById('matches-panel').style.display = 'none'; }
         function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
-        function shareApp() { alert("URL: " + window.location.href); }
-        function closeAll() { document.getElementById('side-menu').classList.remove('remove-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
+        function shareApp() { alert("Link: " + window.location.href); }
+        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
         setInterval(() => { document.getElementById('server-time').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
