@@ -18,8 +18,13 @@
         .swipe-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .card-info { position: absolute; bottom: 0; width: 100%; padding: 60px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 40%, transparent); pointer-events: none; }
         
-        #luxe-panel, #onboarding-overlay { position: fixed; inset: 0; background: #000; z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; }
-        #match-screen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 300; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        #onboarding-screen { position: fixed; inset: 0; background: #000; z-index: 600; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
+        .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 18px; padding: 18px; font-size: 14px; font-weight: 600; color: white; margin-bottom: 20px; outline: none; }
+        .input-field:focus { border-color: #db2777; }
+        .step-panel { display: none; width: 100%; max-width: 400px; margin: auto; }
+        .active-step { display: block; }
+
+        #luxe-panel, #match-screen { position: fixed; inset: 0; z-index: 500; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px; background: #000; }
         #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 75%; background: #0a0a0a; border-top: 1px solid #1a1a1a; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s ease; z-index: 150; padding: 40px 30px; }
         .detail-open { transform: translateY(0) !important; }
     </style>
@@ -28,52 +33,44 @@
 
     <div id="overlay" onclick="closeAll()" class="overlay"></div>
 
-    <div id="onboarding-overlay" class="hidden">
-        <h2 class="text-3xl font-bold tracking-tighter mb-4 uppercase">Identify Yourself</h2>
-        <p class="text-gray-500 text-[10px] tracking-widest uppercase mb-12">Elite Members Only</p>
-        <input type="text" id="user-name-input" placeholder="ENTER YOUR NAME" class="w-full max-w-xs bg-zinc-900 border border-white/10 rounded-2xl py-5 px-6 text-center text-sm font-bold tracking-widest focus:outline-none focus:border-pink-600 transition mb-8">
-        <button onclick="saveUser()" class="px-16 py-4 rounded-full bg-pink-600 text-white text-[10px] font-bold tracking-widest uppercase shadow-2xl">Create Profile</button>
-    </div>
-
-    <div id="luxe-panel" style="display: none;">
-        <button onclick="closeLuxe()" class="text-pink-600 text-[10px] font-bold tracking-[0.4em] uppercase mb-12">← Back</button>
-        <h1 class="text-5xl font-bold tracking-tighter mb-12 bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent italic">Luxe.</h1>
-        <div class="w-full space-y-4">
-            <div class="bg-zinc-900/50 p-6 rounded-3xl border border-pink-500/10 text-left">
-                <p class="text-pink-500 text-[10px] font-bold uppercase tracking-widest mb-1">Unlimited Likes</p>
-                <p class="text-gray-500 text-[9px]">Never run out of potential matches.</p>
-            </div>
-            <div class="bg-zinc-900/50 p-6 rounded-3xl border border-yellow-500/10 text-left">
-                <p class="text-yellow-500 text-[10px] font-bold uppercase tracking-widest mb-1">Passport Mode</p>
-                <p class="text-gray-500 text-[9px]">Match with anyone, anywhere in the world.</p>
-            </div>
+    <div id="onboarding-screen">
+        <div class="flex justify-between items-center mb-12">
+            <span class="text-pink-600 font-bold text-xl tracking-tighter uppercase">Luvantrely</span>
+            <span class="text-[10px] text-gray-500 font-bold tracking-widest uppercase" id="step-indicator">Step 1/3</span>
         </div>
-        <button class="w-full py-5 bg-pink-600 rounded-full mt-12 text-[10px] font-bold tracking-widest uppercase">Upgrade Now</button>
-    </div>
 
-    <div id="match-screen">
-        <h1 class="text-pink-600 text-6xl font-bold italic tracking-tighter mb-16 animate-pulse">It's a Match!</h1>
-        <div class="flex space-x-4 mb-20">
-            <div class="w-24 h-24 rounded-full border-2 border-pink-600 flex items-center justify-center bg-zinc-900 text-xs font-bold" id="user-initial">YOU</div>
-            <div class="w-24 h-24 rounded-full border-2 border-pink-600 p-1"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
+        <div id="step-1" class="step-panel active-step">
+            <h2 class="text-3xl font-bold mb-2">Verify Phone</h2>
+            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-10 italic">To prevent spam & elite safety</p>
+            <input type="tel" id="user-phone" placeholder="+91 00000 00000" class="input-field">
+            <button onclick="goToStep(2)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Send Verification Code</button>
         </div>
-        <div class="space-y-4 w-full px-12">
-            <button onclick="closeMatch()" class="w-full py-5 rounded-full bg-pink-600 text-white font-bold text-[10px] tracking-widest uppercase">Send Message</button>
-            <button onclick="closeMatch()" class="w-full py-5 rounded-full border border-white/10 text-white font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
-        </div>
-    </div>
 
-    <div id="detail-panel">
-        <div class="w-12 h-1.5 bg-zinc-800 rounded-full mx-auto mb-10" onclick="closeDetail()"></div>
-        <h2 id="detail-name" class="text-4xl font-bold mb-2 uppercase tracking-tighter"></h2>
-        <p id="detail-loc" class="text-pink-600 text-xs font-bold tracking-[0.3em] uppercase mb-8"></p>
-        <p id="detail-bio" class="text-gray-300 text-sm italic mb-10 leading-relaxed"></p>
-        <button onclick="closeDetail()" class="w-full py-5 rounded-2xl bg-white text-black text-[10px] font-bold tracking-[0.4em] uppercase">Return</button>
+        <div id="step-2" class="step-panel">
+            <h2 class="text-3xl font-bold mb-2">Who are you?</h2>
+            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-10 italic">Tell the circle about yourself</p>
+            <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase">
+            <input type="date" id="user-dob" class="input-field text-gray-500">
+            <select id="user-gender" class="input-field">
+                <option value="">SELECT GENDER</option>
+                <option value="Male">MALE</option>
+                <option value="Female">FEMALE</option>
+                <option value="Other">OTHER</option>
+            </select>
+            <button onclick="goToStep(3)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Next Section</button>
+        </div>
+
+        <div id="step-3" class="step-panel">
+            <h2 class="text-3xl font-bold mb-2">Elite Bio</h2>
+            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-10 italic">Finish your onboarding</p>
+            <textarea id="user-bio" placeholder="Write a few words about your lifestyle..." class="input-field h-32 resize-none"></textarea>
+            <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-2xl">Enter The Circle</button>
+        </div>
     </div>
 
     <nav class="flex justify-between items-center px-8 py-8 absolute top-0 w-full z-50">
         <div class="flex items-center space-x-3 bg-zinc-900/40 px-4 py-2 rounded-full border border-white/5">
-            <div class="w-6 h-6 rounded-full bg-pink-600 flex items-center justify-center text-[8px] font-bold uppercase" id="nav-initial">V</div>
+            <div class="w-6 h-6 rounded-full bg-pink-600 flex items-center justify-center text-[8px] font-bold uppercase" id="nav-initial">L</div>
             <span id="match-count" class="text-[9px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
         </div>
         <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-white/10"><svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
@@ -82,39 +79,37 @@
     <div id="side-menu" class="side-drawer flex flex-col p-10 justify-between">
         <div class="space-y-12">
             <div class="flex items-center space-x-4 border-b border-white/5 pb-8">
-                <div class="w-12 h-12 rounded-full bg-pink-600 flex items-center justify-center font-bold text-xl uppercase" id="menu-initial">V</div>
-                <div><p class="text-sm font-bold tracking-tight uppercase" id="display-name">Ved Prakash</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase">Elite Member</p></div>
+                <div class="w-12 h-12 rounded-full bg-pink-600 flex items-center justify-center font-bold text-xl uppercase" id="menu-initial">L</div>
+                <div><p class="text-sm font-bold tracking-tight uppercase" id="display-name">Guest User</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase">Elite Member</p></div>
             </div>
             <ul class="space-y-8">
-                <li class="flex items-center justify-between group cursor-pointer text-sm font-medium tracking-wide hover:text-pink-500 transition">Profile Gallery</li>
-                <li class="flex items-center justify-between group cursor-pointer text-sm font-medium tracking-wide hover:text-pink-500 transition">Discovery Filter</li>
-                <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 hover:bg-pink-600/10 transition">Luvantrely Luxe</li>
+                <li class="cursor-pointer text-sm font-medium hover:text-pink-500 transition">Profile Gallery</li>
+                <li class="cursor-pointer text-sm font-medium hover:text-pink-500 transition">Discovery Filter</li>
+                <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 hover:bg-pink-600/10 transition uppercase text-xs">Luvantrely Luxe</li>
             </ul>
         </div>
         <div class="space-y-8">
-            <div class="text-[9px] text-gray-600 uppercase tracking-widest space-y-3 pb-6 border-b border-white/5 font-medium">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-            </div>
-            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Log Out</div>
-            <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
+            <p class="text-[9px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</p>
+            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
         </div>
     </div>
 
     <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6">
         <h2 class="text-6xl font-bold tracking-tighter mb-2 uppercase">Luvantrely</h2>
         <p class="text-[10px] tracking-[0.8em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
-        <button onclick="startOnboarding()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Enter The Circle</button>
+        <button onclick="startOnboarding()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
     </main>
 
     <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
         <div class="card-stack" id="card-stack"></div>
-        <div id="empty-state" class="hidden text-center"><p class="text-gray-500 text-xs tracking-widest uppercase italic">Searching for Elite Matches...</p></div>
+        <div id="empty-state" class="hidden text-center"><p class="text-gray-500 text-xs tracking-widest uppercase italic animate-pulse">Scanning Circle...</p></div>
         <div id="controls" class="flex items-center space-x-12 mt-12">
-            <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center hover:bg-red-500/10 transition shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center hover:bg-pink-500/10 transition shadow-xl"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+            <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center hover:bg-red-500/10 transition"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center hover:bg-pink-500/10 transition"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         </div>
     </div>
+
+    <div id="luxe-panel" style="display: none;"><button onclick="closeLuxe()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">← Back</button><h1 class="text-5xl font-bold italic text-pink-500 mb-8">Luxe.</h1><p class="text-gray-400 text-xs uppercase tracking-widest">VIP Connections Only</p></div>
 
     <script>
         const profiles = [
@@ -123,20 +118,31 @@
             { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Looking for a minimalist soul with a high-class vibe.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop' }
         ];
 
-        let currentIdx = profiles.length - 1;
-        let matchesCount = 0;
+        function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
+        
+        function goToStep(step) {
+            if(step === 2) {
+                const phone = document.getElementById('user-phone').value;
+                if(phone.length < 10) { alert("Invalid Phone Number, Elite."); return; }
+                document.getElementById('step-1').classList.remove('active-step');
+                document.getElementById('step-2').classList.add('active-step');
+                document.getElementById('step-indicator').innerText = "Step 2/3";
+            }
+            if(step === 3) {
+                const name = document.getElementById('user-name').value;
+                if(!name) { alert("Enter your name."); return; }
+                document.getElementById('step-2').classList.remove('active-step');
+                document.getElementById('step-3').classList.add('active-step');
+                document.getElementById('step-indicator').innerText = "Step 3/3";
+            }
+        }
 
-        function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-overlay').classList.remove('hidden'); }
-
-        function saveUser() {
-            const nameInput = document.getElementById('user-name-input').value;
-            if (nameInput.trim() === "") { alert("Please enter your name, Elite."); return; }
-            document.getElementById('display-name').innerText = nameInput;
-            const initial = nameInput.charAt(0).toUpperCase();
-            document.getElementById('nav-initial').innerText = initial;
-            document.getElementById('menu-initial').innerText = initial;
-            document.getElementById('user-initial').innerText = initial;
-            document.getElementById('onboarding-overlay').style.display = 'none';
+        function finalizeUser() {
+            const name = document.getElementById('user-name').value;
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('nav-initial').innerText = name.charAt(0).toUpperCase();
+            document.getElementById('menu-initial').innerText = name.charAt(0).toUpperCase();
+            document.getElementById('onboarding-screen').style.display = 'none';
             document.getElementById('swipe-section').classList.remove('hidden');
             renderCards();
         }
@@ -147,15 +153,14 @@
                 const card = document.createElement('div');
                 card.className = 'swipe-card';
                 card.id = `card-${p.id}`;
-                card.innerHTML = `<img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-[0.2em] text-gray-500 uppercase mt-1">${p.loc} • Tap for bio</p></div>`;
-                card.onclick = () => openDetail(p);
+                card.innerHTML = `<img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-[0.2em] text-gray-500 uppercase mt-1">${p.loc}</p></div>`;
                 setupDraggable(card);
                 stack.appendChild(card);
             });
         }
 
         function setupDraggable(card) {
-            let startX, moveX;
+            let startX, moveX = 0;
             card.addEventListener('mousedown', s => start(s));
             card.addEventListener('touchstart', s => start(s));
             function start(e) {
@@ -181,30 +186,13 @@
             card.style.transition = '0.5s';
             card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
             card.style.opacity = '0';
-            if(dir === 'right') {
-                matchesCount++;
-                document.getElementById('match-count').innerText = matchesCount + ' Matches';
-                triggerMatchUI(card.querySelector('img').src);
-            }
-            currentIdx--;
-            if (currentIdx < 0) setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
         }
 
-        function triggerMatchUI(imgSrc) { document.getElementById('matched-img').src = imgSrc; document.getElementById('match-screen').style.display = 'flex'; }
+        function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
         function openLuxe() { document.getElementById('luxe-panel').style.display = 'flex'; }
         function closeLuxe() { document.getElementById('luxe-panel').style.display = 'none'; }
-        function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
-        function openDetail(p) {
-            document.getElementById('detail-name').innerText = p.name + ', ' + p.age;
-            document.getElementById('detail-loc').innerText = p.loc;
-            document.getElementById('detail-bio').innerText = p.bio;
-            document.getElementById('detail-panel').classList.add('detail-open');
-            document.getElementById('overlay').classList.add('show-overlay');
-        }
-        function closeDetail() { document.getElementById('detail-panel').classList.remove('detail-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
-        function manualSwipe(dir) { const cards = document.querySelectorAll('.swipe-card'); if (currentIdx >= 0) dismiss(cards[currentIdx], dir); }
-        function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
-        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); closeDetail(); document.getElementById('overlay').classList.remove('show-overlay'); }
+        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
+        function manualSwipe(dir) { const cards = document.querySelectorAll('.swipe-card'); let target = cards[cards.length - 1]; if(target) dismiss(target, dir); }
     </script>
 </body>
 </html>
