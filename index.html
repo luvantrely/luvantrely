@@ -19,8 +19,7 @@
         .card-info { position: absolute; bottom: 0; width: 100%; padding: 60px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 40%, transparent); pointer-events: none; }
         
         #onboarding-screen { position: fixed; inset: 0; background: #000; z-index: 600; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
-        .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 18px; padding: 18px; font-size: 14px; font-weight: 600; color: white; margin-bottom: 20px; outline: none; }
-        .input-field:focus { border-color: #db2777; }
+        .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 18px; padding: 18px; font-size: 14px; color: white; margin-bottom: 20px; outline: none; }
         .step-panel { display: none; width: 100%; max-width: 400px; margin: auto; }
         .active-step { display: block; }
 
@@ -35,37 +34,38 @@
 
     <div id="onboarding-screen">
         <div class="flex justify-between items-center mb-12">
-            <span class="text-pink-600 font-bold text-xl tracking-tighter uppercase">Luvantrely</span>
-            <span class="text-[10px] text-gray-500 font-bold tracking-widest uppercase" id="step-indicator">Step 1/3</span>
+            <span class="text-pink-600 font-bold text-xl uppercase tracking-tighter">Luvantrely</span>
+            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/3</span>
         </div>
-
         <div id="step-1" class="step-panel active-step">
-            <h2 class="text-3xl font-bold mb-2">Verify Phone</h2>
-            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-10 italic">To prevent spam & elite safety</p>
+            <h2 class="text-3xl font-bold mb-8">Verify Phone</h2>
             <input type="tel" id="user-phone" placeholder="+91 00000 00000" class="input-field">
-            <button onclick="goToStep(2)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Send Verification Code</button>
+            <button onclick="goToStep(2)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Send Verification</button>
         </div>
-
         <div id="step-2" class="step-panel">
-            <h2 class="text-3xl font-bold mb-2">Who are you?</h2>
-            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-10 italic">Tell the circle about yourself</p>
+            <h2 class="text-3xl font-bold mb-8">Personal Info</h2>
             <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase">
-            <input type="date" id="user-dob" class="input-field text-gray-500">
+            <input type="date" id="user-dob" class="input-field">
             <select id="user-gender" class="input-field">
-                <option value="">SELECT GENDER</option>
-                <option value="Male">MALE</option>
-                <option value="Female">FEMALE</option>
-                <option value="Other">OTHER</option>
+                <option value="">GENDER</option>
+                <option value="Male">MALE</option><option value="Female">FEMALE</option>
             </select>
-            <button onclick="goToStep(3)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Next Section</button>
+            <button onclick="goToStep(3)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Next</button>
         </div>
-
         <div id="step-3" class="step-panel">
-            <h2 class="text-3xl font-bold mb-2">Elite Bio</h2>
-            <p class="text-gray-500 text-[10px] uppercase tracking-widest mb-10 italic">Finish your onboarding</p>
-            <textarea id="user-bio" placeholder="Write a few words about your lifestyle..." class="input-field h-32 resize-none"></textarea>
-            <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-2xl">Enter The Circle</button>
+            <h2 class="text-3xl font-bold mb-8">Elite Bio</h2>
+            <textarea id="user-bio" placeholder="Tell us about yourself..." class="input-field h-32 resize-none"></textarea>
+            <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-2xl">Finalize</button>
         </div>
+    </div>
+
+    <div id="match-screen">
+        <h1 class="text-pink-600 text-6xl font-bold italic mb-16 animate-pulse">It's a Match!</h1>
+        <div class="flex space-x-4 mb-20">
+            <div class="w-24 h-24 rounded-full border-2 border-pink-600 flex items-center justify-center bg-zinc-900 text-[10px] font-bold" id="user-initial">YOU</div>
+            <div class="w-24 h-24 rounded-full border-2 border-pink-600 p-1"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
+        </div>
+        <button onclick="closeMatch()" class="w-full max-w-xs py-5 rounded-full bg-pink-600 text-white font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
     </div>
 
     <nav class="flex justify-between items-center px-8 py-8 absolute top-0 w-full z-50">
@@ -73,7 +73,7 @@
             <div class="w-6 h-6 rounded-full bg-pink-600 flex items-center justify-center text-[8px] font-bold uppercase" id="nav-initial">L</div>
             <span id="match-count" class="text-[9px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
         </div>
-        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-white/10"><svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
+        <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3 rounded-2xl border border-white/10 text-pink-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 8h16M4 16h16"></path></svg></div>
     </nav>
 
     <div id="side-menu" class="side-drawer flex flex-col p-10 justify-between">
@@ -89,8 +89,12 @@
             </ul>
         </div>
         <div class="space-y-8">
-            <p class="text-[9px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</p>
+            <div class="text-[9px] text-gray-600 uppercase tracking-widest space-y-3 pb-6 border-b border-white/5 font-medium">
+                <p class="hover:text-white cursor-pointer transition">Privacy Policy</p>
+                <p class="hover:text-white cursor-pointer transition">Terms of Use</p>
+            </div>
             <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
+            <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
         </div>
     </div>
 
@@ -109,61 +113,50 @@
         </div>
     </div>
 
-    <div id="luxe-panel" style="display: none;"><button onclick="closeLuxe()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">← Back</button><h1 class="text-5xl font-bold italic text-pink-500 mb-8">Luxe.</h1><p class="text-gray-400 text-xs uppercase tracking-widest">VIP Connections Only</p></div>
-
     <script>
         const profiles = [
-            { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Architecture enthusiast and lover of deep evening conversations.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1000&auto=format&fit=crop' },
-            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Traveling the world to find the perfect elite connection.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop' },
-            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Looking for a minimalist soul with a high-class vibe.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop' }
+            { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Architecture lover.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1000&auto=format&fit=crop' },
+            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Traveler.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop' },
+            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Minimalist soul.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop' }
         ];
+        let currentIdx = profiles.length - 1;
+        let matchesCount = 0;
 
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
-        
         function goToStep(step) {
-            if(step === 2) {
-                const phone = document.getElementById('user-phone').value;
-                if(phone.length < 10) { alert("Invalid Phone Number, Elite."); return; }
-                document.getElementById('step-1').classList.remove('active-step');
-                document.getElementById('step-2').classList.add('active-step');
-                document.getElementById('step-indicator').innerText = "Step 2/3";
-            }
-            if(step === 3) {
-                const name = document.getElementById('user-name').value;
-                if(!name) { alert("Enter your name."); return; }
-                document.getElementById('step-2').classList.remove('active-step');
-                document.getElementById('step-3').classList.add('active-step');
-                document.getElementById('step-indicator').innerText = "Step 3/3";
-            }
+            if(step === 2 && document.getElementById('user-phone').value.length < 10) return alert("Enter valid phone.");
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
+            document.getElementById('step-' + step).classList.add('active-step');
+            document.getElementById('step-indicator').innerText = "Step " + step + "/3";
         }
-
         function finalizeUser() {
             const name = document.getElementById('user-name').value;
+            if(!name) return alert("Enter name.");
             document.getElementById('display-name').innerText = name;
-            document.getElementById('nav-initial').innerText = name.charAt(0).toUpperCase();
-            document.getElementById('menu-initial').innerText = name.charAt(0).toUpperCase();
+            document.getElementById('nav-initial').innerText = name[0].toUpperCase();
+            document.getElementById('menu-initial').innerText = name[0].toUpperCase();
+            document.getElementById('user-initial').innerText = name[0].toUpperCase();
             document.getElementById('onboarding-screen').style.display = 'none';
             document.getElementById('swipe-section').classList.remove('hidden');
             renderCards();
         }
-
         function renderCards() {
             const stack = document.getElementById('card-stack');
-            profiles.forEach((p) => {
+            profiles.forEach((p, index) => {
                 const card = document.createElement('div');
                 card.className = 'swipe-card';
-                card.id = `card-${p.id}`;
-                card.innerHTML = `<img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-[0.2em] text-gray-500 uppercase mt-1">${p.loc}</p></div>`;
-                setupDraggable(card);
+                card.id = `card-${index}`;
+                card.innerHTML = `<img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc}</p></div>`;
+                setupDraggable(card, index);
                 stack.appendChild(card);
             });
         }
-
-        function setupDraggable(card) {
+        function setupDraggable(card, index) {
             let startX, moveX = 0;
             card.addEventListener('mousedown', s => start(s));
             card.addEventListener('touchstart', s => start(s));
             function start(e) {
+                if(index !== currentIdx) return;
                 startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
                 const moveFunc = (me) => {
                     moveX = (me.type === 'touchmove' ? me.touches[0].clientX : me.clientX) - startX;
@@ -181,18 +174,22 @@
                 document.addEventListener('touchend', endFunc, {once: true});
             }
         }
-
         function dismiss(card, dir) {
             card.style.transition = '0.5s';
             card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
             card.style.opacity = '0';
+            if(dir === 'right') { matchesCount++; document.getElementById('match-count').innerText = matchesCount + ' Matches'; triggerMatchUI(card.querySelector('img').src); }
+            currentIdx--;
+            if (currentIdx < 0) {
+                setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
+            }
         }
-
+        function triggerMatchUI(imgSrc) { document.getElementById('matched-img').src = imgSrc; document.getElementById('match-screen').style.display = 'flex'; }
+        function manualSwipe(dir) { const card = document.getElementById(`card-${currentIdx}`); if(card) dismiss(card, dir); }
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
-        function openLuxe() { document.getElementById('luxe-panel').style.display = 'flex'; }
-        function closeLuxe() { document.getElementById('luxe-panel').style.display = 'none'; }
+        function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
-        function manualSwipe(dir) { const cards = document.querySelectorAll('.swipe-card'); let target = cards[cards.length - 1]; if(target) dismiss(target, dir); }
+        function openLuxe() { alert("Luxe Screen Coming Soon!"); }
     </script>
 </body>
 </html>
