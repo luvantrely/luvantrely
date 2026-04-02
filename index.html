@@ -18,16 +18,31 @@
         .swipe-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .card-info { position: absolute; bottom: 0; width: 100%; padding: 60px 25px 30px; background: linear-gradient(to top, rgba(0,0,0,1) 40%, transparent); pointer-events: none; }
         
+        /* Match Screen - Elite Layer */
+        #match-screen { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 300; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .match-anim { animation: zoomIn 0.5s ease-out; }
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
         #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 75%; background: #0a0a0a; border-top: 1px solid #1a1a1a; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s ease; z-index: 150; padding: 40px 30px; }
         .detail-open { transform: translateY(0) !important; }
-        #match-alert { position: fixed; top: 15%; left: 50%; transform: translateX(-50%); z-index: 200; display: none; }
     </style>
 </head>
 <body>
 
     <div id="overlay" onclick="closeAll()" class="overlay"></div>
 
-    <div id="match-alert" class="bg-pink-600 text-white px-10 py-5 rounded-full font-bold text-sm tracking-[0.3em] shadow-2xl animate-bounce">MATCH FOUND! ❤️</div>
+    <div id="match-screen">
+        <h1 class="text-pink-600 text-6xl font-bold italic tracking-tighter match-anim mb-4">It's a Match!</h1>
+        <p class="text-gray-400 text-xs tracking-[0.4em] uppercase mb-16">You both liked each other</p>
+        <div class="flex space-x-4 mb-20">
+            <div class="w-24 h-24 rounded-full border-2 border-pink-600 p-1"><div class="w-full h-full rounded-full bg-zinc-800"></div></div>
+            <div class="w-24 h-24 rounded-full border-2 border-pink-600 p-1"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
+        </div>
+        <div class="space-y-4 w-full px-12">
+            <button onclick="alert('Chat System Coming Soon!')" class="w-full py-5 rounded-full bg-pink-600 text-white font-bold text-[10px] tracking-widest uppercase">Send a Message</button>
+            <button onclick="closeMatch()" class="w-full py-5 rounded-full border border-white/10 text-white font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
+        </div>
+    </div>
 
     <div id="detail-panel">
         <div class="w-12 h-1.5 bg-zinc-800 rounded-full mx-auto mb-10" onclick="closeDetail()"></div>
@@ -52,26 +67,17 @@
         <div class="space-y-12">
             <h3 class="text-[9px] tracking-[0.5em] text-gray-600 uppercase font-bold border-b border-white/5 pb-4 italic">The Elite Circle</h3>
             <ul class="space-y-8">
-                <li class="flex items-center justify-between group cursor-pointer">
-                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500">Profile Gallery</span>
-                    <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
-                </li>
-                <li class="flex items-center justify-between group cursor-pointer">
-                    <span class="text-sm font-medium tracking-wide group-hover:text-pink-500">Discovery Filter</span>
-                    <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
-                </li>
-                <li class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer group hover:bg-pink-600/10 transition">
-                    <span class="text-sm font-bold text-pink-500">Luvantrely Luxe</span>
-                </li>
+                <li class="flex items-center justify-between group cursor-pointer"><span class="text-sm font-medium tracking-wide group-hover:text-pink-500">Profile Gallery</span><svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></li>
+                <li class="flex items-center justify-between group cursor-pointer"><span class="text-sm font-medium tracking-wide group-hover:text-pink-500">Discovery Filter</span><svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></li>
+                <li class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer group hover:bg-pink-600/10 transition"><span class="text-sm font-bold text-pink-500">Luvantrely Luxe</span></li>
             </ul>
         </div>
-
         <div class="space-y-8">
             <div class="space-y-3 pb-6 border-b border-white/5 text-[9px] text-gray-600 uppercase tracking-widest font-medium">
                 <p class="hover:text-white cursor-pointer transition">Privacy Policy</p>
                 <p class="hover:text-white cursor-pointer transition">Terms of Use</p>
             </div>
-            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest hover:text-red-500 transition">Log Out</div>
+            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Log Out</div>
             <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
         </div>
     </div>
@@ -84,11 +90,10 @@
 
     <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
         <div class="card-stack" id="card-stack"></div>
-        <div id="empty-state" class="hidden text-center"><p class="text-gray-500 text-xs tracking-widest uppercase italic animate-pulse">Searching for Elite Matches...</p></div>
-        
+        <div id="empty-state" class="hidden text-center"><p class="text-gray-500 text-xs tracking-widest uppercase italic">Searching for Elite Matches...</p></div>
         <div id="controls" class="flex items-center space-x-12 mt-12">
             <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center hover:bg-red-500/10 transition shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center hover:bg-pink-500/10 transition shadow-xl shadow-pink-900/10"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
+            <button onclick="manualSwipe('right')" class="w-16 h-16 rounded-full border border-pink-500/10 text-pink-500 bg-zinc-900/40 flex items-center justify-center hover:bg-pink-500/10 transition shadow-xl"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></button>
         </div>
     </div>
 
@@ -145,12 +150,18 @@
             if(dir === 'right') {
                 matchesCount++;
                 document.getElementById('match-count').innerText = matchesCount + ' Matches';
-                showMatch();
+                triggerMatchUI(card.querySelector('img').src);
             }
             currentIdx--;
             if (currentIdx < 0) setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
         }
 
+        function triggerMatchUI(imgSrc) {
+            document.getElementById('matched-img').src = imgSrc;
+            document.getElementById('match-screen').style.display = 'flex';
+        }
+
+        function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
         function openDetail(p) {
             document.getElementById('detail-name').innerText = p.name + ', ' + p.age;
             document.getElementById('detail-loc').innerText = p.loc;
@@ -160,7 +171,6 @@
         }
 
         function closeDetail() { document.getElementById('detail-panel').classList.remove('detail-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
-        function showMatch() { const alert = document.getElementById('match-alert'); alert.style.display = 'block'; setTimeout(() => { alert.style.display = 'none'; }, 2000); }
         function manualSwipe(dir) { const cards = document.querySelectorAll('.swipe-card'); if (currentIdx >= 0) dismiss(cards[currentIdx], dir); }
         function startApp() { document.getElementById('landing-page').classList.add('hidden'); document.getElementById('swipe-section').classList.remove('hidden'); renderCards(); }
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
