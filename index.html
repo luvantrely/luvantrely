@@ -36,7 +36,6 @@
 
         #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 80%; background: #0a0a0a; border-top: 1px solid #db2777; border-top-left-radius: 40px; border-top-right-radius: 40px; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 800; padding: 40px 30px; }
         .detail-open { transform: translateY(0) !important; }
-
         .boost-glow { animation: pulse-pink 2s infinite; }
         @keyframes pulse-pink { 0% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(219, 39, 119, 0); } 100% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0); } }
     </style>
@@ -51,12 +50,12 @@
             <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/3</span>
         </div>
         <div id="step-1" class="step-panel active-step">
-            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase">Verify.</h2>
+            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Verify.</h2>
             <input type="tel" id="user-phone" placeholder="MOBILE NUMBER" class="input-field">
             <button onclick="goToStep(2)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Send Code</button>
         </div>
         <div id="step-2" class="step-panel">
-            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase">Identity.</h2>
+            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Identity.</h2>
             <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase">
             <label class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 block ml-2">Date of Birth</label>
             <input type="date" id="user-dob" class="input-field">
@@ -64,7 +63,7 @@
             <button onclick="goToStep(3)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Continue</button>
         </div>
         <div id="step-3" class="step-panel">
-            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase">Bio.</h2>
+            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Bio.</h2>
             <textarea id="user-bio" placeholder="TELL THE CIRCLE ABOUT YOUR STORY..." class="input-field h-36 resize-none uppercase text-[10px]"></textarea>
             <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-2xl">Finalize</button>
         </div>
@@ -73,7 +72,7 @@
     <div id="luxe-panel">
         <button onclick="closeLuxe()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">← Back</button>
         <h1 class="text-6xl font-bold italic match-text mb-2">Luxe.</h1>
-        <p class="text-gray-500 text-[9px] uppercase tracking-[0.5em] mb-12 italic">Experience Pure Intimacy</p>
+        <p class="text-gray-500 text-[9px] uppercase tracking-[0.5em] mb-12 italic text-white">Experience Pure Intimacy</p>
         <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[11px] uppercase tracking-widest mb-1">Unlimited Likes</h4><p class="text-gray-500 text-[9px]">Swipe without limits.</p></div>
         <div class="luxe-item" style="border-color: rgba(234, 179, 8, 0.2);"><h4 class="text-yellow-500 font-bold text-[11px] uppercase tracking-widest mb-1">Global Passport</h4><p class="text-gray-500 text-[9px]">Any city worldwide.</p></div>
         <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[11px] uppercase tracking-widest mb-1">See Who Likes You</h4><p class="text-gray-500 text-[9px]">Instant access.</p></div>
@@ -82,10 +81,10 @@
 
     <div id="detail-panel">
         <div class="w-12 h-1.5 bg-zinc-800 rounded-full mx-auto mb-10" onclick="closeDetail()"></div>
-        <h2 id="det-name" class="text-4xl font-bold uppercase mb-2 tracking-tighter"></h2>
+        <h2 id="det-name" class="text-4xl font-bold uppercase mb-2 tracking-tighter text-white"></h2>
         <p id="det-loc" class="text-pink-600 text-xs font-bold tracking-[0.3em] uppercase mb-10"></p>
         <div class="space-y-6">
-            <div><h4 class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 font-bold italic">The Story</h4><p id="det-bio" class="text-gray-300 text-sm italic leading-relaxed"></p></div>
+            <div><h4 class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 font-bold italic text-white">The Story</h4><p id="det-bio" class="text-gray-300 text-sm italic leading-relaxed"></p></div>
         </div>
         <button onclick="closeDetail()" class="w-full py-5 bg-white text-black font-bold text-[10px] tracking-widest uppercase rounded-full mt-12">Return to Swipe</button>
     </div>
@@ -94,7 +93,7 @@
         <button onclick="document.getElementById('boost-panel').style.display='none'" class="text-yellow-500 text-[10px] font-bold uppercase mb-12">← Return</button>
         <div class="flex flex-col items-center justify-center h-full text-center">
             <div class="w-32 h-32 bg-yellow-500/10 rounded-full flex items-center justify-center mb-8 boost-glow"><svg class="w-16 h-16 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-            <h1 class="text-4xl font-bold uppercase mb-4 tracking-tighter">Profile Boost</h1>
+            <h1 class="text-4xl font-bold uppercase mb-4 tracking-tighter text-white">Profile Boost</h1>
             <p class="text-gray-500 text-sm mb-12 px-10">Get 10x more visibility.</p>
             <button onclick="alert('Boost Activated!'); document.getElementById('boost-panel').style.display='none'" class="w-full max-w-xs py-5 bg-yellow-500 text-black font-bold text-[10px] tracking-widest uppercase rounded-full">Activate</button>
         </div>
@@ -102,14 +101,14 @@
 
     <div id="matches-panel">
         <button onclick="closeMatches()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">← Back</button>
-        <h1 class="text-4xl font-bold italic match-text mb-8 uppercase tracking-tighter">My Matches.</h1>
+        <h1 class="text-4xl font-bold italic match-text mb-8 uppercase tracking-tighter text-white">My Matches.</h1>
         <div id="match-list" class="match-grid"></div>
     </div>
 
     <div id="match-screen">
         <h1 class="text-7xl font-bold italic match-text mb-4 animate-pulse">It's a Match!</h1>
         <div class="flex space-x-6 mb-24 mt-12">
-            <div class="w-28 h-28 rounded-full border-2 border-pink-600 flex items-center justify-center bg-zinc-900 text-xs font-bold shadow-2xl" id="user-initial">YOU</div>
+            <div class="w-28 h-28 rounded-full border-2 border-pink-600 flex items-center justify-center bg-zinc-900 text-xs font-bold shadow-2xl text-white" id="user-initial">YOU</div>
             <div class="w-28 h-28 rounded-full border-2 border-pink-600 p-1 shadow-2xl"><img id="matched-img" class="w-full h-full rounded-full object-cover"></div>
         </div>
         <button onclick="closeMatch()" class="w-full max-w-xs py-5 rounded-full bg-white text-black font-bold text-[10px] tracking-widest uppercase">Keep Swiping</button>
@@ -118,7 +117,7 @@
     <nav class="flex justify-between items-center px-8 py-8 absolute top-0 w-full z-50">
         <div class="flex flex-col">
             <div class="flex items-center space-x-3 bg-zinc-900/40 px-4 py-2 rounded-full border border-white/5">
-                <div class="w-7 h-7 rounded-full bg-pink-600 flex items-center justify-center text-[9px] font-bold uppercase" id="nav-initial">L</div>
+                <div class="w-7 h-7 rounded-full bg-pink-600 flex items-center justify-center text-[9px] font-bold uppercase text-white" id="nav-initial">L</div>
                 <span id="match-count" class="text-[10px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
             </div>
             <span id="server-time" class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.2em] ml-2 mt-2">12:00:00 PM</span>
@@ -132,26 +131,24 @@
     <div id="side-menu" class="side-drawer flex flex-col p-10 justify-between">
         <div class="space-y-12">
             <div class="flex items-center space-x-4 border-b border-white/5 pb-8">
-                <div class="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center font-bold text-2xl uppercase shadow-xl" id="menu-initial">L</div>
-                <div><p class="text-sm font-bold tracking-tight uppercase" id="display-name">Guest</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase italic">Elite Member</p></div>
+                <div class="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center font-bold text-2xl uppercase shadow-xl text-white" id="menu-initial">L</div>
+                <div><p class="text-sm font-bold tracking-tight uppercase text-white" id="display-name">Guest</p><p class="text-[8px] text-pink-600 font-bold tracking-widest uppercase italic">Elite Member</p></div>
             </div>
             <ul class="space-y-6">
-                <li onclick="openMatches()" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide">My Matches</li>
+                <li onclick="openMatches()" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">My Matches</li>
                 <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
-                <li onclick="shareApp()" class="p-4 bg-zinc-900 border border-white/5 rounded-2xl text-center cursor-pointer group hover:border-pink-600 transition">
-                    <span class="text-[10px] font-bold text-gray-400 group-hover:text-pink-500 uppercase tracking-widest">Share The Circle</span>
-                </li>
+                <li onclick="shareApp()" class="p-4 bg-zinc-900 border border-white/5 rounded-2xl text-center cursor-pointer group hover:border-pink-600 transition"><span class="text-[10px] font-bold text-gray-400 group-hover:text-pink-500 uppercase tracking-widest">Share The Circle</span></li>
             </ul>
         </div>
         <div class="space-y-8">
-            <p class="text-[9px] text-gray-600 uppercase tracking-widest font-medium">Privacy & Terms</p>
-            <div onclick="location.reload()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
+            <p class="text-[9px] text-gray-600 uppercase tracking-widest font-medium text-white">Privacy & Terms</p>
+            <div onclick="signOut()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
             <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
         </div>
     </div>
 
     <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6">
-        <h2 class="text-7xl font-bold tracking-tighter mb-2 uppercase">Luvantrely</h2>
+        <h2 class="text-7xl font-bold tracking-tighter mb-2 uppercase text-white">Luvantrely</h2>
         <p class="text-[10px] tracking-[1em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
         <button onclick="startOnboarding()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
     </main>
@@ -161,7 +158,7 @@
         <div id="empty-state" class="hidden text-center">
             <div class="w-14 h-14 border-2 border-pink-600 border-t-transparent rounded-full animate-spin mx-auto mb-8"></div>
             <p class="text-gray-500 text-xs tracking-[0.4em] uppercase italic mb-8">Scanning the Elite Circle...</p>
-            <button onclick="currentIdx=profiles.length-1; renderCards(); document.getElementById('empty-state').classList.add('hidden'); document.getElementById('card-stack').style.display='block'; document.getElementById('controls').style.display='flex';" class="px-8 py-3 border border-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">Refresh Circle</button>
+            <button onclick="currentIdx=profiles.length-1; renderCards(); document.getElementById('empty-state').classList.add('hidden'); document.getElementById('card-stack').style.display='block'; document.getElementById('controls').style.display='flex';" class="px-8 py-3 border border-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest text-white">Refresh Circle</button>
         </div>
         <div id="controls" class="flex items-center space-x-14 mt-12">
             <button onclick="manualSwipe('left')" class="w-16 h-16 rounded-full border border-white/5 text-red-500 bg-zinc-900/40 flex items-center justify-center shadow-2xl"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -181,9 +178,22 @@
         let currentIdx = profiles.length - 1;
         let matchesCount = 0;
 
+        // REAL PERSISTENCE LOGIC
+        window.onload = function() {
+            const savedUser = localStorage.getItem('luvUser');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                setUserData(user.name);
+                document.getElementById('landing-page').style.display = 'none';
+                document.getElementById('swipe-section').classList.remove('hidden');
+                renderCards();
+            }
+        };
+
         setInterval(() => { document.getElementById('server-time').innerText = new Date().toLocaleTimeString(); }, 1000);
 
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
+        
         function goToStep(step) {
             if(step === 2 && document.getElementById('user-phone').value.length < 10) return alert("Enter valid phone.");
             if(step === 3 && !document.getElementById('user-name').value) return alert("Enter your name.");
@@ -191,16 +201,27 @@
             document.getElementById('step-' + step).classList.add('active-step');
             document.getElementById('step-indicator').innerText = "Step " + step + "/3";
         }
+
         function finalizeUser() {
             const name = document.getElementById('user-name').value;
-            document.getElementById('display-name').innerText = name;
-            document.getElementById('nav-initial').innerText = name[0].toUpperCase();
-            document.getElementById('menu-initial').innerText = name[0].toUpperCase();
-            document.getElementById('user-initial').innerText = name[0].toUpperCase();
+            if(!name) return alert("Enter name.");
+            const userData = { name: name, phone: document.getElementById('user-phone').value };
+            localStorage.setItem('luvUser', JSON.stringify(userData));
+            setUserData(name);
             document.getElementById('onboarding-screen').style.display = 'none';
             document.getElementById('swipe-section').classList.remove('hidden');
             renderCards();
         }
+
+        function setUserData(name) {
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('nav-initial').innerText = name[0].toUpperCase();
+            document.getElementById('menu-initial').innerText = name[0].toUpperCase();
+            document.getElementById('user-initial').innerText = name[0].toUpperCase();
+        }
+
+        function signOut() { localStorage.removeItem('luvUser'); location.reload(); }
+
         function renderCards() {
             const stack = document.getElementById('card-stack');
             stack.innerHTML = "";
@@ -216,8 +237,8 @@
         }
         function setupDraggable(card, index) {
             let startX, moveX = 0;
-            const likeBadge = card.querySelector('.badge-like');
-            const nopeBadge = card.querySelector('.badge-nope');
+            const lb = card.querySelector('.badge-like');
+            const nb = card.querySelector('.badge-nope');
             card.addEventListener('mousedown', s => start(s));
             card.addEventListener('touchstart', s => start(s));
             function start(e) {
@@ -226,12 +247,12 @@
                 const moveFunc = (me) => {
                     moveX = (me.type === 'touchmove' ? me.touches[0].clientX : me.clientX) - startX;
                     card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`;
-                    likeBadge.style.opacity = moveX > 20 ? (moveX / 100) : 0;
-                    nopeBadge.style.opacity = moveX < -20 ? (Math.abs(moveX) / 100) : 0;
+                    lb.style.opacity = moveX > 20 ? (moveX / 100) : 0;
+                    nb.style.opacity = moveX < -20 ? (Math.abs(moveX) / 100) : 0;
                 };
                 const endFunc = () => {
                     if (Math.abs(moveX) > 100) dismiss(card, moveX > 0 ? 'right' : 'left');
-                    else { card.style.transform = ''; likeBadge.style.opacity = 0; nopeBadge.style.opacity = 0; }
+                    else { card.style.transform = ''; lb.style.opacity = 0; nb.style.opacity = 0; }
                     document.removeEventListener('mousemove', moveFunc);
                     document.removeEventListener('touchmove', moveFunc);
                 };
@@ -247,8 +268,7 @@
             card.style.opacity = '0';
             if(dir === 'right') { 
                 matchesCount++; document.getElementById('match-count').innerText = matchesCount + ' Matches'; 
-                const img = card.querySelector('img').src;
-                addToMatchList(img); triggerMatchUI(img); 
+                addToMatchList(card.querySelector('img').src); triggerMatchUI(card.querySelector('img').src); 
             }
             currentIdx--;
             if (currentIdx < 0) {
@@ -266,9 +286,7 @@
         function addToMatchList(img) {
             const list = document.getElementById('match-list');
             const imgEl = document.createElement('img');
-            imgEl.className = 'match-avatar';
-            imgEl.src = img;
-            list.appendChild(imgEl);
+            imgEl.className = 'match-avatar'; imgEl.src = img; list.appendChild(imgEl);
         }
         function triggerMatchUI(imgSrc) { document.getElementById('matched-img').src = imgSrc; document.getElementById('match-screen').style.display = 'flex'; }
         function manualSwipe(dir) { const card = document.querySelectorAll('.swipe-card')[currentIdx]; if(card) dismiss(card, dir); }
@@ -279,15 +297,10 @@
         function closeMatches() { document.getElementById('matches-panel').style.display = 'none'; }
         function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
         function shareApp() {
-            if (navigator.share) {
-                navigator.share({ title: 'Luvantrely', text: 'Join the elite circle.', url: window.location.href });
-            } else { alert("Link: " + window.location.href); }
+            if (navigator.share) navigator.share({ title: 'Luvantrely', text: 'Join the circle.', url: window.location.href });
+            else alert("URL: " + window.location.href);
         }
-        function closeAll() { 
-            document.getElementById('side-menu').classList.remove('menu-open'); 
-            document.getElementById('overlay').classList.remove('show-overlay'); 
-            closeLuxe(); closeMatches(); closeDetail();
-        }
+        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
     </script>
 </body>
 </html>
