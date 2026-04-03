@@ -13,7 +13,7 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 1500; }
         .show-overlay { display: block !important; }
         
-        /* THE V5 KING CORE - DO NOT TOUCH */
+        /* THE V5 KING CORE - ABSOLUTE PERSISTENCE */
         .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; margin-top: 20px; }
         .swipe-card { position: absolute; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #111; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.1s ease, opacity 0.3s ease; cursor: grab; }
         .swipe-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
@@ -23,24 +23,19 @@
         .badge-like { left: 30px; border-color: #22c55e; color: #22c55e; transform: rotate(-15deg); }
         .badge-nope { right: 30px; border-color: #ef4444; color: #ef4444; transform: rotate(15deg); }
 
+        /* ALL PANELS - 7XL SAFE */
         #onboarding-screen, #luxe-panel, #matches-panel, #boost-panel, #discovery-panel, #legal-panel { position: fixed; inset: 0; background: #000; z-index: 2500; display: none; flex-direction: column; padding: 40px; overflow-y: auto; }
         .input-field { width: 100%; background: #111; border: 1px solid #222; border-radius: 20px; padding: 18px; font-size: 14px; color: white; margin-bottom: 20px; outline: none; }
         .step-panel { display: none; width: 100%; max-width: 400px; margin: auto; }
         .active-step { display: block !important; }
         
-        .luxe-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(219, 39, 119, 0.2); border-radius: 24px; padding: 25px; margin-bottom: 20px; }
-        
         /* 7XL MATCH - V5 PERSISTENCE */
         #match-screen { position: fixed; inset: 0; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px; background: rgba(0,0,0,0.98); backdrop-filter: blur(10px); }
         .match-text { background: linear-gradient(to right, #db2777, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .match-avatar { width: 100%; aspect-ratio: 1; border-radius: 20px; object-fit: cover; border: 1px solid #db2777; }
-
         #detail-panel { position: fixed; bottom: 0; left: 0; width: 100%; height: 82%; background: #0a0a0a; border-top: 1px solid #db2777; border-top-left-radius: 45px; border-top-right-radius: 45px; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2600; padding: 45px 30px; }
         .detail-open { transform: translateY(0) !important; }
         
-        /* SMART PHONE UI */
         .phone-box { display: flex; background: #111; border: 1px solid #222; border-radius: 20px; overflow: hidden; margin-bottom: 20px; }
         .prefix { padding: 18px; background: #1a1a1a; color: #db2777; font-weight: 800; border-right: 1px solid #222; }
         
@@ -54,7 +49,7 @@
 
     <div id="onboarding-screen">
         <div class="flex justify-between items-center mb-12">
-            <span class="text-pink-600 font-bold text-xl tracking-tighter uppercase">Luvantrely</span>
+            <span onclick="location.reload()" class="text-pink-600 font-bold text-xl tracking-tighter uppercase cursor-pointer">Luvantrely</span>
             <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/3</span>
         </div>
         <div id="step-1" class="step-panel active-step">
@@ -67,12 +62,12 @@
             <button onclick="validatePhone()" class="w-full py-6 bg-pink-600 rounded-full font-bold text-[11px] tracking-[0.3em] uppercase shadow-2xl">Send SMS Code</button>
         </div>
         <div id="step-2" class="step-panel">
-            <h2 class="text-5xl font-bold mb-6 tracking-tighter uppercase text-white">Identity.</h2>
+            <h2 class="text-5xl font-bold mb-6 tracking-tighter uppercase text-white font-bold">Identity.</h2>
             <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase font-bold">
             <label class="text-[10px] text-gray-600 uppercase tracking-widest mb-2 block ml-3">Date of Birth</label>
             <input type="date" id="user-dob" class="input-field">
             <select id="user-gender" class="input-field"><option value="">GENDER</option><option value="Male">MALE</option><option value="Female">FEMALE</option></select>
-            <button onclick="goToStep(3)" class="w-full py-6 bg-pink-600 rounded-full font-bold text-[11px] tracking-[0.3em] uppercase">Continue</button>
+            <button onclick="validateIdentity()" class="w-full py-6 bg-pink-600 rounded-full font-bold text-[11px] tracking-[0.3em] uppercase">Continue</button>
         </div>
         <div id="step-3" class="step-panel">
             <h2 class="text-5xl font-bold mb-6 tracking-tighter uppercase text-white">Bio.</h2>
@@ -90,53 +85,34 @@
                 <input type="range" min="1" max="160" value="50" oninput="document.getElementById('dist-val').innerText = this.value + 'km'" class="w-full accent-pink-600">
             </div>
             <div class="luxe-item">
-                <div class="flex justify-between mb-6"><span class="text-[11px] font-bold uppercase tracking-widest">Preferred Age</span><span class="text-pink-600 font-bold">18-30</span></div>
+                <div class="flex justify-between mb-6"><span class="text-[11px] font-bold uppercase tracking-widest">Preferred Age</span><span class="text-pink-600 font-bold">18-35</span></div>
                 <input type="range" min="18" max="60" value="24" class="w-full accent-pink-600">
             </div>
-            <button onclick="closeAll()" class="w-full py-5 border border-pink-600 rounded-full text-[10px] font-bold uppercase tracking-widest">Save Settings</button>
+            <button onclick="closeAll()" class="w-full py-5 bg-pink-600 rounded-full text-[10px] font-bold uppercase tracking-widest">Save Settings</button>
         </div>
     </div>
 
-    <div id="luxe-panel">
-        <button onclick="closeAll()" class="text-pink-600 text-[11px] font-bold uppercase mb-12">← Back</button>
-        <h1 class="text-6xl font-bold italic match-text mb-2">Luxe.</h1>
-        <p class="text-gray-500 text-[10px] uppercase tracking-[0.5em] mb-12 italic">Experience Pure Intimacy</p>
-        <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[12px] uppercase tracking-widest mb-1">Unlimited Likes</h4><p class="text-gray-500 text-[10px]">Swipe without any limits.</p></div>
-        <div class="luxe-item" style="border-color: rgba(234, 179, 8, 0.3);"><h4 class="text-yellow-500 font-bold text-[12px] uppercase tracking-widest mb-1">Global Passport</h4><p class="text-gray-500 text-[10px]">Connect across the world.</p></div>
-        <div class="luxe-item"><h4 class="text-pink-500 font-bold text-[12px] uppercase tracking-widest mb-1">See Who Likes You</h4><p class="text-gray-500 text-[10px]">Instant access to admirers.</p></div>
-    </div>
-
-    <div id="legal-panel">
-        <button onclick="document.getElementById('legal-panel').style.display='none'" class="text-pink-600 text-[11px] font-bold uppercase mb-10">← Back</button>
-        <h1 id="legal-title" class="text-5xl font-bold uppercase mb-8 italic">Terms.</h1>
-        <div id="legal-content" class="text-gray-400 text-[11px] leading-loose uppercase tracking-[0.1em] space-y-6">
-            </div>
-    </div>
-
-    <div id="detail-panel">
-        <div class="w-16 h-1.5 bg-zinc-800 rounded-full mx-auto mb-12" onclick="closeDetail()"></div>
-        <h2 id="det-name" class="text-5xl font-bold uppercase mb-3 tracking-tighter text-white"></h2>
-        <p id="det-loc" class="text-pink-600 text-sm font-bold tracking-[0.4em] uppercase mb-12"></p>
-        <div class="space-y-8">
-            <div><h4 class="text-[10px] text-gray-600 uppercase tracking-widest mb-3 font-bold italic">The Persona</h4><p id="det-bio" class="text-gray-300 text-base italic leading-relaxed"></p></div>
-        </div>
-        <div class="flex space-x-6 mt-16">
-            <button onclick="closeDetail()" class="flex-1 py-6 bg-white text-black font-bold text-[11px] tracking-widest uppercase rounded-full shadow-2xl">Return</button>
-            <button onclick="alert('User Blocked & Hidden'); closeDetail();" class="px-10 py-6 border border-red-900 text-red-900 font-bold text-[11px] tracking-widest uppercase rounded-full">Block</button>
+    <div id="boost-panel">
+        <button onclick="closeAll()" class="text-yellow-500 text-[11px] font-bold uppercase mb-12">← Back</button>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <div class="w-32 h-32 bg-yellow-500/10 rounded-full flex items-center justify-center mb-8 boost-glow"><svg class="w-16 h-16 text-yellow-500" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+            <h1 class="text-4xl font-bold uppercase mb-4 tracking-tighter text-white font-bold italic">Profile Boost</h1>
+            <p class="text-gray-500 text-sm mb-12 px-10">Get 10x more visibility in Bikramganj.</p>
+            <button onclick="alert('Boost Activated!'); closeAll();" class="w-full max-w-xs py-5 bg-yellow-500 text-black font-bold text-[10px] tracking-widest uppercase rounded-full">Activate Now</button>
         </div>
     </div>
 
     <nav class="flex justify-between items-center px-6 py-10 absolute top-0 w-full z-[1000]">
         <div class="flex flex-col">
-            <div onclick="location.reload()" class="flex items-center space-x-3 bg-zinc-900/60 px-4 py-2.5 rounded-full border border-white/5 backdrop-blur-xl">
+            <div onclick="location.reload()" class="flex items-center space-x-3 bg-zinc-900/60 px-4 py-2.5 rounded-full border border-white/5 backdrop-blur-xl cursor-pointer">
                 <div class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-[10px] font-bold uppercase" id="nav-initial">L</div>
                 <span id="match-count" class="text-[11px] font-bold text-pink-600 tracking-widest uppercase">0 Matches</span>
             </div>
             <span id="server-time" class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.3em] ml-3 mt-2">12:00:00 PM</span>
         </div>
         <div class="flex space-x-3">
-            <div onclick="document.getElementById('boost-panel').style.display='flex'" class="cursor-pointer bg-zinc-900/60 p-3.5 rounded-2xl border border-yellow-500/20 text-yellow-500 shadow-2xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-            <div onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3.5 rounded-2xl border border-white/10 text-pink-600 shadow-2xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M4 8h16M4 16h16"></path></svg></div>
+            <div id="btn-boost" onclick="document.getElementById('boost-panel').style.display='flex'" class="cursor-pointer bg-zinc-900/60 p-3.5 rounded-2xl border border-yellow-500/20 text-yellow-500 shadow-2xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+            <div id="btn-menu" onclick="toggleMenu()" class="cursor-pointer bg-zinc-900/60 p-3.5 rounded-2xl border border-white/10 text-pink-600 shadow-2xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M4 8h16M4 16h16"></path></svg></div>
         </div>
     </nav>
 
@@ -147,23 +123,19 @@
                 <div><p class="text-base font-bold tracking-tight uppercase" id="display-name">Guest</p><p class="text-[9px] text-pink-600 font-bold tracking-[0.2em] uppercase italic">Elite Circle</p></div>
             </div>
             <ul class="space-y-8">
-                <li onclick="document.getElementById('discovery-panel').style.display='flex'; closeAll();" class="cursor-pointer text-sm font-bold hover:text-pink-500 transition uppercase tracking-[0.1em]">Discovery Settings</li>
-                <li onclick="document.getElementById('matches-panel').style.display='flex'; closeAll();" class="cursor-pointer text-sm font-bold hover:text-pink-500 transition uppercase tracking-[0.1em]">My Connections</li>
-                <li onclick="document.getElementById('luxe-panel').style.display='flex'; closeAll();" class="p-5 bg-pink-600/5 border border-pink-600/20 rounded-3xl text-center cursor-pointer font-bold text-pink-600 uppercase text-[11px] tracking-widest">Luvantrely Luxe</li>
+                <li onclick="document.getElementById('discovery-panel').style.display='flex'; closeMenuOnly();" class="cursor-pointer text-sm font-bold hover:text-pink-500 transition uppercase tracking-[0.1em] flex items-center">Discovery Settings</li>
+                <li onclick="document.getElementById('matches-panel').style.display='flex'; closeMenuOnly();" class="cursor-pointer text-sm font-bold hover:text-pink-500 transition uppercase tracking-[0.1em]">My Connections</li>
+                <li onclick="document.getElementById('luxe-panel').style.display='flex'; closeMenuOnly();" class="p-5 bg-pink-600/5 border border-pink-600/20 rounded-3xl text-center cursor-pointer font-bold text-pink-600 uppercase text-[11px] tracking-widest">Luvantrely Luxe</li>
             </ul>
         </div>
         <div class="space-y-10">
-            <div class="flex space-x-6 text-[9px] text-gray-500 font-bold uppercase tracking-widest">
-                <span onclick="openLegal('terms')" class="cursor-pointer hover:text-white">Terms</span>
-                <span onclick="openLegal('privacy')" class="cursor-pointer hover:text-white">Privacy</span>
-            </div>
             <div onclick="signOut()" class="text-red-900 text-[11px] font-bold cursor-pointer uppercase tracking-widest">Sign Out Account</div>
-            <div class="text-[9px] text-gray-700 tracking-[0.3em] font-bold uppercase leading-relaxed">Since 2026 Luvantrely<br>- Ved Parkash</div>
+            <div class="text-[9px] text-gray-700 tracking-[0.2em] font-bold uppercase leading-relaxed">Since 2026 | Luvantrely |<br>Ved Parkash</div>
         </div>
     </div>
 
     <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-8">
-        <h2 onclick="location.reload()" class="text-7xl font-bold tracking-tighter mb-3 uppercase text-white">Luvantrely</h2>
+        <h2 onclick="location.reload()" class="text-7xl font-bold tracking-tighter mb-3 uppercase text-white cursor-pointer">Luvantrely</h2>
         <p class="text-[10px] tracking-[1.2em] text-pink-600 uppercase font-bold mb-20 ml-4">Pure Intimacy</p>
         <button onclick="startOnboarding()" class="px-16 py-5 rounded-full border border-white/10 text-white text-[11px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-700 shadow-2xl">Join The Circle</button>
     </main>
@@ -191,14 +163,12 @@
     </div>
 
     <script>
-        // MASTER CONFIGURATION
         const profiles = [
             { id: 6, name: 'Zara', age: 23, loc: 'Delhi', bio: 'Architecture and minimalist soul.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000' },
             { id: 5, name: 'Mehak', age: 22, loc: 'Mumbai', bio: 'Classical dancer and travel enthusiast.', img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1000' },
             { id: 4, name: 'Riya', age: 25, loc: 'Bangalore', bio: 'AI researcher looking for an elite connection.', img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1000' },
             { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Deep conversations over black coffee.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1000' },
-            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Art and life enthusiast.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000' },
-            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Pure intimacy and high-class vibe.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000' }
+            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Art and life enthusiast.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000' }
         ];
         let currentIdx = profiles.length - 1;
         let matchesCount = 0;
@@ -206,8 +176,7 @@
         window.onload = function() {
             const savedUser = localStorage.getItem('luvUser');
             if (savedUser) {
-                const user = JSON.parse(savedUser);
-                setUserData(user.name);
+                setUserData(JSON.parse(savedUser).name);
                 document.getElementById('landing-page').style.display = 'none';
                 document.getElementById('swipe-section').classList.remove('hidden');
                 renderCards();
@@ -215,23 +184,20 @@
         };
 
         function validatePhone() {
-            const val = document.getElementById('user-phone').value;
-            if(val.length === 10) goToStep(2);
-            else alert("Error: Please enter a valid 10-digit number.");
+            const ph = document.getElementById('user-phone').value;
+            if(ph.length === 10) goToStep(2);
+            else alert("Error: Mobile number must be exactly 10 digits.");
         }
 
-        function openLegal(type) {
-            const panel = document.getElementById('legal-panel');
-            const title = document.getElementById('legal-title');
-            const content = document.getElementById('legal-content');
-            panel.style.display = 'flex';
-            if(type === 'terms') {
-                title.innerText = "Terms.";
-                content.innerHTML = "<p>1. Members must be 18+.</p><p>2. Zero tolerance for fake data.</p><p>3. Ved Parkash Edition reserves all rights.</p>";
-            } else {
-                title.innerText = "Privacy.";
-                content.innerHTML = "<p>1. Data is encrypted by Elite standards.</p><p>2. We never share contacts.</p><p>3. High-tier cloud security.</p>";
+        function validateIdentity() {
+            const name = document.getElementById('user-name').value;
+            const dob = document.getElementById('user-dob').value;
+            const gender = document.getElementById('user-gender').value;
+            if(!name || !dob || !gender) {
+                alert("Identify Yourself: Please fill Name, DOB and Gender.");
+                return;
             }
+            goToStep(3);
         }
 
         function finalizeUser() {
@@ -298,10 +264,10 @@
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
         function goToStep(step) { document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step')); document.getElementById('step-' + step).classList.add('active-step'); document.getElementById('step-indicator').innerText = "Step " + step + "/3"; }
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
-        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); document.querySelectorAll('#luxe-panel, #boost-panel, #discovery-panel, #legal-panel, #matches-panel').forEach(p => p.style.display='none'); closeDetail(); }
+        function closeMenuOnly() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.add('show-overlay'); }
+        function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); document.querySelectorAll('#luxe-panel, #boost-panel, #discovery-panel, #legal-panel, #matches-panel').forEach(p => p.style.display='none'); document.getElementById('detail-panel').classList.remove('detail-open'); }
         function manualSwipe(dir) { const card = document.querySelectorAll('.swipe-card')[currentIdx]; if(card) dismiss(card, dir); }
         function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
-        function closeDetail() { document.getElementById('detail-panel').classList.remove('detail-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
         function signOut() { localStorage.removeItem('luvUser'); location.reload(); }
         setInterval(() => { document.getElementById('server-time').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
