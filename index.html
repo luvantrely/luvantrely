@@ -136,6 +136,7 @@
             </div>
             <ul class="space-y-6">
                 <li onclick="openMatches()" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">My Matches</li>
+                <li onclick="document.getElementById('discovery-panel').style.display='flex'; closeAll();" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">Discovery Settings</li>
                 <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
                 <li onclick="shareApp()" class="p-4 bg-zinc-900 border border-white/5 rounded-2xl text-center cursor-pointer group hover:border-pink-600 transition"><span class="text-[10px] font-bold text-gray-400 group-hover:text-pink-500 uppercase tracking-widest">Share The Circle</span></li>
             </ul>
@@ -316,6 +317,7 @@
             else alert("URL: " + window.location.href);
         }
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
+        document.getElementById('discovery-panel').style.display='none';
     </script>
 </body>
 </html>
