@@ -230,7 +230,13 @@
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
         
         function goToStep(step) {
-            if(step === 2 && document.getElementById('user-phone').value.length < 10) return alert("Enter valid phone.");
+            if(step === 2) {
+        const ph = document.getElementById('user-phone').value;
+        if(ph.length !== 10 || isNaN(ph)) {
+            alert("Bhai, 10 digit ka sahi number dalo!");
+            return; 
+        }
+    }
             if(step === 3 && !document.getElementById('user-name').value) return alert("Enter your name.");
             document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
             document.getElementById('step-' + step).classList.add('active-step');
