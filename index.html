@@ -161,7 +161,11 @@
             </ul>
         </div>
         <div class="space-y-8">
-            <p class="text-[9px] text-gray-600 uppercase tracking-widest font-medium text-white">Privacy & Terms</p>
+    <p onclick="openPrivacy()" class="text-[10px] text-gray-400 uppercase tracking-widest font-bold cursor-pointer hover:text-pink-600 transition">Privacy & Terms</p>
+    
+    <div onclick="signOut()" class="text-red-900 ...">Sign Out</div>
+    <div class="text-[8px] ...">Since 2026...</div>
+</div>
             <div onclick="signOut()" class="text-red-900 text-[10px] font-bold cursor-pointer uppercase tracking-widest">Sign Out</div>
             <div class="text-[8px] text-gray-800 tracking-[0.4em] font-bold uppercase">Since 2026 | Luvantrely</div>
         </div>
@@ -200,8 +204,55 @@
         <button onclick="document.getElementById('discovery-panel').style.display='none'" class="w-full py-5 border border-pink-600 rounded-full text-[10px] font-bold uppercase tracking-widest text-pink-600">Save Preferences</button>
     </div>
 </div>
+    <div id="privacy-panel" style="position: fixed; inset: 0; background: #000; z-index: 950; display: none; flex-direction: column; padding: 40px; overflow-y: auto;">
+    <div class="flex justify-between items-center mb-16">
+        <button onclick="document.getElementById('privacy-panel').style.display='none'" class="text-pink-600 text-[10px] font-bold uppercase tracking-[0.3em]">← Close Vault</button>
+        <span class="text-[8px] text-gray-600 font-bold uppercase tracking-[0.5em]">Luvantrely Security Protocol</span>
+    </div>
+
+    <h1 class="text-6xl font-bold italic match-text mb-4 uppercase tracking-tighter">Privacy Policy.</h1>
+    <p class="text-gray-500 text-[10px] uppercase tracking-[0.4em] mb-16 italic">By Ved Prakash | Executive Protection</p>
+    
+    <div class="space-y-12 text-gray-400 text-xs leading-relaxed max-w-2xl">
+        <section>
+            <h4 class="text-white font-bold uppercase text-[11px] tracking-widest mb-4 border-b border-pink-600/30 pb-2">1. Data Sovereignty</h4>
+            <p class="mb-4">At Luvantrely, your data is treated as elite assets. We collect your identity (Name, DOB, Gender) and bio solely to curate your experience within the circle. We do not sell your personal archives to any third-party marketing entities.</p>
+        </section>
+        
+        <section>
+            <h4 class="text-white font-bold uppercase text-[11px] tracking-widest mb-4 border-b border-pink-600/30 pb-2">2. Geolocation & Privacy</h4>
+            <p class="mb-4">To maintain intimacy, we access your location only to find matches within your chosen discovery radius. Your precise coordinates are never visible to other members; only an approximate distance is displayed.</p>
+        </section>
+
+        <section>
+            <h4 class="text-white font-bold uppercase text-[11px] tracking-widest mb-4 border-b border-pink-600/30 pb-2">3. Media & Content</h4>
+            <p class="mb-4">Any media uploaded to Luvantrely is processed via secure cloud servers. We reserve the right to audit content to maintain the "Elite" standard of our community, ensuring a safe environment free from harassment.</p>
+        </section>
+
+        <section>
+            <h4 class="text-white font-bold uppercase text-[11px] tracking-widest mb-4 border-b border-pink-600/30 pb-2">4. Cookies & Tracking</h4>
+            <p class="mb-4">We use "Elite-Tokens" (Cookies) to remember your session. This ensures you stay logged into the circle without re-authenticating every time you open the app.</p>
+        </section>
+
+        <section>
+            <h4 class="text-white font-bold uppercase text-[11px] tracking-widest mb-4 border-b border-pink-600/30 pb-2">5. Account Termination</h4>
+            <p class="mb-4">You have the "Right to be Forgotten." Upon deleting your account, all your personal records, matches, and logs will be permanently purged from our active databases within 30 days.</p>
+        </section>
+    </div>
+    
+    <div class="mt-24 border-t border-white/5 pt-10 mb-10">
+        <p class="text-[9px] tracking-[0.2em] uppercase text-gray-700">© 2026 Luvantrely Global. All Rights Reserved. Managed by Ved Prakash.</p>
+    </div>
+</div>
+    
 
     <script>
+        function openPrivacy() {
+    // Menu band karo aur privacy screen dikhao
+    document.getElementById('side-menu').classList.remove('menu-open');
+    document.getElementById('overlay').classList.remove('show-overlay');
+    document.getElementById('privacy-panel').style.display = 'flex';
+}
         const profiles = [
             { id: 6, name: 'Zara', age: 23, loc: 'Delhi', bio: 'Architecture and minimalist design soul.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000' },
             { id: 5, name: 'Mehak', age: 22, loc: 'Mumbai', bio: 'Classical dancer and travel enthusiast.', img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1000' },
@@ -261,7 +312,7 @@
         }
 
         if(age < 18) {
-            alert("Access Denied: You must be at least 18 to join this circle.");
+            alert("You must be at least 18 to join this circle.");
             return;
         }
         
