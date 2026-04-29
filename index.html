@@ -237,6 +237,39 @@
             return; 
         }
     }
+        if(step === 3) {
+        const dobValue = document.getElementById('user-dob').value;
+        const nameValue = document.getElementById('user-name').value;
+        
+        if(!nameValue) {
+            alert("Elite Identification Required: Please enter your name.");
+            return;
+        }
+
+        if(!dobValue) {
+            alert("Elite Identification Required: Please enter your Date of Birth.");
+            return;
+        }
+
+        const dob = new Date(dobValue);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        if(age < 18) {
+            alert("Access Denied: You must be at least 18 to join this circle.");
+            return;
+        }
+        
+        if(dob > today) {
+            alert("Invalid Entry: Date of Birth cannot be in the future.");
+            return;
+        }
+    }  
             if(step === 3 && !document.getElementById('user-name').value) return alert("Enter your name.");
             document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
             document.getElementById('step-' + step).classList.add('active-step');
