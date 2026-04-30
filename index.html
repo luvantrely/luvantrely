@@ -105,6 +105,9 @@
         <div class="space-y-6">
             <div><h4 class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 font-bold italic text-white">The Story</h4><p id="det-bio" class="text-gray-300 text-sm italic leading-relaxed"></p></div>
         </div>
+        <button onclick="blockCurrentProfile()" class="w-full py-4 border border-red-900/30 text-red-700 font-bold text-[9px] tracking-widest uppercase rounded-full mt-8 hover:bg-red-900 hover:text-white transition duration-300">
+    Block & Report User
+</button>
         <button onclick="closeDetail()" class="w-full py-5 bg-white text-black font-bold text-[10px] tracking-widest uppercase rounded-full mt-12">Return to Swipe</button>
     </div>
 
@@ -245,6 +248,9 @@
     
 
     <script>
+    // Initialize blocked list from localStorage
+let blockedUsers = JSON.parse(localStorage.getItem('blockedUsers')) || [];
+let currentViewingProfileId = null; // To track which profile is open in detail view
         function openPrivacy() {
     // Menu band karo aur privacy screen dikhao
     document.getElementById('side-menu').classList.remove('menu-open');
@@ -346,18 +352,32 @@
         function signOut() { localStorage.removeItem('luvUser'); location.reload(); }
 
         function renderCards() {
-            const stack = document.getElementById('card-stack');
-            stack.innerHTML = "";
-            profiles.forEach((p, index) => {
-                const card = document.createElement('div');
-                card.className = 'swipe-card';
-                card.id = `card-${index}`;
-                card.innerHTML = `<div class="badge badge-like">LIKE</div><div class="badge badge-nope">NOPE</div><img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc} • Tap for details</p></div>`;
-                card.onclick = (e) => { e.stopPropagation(); openDetail(p); };
-                setupDraggable(card, index);
-                stack.appendChild(card);
-            });
-        }
+    const stack = document.getElementById('card-stack');
+    stack.innerHTML = "";
+
+    // NAYI LINE: Blocked logo ko hatane ke liye filter
+    const visibleProfiles = profiles.filter(p => !blockedUsers.includes(p.id));
+    
+    currentIdx = visibleProfiles.length - 1;
+
+    if (currentIdx < 0) {
+        document.getElementById('card-stack').style.display = 'none';
+        document.getElementById('controls').style.display = 'none';
+        document.getElementById('empty-state').classList.remove('hidden');
+        return;
+    }
+
+    // Ab 'profiles' ki jagah 'visibleProfiles' use hoga
+    visibleProfiles.forEach((p, index) => {
+        const card = document.createElement('div');
+        card.className = 'swipe-card';
+        card.id = `card-${index}`;
+        card.innerHTML = `<div class="badge badge-like">LIKE</div><div class="badge badge-nope">NOPE</div><img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc} • Tap for details</p></div>`;
+        card.onclick = (e) => { e.stopPropagation(); openDetail(p); };
+        setupDraggable(card, index);
+        stack.appendChild(card);
+    });
+}
         function setupDraggable(card, index) {
             let startX, moveX = 0;
             const lb = card.querySelector('.badge-like');
@@ -398,13 +418,28 @@
                 setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
             }
         }
-        function openDetail(p) {
-            document.getElementById('det-name').innerText = p.name + ', ' + p.age;
-            document.getElementById('det-loc').innerText = p.loc + ' • Elite Member';
-            document.getElementById('det-bio').innerText = p.bio;
-            document.getElementById('detail-panel').classList.add('detail-open');
-            document.getElementById('overlay').classList.add('show-overlay');
-        }
+        // Is poore block ko replace karo
+function openDetail(p) {
+    currentViewingProfileId = p.id; // Yeh line id save karegi block karne ke liye
+    document.getElementById('det-name').innerText = p.name + ', ' + p.age;
+    document.getElementById('det-loc').innerText = p.loc + ' • Elite Member';
+    document.getElementById('det-bio').innerText = p.bio;
+    document.getElementById('detail-panel').classList.add('detail-open');
+    document.getElementById('overlay').classList.add('show-overlay');
+}
+
+// Yeh ek ekdum naya function hai, ise openDetail ke neeche paste kar do
+function blockCurrentProfile() {
+    if (!currentViewingProfileId) return;
+    const confirmBlock = confirm("Are you sure you want to block this user?");
+    if (confirmBlock) {
+        blockedUsers.push(currentViewingProfileId);
+        localStorage.setItem('blockedUsers', JSON.stringify(blockedUsers));
+        alert("User blocked.");
+        closeDetail();
+        renderCards(); // Yeh swipe list refresh kar dega
+    }
+}
         function closeDetail() { document.getElementById('detail-panel').classList.remove('detail-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
         function addToMatchList(img) {
             const list = document.getElementById('match-list');
