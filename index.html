@@ -246,7 +246,26 @@
     </div>
 </div>
     
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDDdnmvkdoBvHqOOP60GdJ4JEvXjWdmxl4",
+  authDomain: "luvantrely-elite-b245d.firebaseapp.com",
+  projectId: "luvantrely-elite-b245d",
+  storageBucket: "luvantrely-elite-b245d.firebasestorage.app",
+  messagingSenderId: "952537265860",
+  appId: "1:952537265860:web:dfccec24c5f82352b9fb91"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+console.log("Firebase connected ✅");
+</script>
     <script>
     // Initialize blocked list from localStorage
 let blockedUsers = JSON.parse(localStorage.getItem('blockedUsers')) || [];
