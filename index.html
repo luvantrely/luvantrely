@@ -477,6 +477,35 @@ function blockCurrentProfile() {
             if (navigator.share) navigator.share({ title: 'Luvantrely', text: 'Join the circle.', url: window.location.href });
             else alert("URL: " + window.location.href);
         }
+        function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+
+      const userData = {
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL
+      };
+
+      localStorage.setItem('luvUser', JSON.stringify(userData));
+
+      setUserData(user.displayName);
+
+      document.getElementById('landing-page').style.display = 'none';
+      document.getElementById('swipe-section').classList.remove('hidden');
+
+      renderCards();
+
+      alert("Login successful ✅");
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("Login failed ❌");
+    });
+}
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
         document.getElementById('discovery-panel').style.display='none';
     </script>
