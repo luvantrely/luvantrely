@@ -176,6 +176,10 @@
         <h2 class="text-7xl font-bold tracking-tighter mb-2 uppercase text-white">Luvantrely</h2>
         <p class="text-[10px] tracking-[1em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
         <button onclick="startOnboarding()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
+        <button onclick="googleLogin()" 
+class="mt-4 px-10 py-3 rounded-full bg-white text-black text-[10px] font-bold tracking-widest uppercase">
+Login with Google
+</button>
     </main>
 
     <div id="swipe-section" class="h-screen flex flex-col items-center justify-center hidden bg-[#050505]">
@@ -250,6 +254,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDdnmvkdoBvHqOOP60GdJ4JEvXjWdmxl4",
@@ -478,9 +483,9 @@ function blockCurrentProfile() {
             else alert("URL: " + window.location.href);
         }
         function googleLogin() {
-  const provider = new firebase.auth.GoogleAuthProvider();
+  const provider = new GoogleAuthProvider();
 
-  firebase.auth().signInWithPopup(provider)
+  signInWithPopup(auth, provider)
     .then((result) => {
       const user = result.user;
 
