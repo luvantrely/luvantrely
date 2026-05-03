@@ -131,6 +131,20 @@
         <div id="match-list" class="match-grid"></div>
     </div>
 
+    <div id="blocked-panel" style="position: fixed; inset: 0; background: #000; z-index: 700; display: none; flex-direction: column; padding: 40px; overflow-y: auto;">
+    
+    <button onclick="closeBlocked()" class="text-pink-600 text-[10px] font-bold uppercase mb-12">
+        ← Back
+    </button>
+    
+    <h1 class="text-4xl font-bold italic match-text mb-8 uppercase tracking-tighter text-white">
+        Blocked Users
+    </h1>
+
+    <div id="blocked-list"></div>
+
+</div>
+
     <div id="match-screen">
         <h1 class="text-7xl font-bold italic match-text mb-4 animate-pulse">It's a Match!</h1>
         <div class="flex space-x-6 mb-24 mt-12">
@@ -165,6 +179,9 @@
                 <li onclick="document.getElementById('discovery-panel').style.display='flex'; closeAll();" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">Discovery Settings</li>
                 <li onclick="openLuxe()" class="p-4 bg-pink-600/5 border border-pink-600/20 rounded-2xl text-center cursor-pointer font-bold text-pink-500 uppercase text-[10px]">Luvantrely Luxe</li>
                 <li onclick="shareApp()" class="p-4 bg-zinc-900 border border-white/5 rounded-2xl text-center cursor-pointer group hover:border-pink-600 transition"><span class="text-[10px] font-bold text-gray-400 group-hover:text-pink-500 uppercase tracking-widest">Share The Circle</span></li>
+                <li onclick="openBlocked()" class="cursor-pointer text-sm font-medium hover:text-pink-500 transition uppercase tracking-wide text-white">
+    Blocked Users
+</li>
             </ul>
         </div>
         <div class="space-y-8">
@@ -540,6 +557,53 @@ function blockCurrentProfile() {
       console.log(error);
       alert("Login Failed ❌");
     });
+}
+        function openBlocked() {
+    document.getElementById('blocked-panel').style.display = 'flex';
+    renderBlockedUsers();
+}
+
+function closeBlocked() {
+    document.getElementById('blocked-panel').style.display = 'none';
+}
+        function renderBlockedUsers() {
+    const list = document.getElementById('blocked-list');
+    list.innerHTML = "";
+
+    if (blockedUsers.length === 0) {
+        list.innerHTML = "<p style='color:gray'>No blocked users</p>";
+        return;
+    }
+
+    blockedUsers.forEach(id => {
+        const user = profiles.find(p => p.id === id);
+
+        if (!user) return;
+
+        const div = document.createElement('div');
+        div.style.display = "flex";
+        div.style.justifyContent = "space-between";
+        div.style.marginBottom = "10px";
+        div.style.background = "#111";
+        div.style.padding = "10px";
+        div.style.borderRadius = "10px";
+
+        div.innerHTML = `
+            <span>${user.name}</span>
+            <button onclick="unblockUser(${user.id})" style="color:red">Unblock</button>
+        `;
+
+        list.appendChild(div);
+    });
+}
+        function unblockUser(id) {
+    blockedUsers = blockedUsers.filter(u => u !== id);
+    localStorage.setItem('blockedUsers', JSON.stringify(blockedUsers));
+
+    renderBlockedUsers();
+    renderCards();
+
+    alert("User unblocked");
 }
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
         document.getElementById('discovery-panel').style.display='none';
