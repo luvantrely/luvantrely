@@ -392,21 +392,6 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
     }
 }
 
-    // save full user data
-    localStorage.setItem('luvUser', JSON.stringify(userData));
-
-    // UI update
-    setUserData(name);
-
-    // onboarding close
-    document.getElementById('onboarding-screen').style.display = 'none';
-
-    // swipe open
-    document.getElementById('swipe-section').classList.remove('hidden');
-
-    renderCards();
-}
-
         function setUserData(name) {
             document.getElementById('display-name').innerText = name;
             document.getElementById('nav-initial').innerText = name[0].toUpperCase();
