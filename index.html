@@ -10,14 +10,18 @@
         body { font-family: 'Inter', sans-serif; background-color: #000; color: white; overflow: hidden; touch-action: none; }
         .side-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 320px; background: #0a0a0a; border-left: 1px solid #1a1a1a; transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
         .menu-open { transform: translateX(0); }
-        .overlay { 
-    position: fixed; 
-    inset: 0; 
-    background: rgba(0,0,0,0.8); 
-    backdrop-filter: blur(5px); 
-    display: none; 
-    z-index: 10; 
-    pointer-events: none;   /* 👈 ye line important hai */
+        .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    z-index: 10;
+}
+
+.show-overlay {
+    display: block;
+    pointer-events: auto; /* 👈 important */
 }
         .show-overlay { display: block; }
         
