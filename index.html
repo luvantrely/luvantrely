@@ -254,6 +254,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDdnmvkdoBvHqOOP60GdJ4JEvXjWdmxl4",
@@ -352,7 +353,7 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
     document.getElementById('step-indicator').innerText = "Step " + step + "/2";
 }
 
-        function finalizeUser() {
+        async function finalizeUser() {
     const name = document.getElementById('user-name').value;
     const dob = document.getElementById('user-dob').value;
     const gender = document.getElementById('user-gender').value;
@@ -367,8 +368,29 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
         name: name,
         dob: dob,
         gender: gender,
-        bio: bio
+        bio: bio,
+        createdAt: new Date()
     };
+
+    try {
+        await addDoc(collection(db, "users"), userData);
+
+        localStorage.setItem('luvUser', JSON.stringify(userData));
+
+        setUserData(name);
+
+        document.getElementById('onboarding-screen').style.display = 'none';
+        document.getElementById('swipe-section').classList.remove('hidden');
+
+        renderCards();
+
+        alert("User Saved to Firebase ✅");
+
+    } catch (error) {
+        console.error(error);
+        alert("Error saving user ❌");
+    }
+}
 
     // save full user data
     localStorage.setItem('luvUser', JSON.stringify(userData));
