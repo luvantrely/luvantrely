@@ -10,7 +10,15 @@
         body { font-family: 'Inter', sans-serif; background-color: #000; color: white; overflow: hidden; touch-action: none; }
         .side-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 320px; background: #0a0a0a; border-left: 1px solid #1a1a1a; transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
         .menu-open { transform: translateX(0); }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; z-index: 90; }
+        .overlay { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.8); 
+    backdrop-filter: blur(5px); 
+    display: none; 
+    z-index: 10; 
+    pointer-events: none;   /* 👈 ye line important hai */
+}
         .show-overlay { display: block; }
         
         .card-stack { position: relative; width: 92%; max-width: 380px; height: 550px; perspective: 1000px; }
@@ -177,7 +185,7 @@
         <p class="text-[10px] tracking-[1em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
         <button onclick="startOnboarding()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
         <button onclick="googleLogin()" 
-class="mt-4 px-10 py-3 rounded-full bg-white text-black text-[10px] font-bold tracking-widest uppercase">
+class="mt-4 px-10 py-3 rounded-full bg-white text-black text-[10px] font-bold tracking-widest uppercase relative z-50">
 Login with Google
 </button>
     </main>
