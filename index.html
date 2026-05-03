@@ -276,6 +276,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebas
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDdnmvkdoBvHqOOP60GdJ4JEvXjWdmxl4",
@@ -295,7 +296,9 @@ window.GoogleAuthProvider = GoogleAuthProvider;
 window.signInWithPopup = signInWithPopup;
 window.addDoc = addDoc;
 window.collection = collection;
-window.db = db;
+window.setDoc = setDoc;
+window.doc = doc;
+window.db = db;   // 👈 ये भी जरूरी
 
 console.log("Firebase connected ✅");
 </script>
@@ -397,7 +400,12 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
     };
 
     try {
-        await window.addDoc(window.collection(db, "users"), userData);
+        const uid = auth.currentUser.uid;
+
+await window.setDoc(
+    window.doc(window.db, "users", uid),
+    userData
+);
 
         localStorage.setItem('luvUser', JSON.stringify(userData));
 
