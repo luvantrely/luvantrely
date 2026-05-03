@@ -353,15 +353,37 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
 }
 
         function finalizeUser() {
-            const name = document.getElementById('user-name').value;
-            if(!name) return alert("Enter name.");
-            const userData = { name: name };
-            localStorage.setItem('luvUser', JSON.stringify(userData));
-            setUserData(name);
-            document.getElementById('onboarding-screen').style.display = 'none';
-            document.getElementById('swipe-section').classList.remove('hidden');
-            renderCards();
-        }
+    const name = document.getElementById('user-name').value;
+    const dob = document.getElementById('user-dob').value;
+    const gender = document.getElementById('user-gender').value;
+    const bio = document.getElementById('user-bio').value;
+
+    if(!name || !dob || !gender || !bio){
+        alert("Please fill all details!");
+        return;
+    }
+
+    const userData = {
+        name: name,
+        dob: dob,
+        gender: gender,
+        bio: bio
+    };
+
+    // save full user data
+    localStorage.setItem('luvUser', JSON.stringify(userData));
+
+    // UI update
+    setUserData(name);
+
+    // onboarding close
+    document.getElementById('onboarding-screen').style.display = 'none';
+
+    // swipe open
+    document.getElementById('swipe-section').classList.remove('hidden');
+
+    renderCards();
+}
 
         function setUserData(name) {
             document.getElementById('display-name').innerText = name;
