@@ -71,25 +71,17 @@
     <div id="onboarding-screen">
         <div class="flex justify-between items-center mb-12">
             <span class="text-pink-600 font-bold text-xl tracking-tighter uppercase">Luvantrely</span>
-            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/3</span>
+            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="step-indicator">Step 1/2</span>
         </div>
         <div id="step-1" class="step-panel active-step">
-            <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Verify.</h2>
-            <div class="phone-box">
-    <div class="prefix">+91</div>
-    <input type="tel" id="user-phone" placeholder="10 DIGIT NUMBER" maxlength="10" class="w-full bg-transparent p-4 outline-none text-white font-bold text-sm">
-</div>
-            <button onclick="goToStep(2)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Send Code</button>
-        </div>
-        <div id="step-2" class="step-panel">
             <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Identity.</h2>
             <input type="text" id="user-name" placeholder="FULL NAME" class="input-field uppercase">
             <label class="text-[9px] text-gray-600 uppercase tracking-widest mb-2 block ml-2">Date of Birth</label>
             <input type="date" id="user-dob" class="input-field">
             <select id="user-gender" class="input-field"><option value="">GENDER</option><option value="Male">MALE</option><option value="Female">FEMALE</option></select>
-            <button onclick="goToStep(3)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Continue</button>
+            <button onclick="goToStep(2)" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase">Continue</button>
         </div>
-        <div id="step-3" class="step-panel">
+        <div id="step-2" class="step-panel">
             <h2 class="text-4xl font-bold mb-4 tracking-tighter uppercase text-white">Bio.</h2>
             <textarea id="user-bio" placeholder="TELL THE CIRCLE ABOUT YOUR STORY..." class="input-field h-36 resize-none uppercase text-[10px]"></textarea>
             <button onclick="finalizeUser()" class="w-full py-5 bg-pink-600 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-2xl">Finalize</button>
@@ -183,10 +175,9 @@
     <main id="landing-page" class="h-screen flex flex-col items-center justify-center text-center px-6">
         <h2 class="text-7xl font-bold tracking-tighter mb-2 uppercase text-white">Luvantrely</h2>
         <p class="text-[10px] tracking-[1em] text-pink-600 uppercase font-bold mb-16">Pure Intimacy</p>
-        <button onclick="startOnboarding()" class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">Join The Circle</button>
         <button onclick="googleLogin()" 
-class="mt-4 px-10 py-3 rounded-full bg-white text-black text-[10px] font-bold tracking-widest uppercase relative z-50">
-Login with Google
+class="px-14 py-4 rounded-full border border-white/10 text-white text-[10px] font-bold tracking-[0.4em] uppercase hover:bg-white hover:text-black transition duration-500">
+Join The Circle
 </button>
     </main>
 
@@ -321,24 +312,18 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
         function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
         
         function goToStep(step) {
-            if(step === 2) {
-        const ph = document.getElementById('user-phone').value;
-        if(ph.length !== 10 || isNaN(ph)) {
-            alert("Enter your valid phone number!");
-            return; 
-        }
-    }
-        if(step === 3) {
+
+    if(step === 2) {
         const dobValue = document.getElementById('user-dob').value;
         const nameValue = document.getElementById('user-name').value;
-        
+
         if(!nameValue) {
-            alert("Elite Identification Required: Please enter your name.");
+            alert("Please enter your name.");
             return;
         }
 
         if(!dobValue) {
-            alert("Elite Identification Required: Please enter your Date of Birth.");
+            alert("Please enter your Date of Birth.");
             return;
         }
 
@@ -352,25 +337,25 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
         }
 
         if(age < 18) {
-            alert("You must be at least 18 to join this circle.");
+            alert("You must be at least 18.");
             return;
         }
-        
+
         if(dob > today) {
-            alert("Invalid Entry: Date of Birth cannot be in the future.");
+            alert("Invalid Date of Birth.");
             return;
         }
-    }  
-            if(step === 3 && !document.getElementById('user-name').value) return alert("Enter your name.");
-            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
-            document.getElementById('step-' + step).classList.add('active-step');
-            document.getElementById('step-indicator').innerText = "Step " + step + "/3";
-        }
+    }
+
+    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
+    document.getElementById('step-' + step).classList.add('active-step');
+    document.getElementById('step-indicator').innerText = "Step " + step + "/2";
+}
 
         function finalizeUser() {
             const name = document.getElementById('user-name').value;
             if(!name) return alert("Enter name.");
-            const userData = { name: name, phone: document.getElementById('user-phone').value };
+            const userData = { name: name };
             localStorage.setItem('luvUser', JSON.stringify(userData));
             setUserData(name);
             document.getElementById('onboarding-screen').style.display = 'none';
@@ -501,26 +486,26 @@ function blockCurrentProfile() {
     .then((result) => {
       const user = result.user;
 
-      const userData = {
+      // user save
+      localStorage.setItem('luvUser', JSON.stringify({
         name: user.displayName,
-        email: user.email,
-        photo: user.photoURL
-      };
+        email: user.email
+      }));
 
-      localStorage.setItem('luvUser', JSON.stringify(userData));
-
-      setUserData(user.displayName);
-
+      // landing hide
       document.getElementById('landing-page').style.display = 'none';
-      document.getElementById('swipe-section').classList.remove('hidden');
 
-      renderCards();
+      // onboarding open
+      document.getElementById('onboarding-screen').style.display = 'flex';
 
-      alert("Login successful ✅");
+      // 👇 NAME AUTO FILL
+      document.getElementById('user-name').value = user.displayName;
+
+      alert("Login Successful ✅");
     })
     .catch((error) => {
-      console.error(error);
-      alert("Login failed ❌");
+      console.log(error);
+      alert("Login Failed ❌");
     });
 }
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
