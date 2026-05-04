@@ -548,21 +548,23 @@ function blockCurrentProfile() {
             else alert("URL: " + window.location.href);
         }
         async function handleLike(targetUserId, targetUserImg) {
-            try {
-    const currentUser = auth.currentUser;
-    if (!currentUser) return alert("Login required");
-    
-    const myId = currentUser.uid; // 👈 ADD THIS
-    const matchId = [myId, targetUserId.toString()].sort().join("_");
+    try {
+        const currentUser = auth.currentUser;
+        if (!currentUser) return alert("Login required");
 
-await window.setDoc(
-    window.doc(window.db, "matches", matchId),
-    {
-        users: [myId.toString(), targetUserId.toString()],
-        createdAt: new Date()
-    }
-);
+        const myId = currentUser.uid;
 
+        // ✅ STEP 1: LIKE SAVE KAR
+        await window.addDoc(
+            window.collection(window.db, "likes"),
+            {
+                from: myId,
+                to: targetUserId.toString(),
+                createdAt: new Date()
+            }
+        );
+
+        // ✅ STEP 2: CHECK karo saamne wale ne like kiya ya nahi
         const q = window.query(
             window.collection(window.db, "likes"),
             window.where("from", "==", targetUserId.toString()),
@@ -571,14 +573,18 @@ await window.setDoc(
 
         const snap = await window.getDocs(q);
 
+        // ✅ STEP 3: AGAR mutual hai → MATCH
         if (!snap.empty) {
-            await window.addDoc(
-    window.collection(window.db, "matches"),
-    {
-        users: [myId.toString(), targetUserId.toString()], // 👈 IMPORTANT FIX
-        createdAt: new Date()
-    }
-);
+
+            const matchId = [myId, targetUserId.toString()].sort().join("_");
+
+            await window.setDoc(
+                window.doc(window.db, "matches", matchId),
+                {
+                    users: [myId.toString(), targetUserId.toString()],
+                    createdAt: new Date()
+                }
+            );
 
             matchesCount++;
             document.getElementById('match-count').innerText = matchesCount + ' Matches';
