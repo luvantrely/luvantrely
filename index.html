@@ -539,7 +539,8 @@ function blockCurrentProfile() {
         function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
         function openLuxe() { document.getElementById('luxe-panel').style.display = 'flex'; }
         function closeLuxe() { document.getElementById('luxe-panel').style.display = 'none'; }
-        function openMatches() { document.getElementById('matches-panel').style.display = 'flex'; }
+        function openMatches() { document.getElementById('matches-panel').style.display = 'flex'; loadMatches(); // 👈 ADD THIS
+}
         function closeMatches() { document.getElementById('matches-panel').style.display = 'none'; }
         function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
         function shareApp() {
@@ -665,6 +666,36 @@ function closeBlocked() {
     renderCards();
 
     alert("User unblocked");
+}
+        async function loadMatches() {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+
+    const myId = currentUser.uid;
+
+    const q = window.query(
+        window.collection(window.db, "matches"),
+        window.where("users", "array-contains", myId)
+    );
+
+    const snap = await window.getDocs(q);
+
+    const list = document.getElementById('match-list');
+    list.innerHTML = "";
+
+    snap.forEach(doc => {
+        const data = doc.data();
+
+        // doosra user nikaal
+        const otherUserId = data.users.find(u => u !== myId);
+
+        // dummy image (abhi ke liye)
+        const img = document.createElement('img');
+        img.className = 'match-avatar';
+        img.src = "https://i.pravatar.cc/150?u=" + otherUserId;
+
+        list.appendChild(img);
+    });
 }
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
         document.getElementById('discovery-panel').style.display='none';
