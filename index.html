@@ -277,6 +277,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-aut
 import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDDdnmvkdoBvHqOOP60GdJ4JEvXjWdmxl4",
@@ -299,6 +300,9 @@ window.collection = collection;
 window.setDoc = setDoc;
 window.doc = doc;
 window.db = db;   // 👈 ये भी जरूरी
+window.getDocs = getDocs;
+window.query = query;
+window.where = where;
 
 console.log("Firebase connected ✅");
 </script>
@@ -491,10 +495,12 @@ await window.setDoc(
             card.style.transition = '0.5s';
             card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
             card.style.opacity = '0';
-            if(dir === 'right') { 
-                matchesCount++; document.getElementById('match-count').innerText = matchesCount + ' Matches'; 
-                addToMatchList(card.querySelector('img').src); triggerMatchUI(card.querySelector('img').src); 
-            }
+            if(dir === 'right') {
+    const visibleProfiles = profiles.filter(p => !blockedUsers.includes(p.id));
+    const likedUser = visibleProfiles[currentIdx];
+
+    handleLike(likedUser.id, likedUser.img);
+}
             currentIdx--;
             if (currentIdx < 0) {
                 setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
@@ -540,6 +546,50 @@ function blockCurrentProfile() {
             if (navigator.share) navigator.share({ title: 'Luvantrely', text: 'Join the circle.', url: window.location.href });
             else alert("URL: " + window.location.href);
         }
+        async function handleLike(targetUserId, targetUserImg) {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return alert("Login required");
+
+    const myId = currentUser.uid;
+
+    try {
+        await window.addDoc(
+            window.collection(window.db, "likes"),
+            {
+                from: myId,
+                to: targetUserId.toString(), // 👈 FIXED
+                createdAt: new Date()
+            }
+        );
+
+        const q = window.query(
+            window.collection(window.db, "likes"),
+            window.where("from", "==", targetUserId.toString()),
+            window.where("to", "==", myId)
+        );
+
+        const snap = await window.getDocs(q);
+
+        if (!snap.empty) {
+            await window.addDoc(
+    window.collection(window.db, "matches"),
+    {
+        users: [myId.toString(), targetUserId.toString()], // 👈 IMPORTANT FIX
+        createdAt: new Date()
+    }
+);
+
+            matchesCount++;
+            document.getElementById('match-count').innerText = matchesCount + ' Matches';
+
+            triggerMatchUI(targetUserImg);
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Error liking user");
+    }
+}
         function googleLogin() {
   const provider = new GoogleAuthProvider();
 
