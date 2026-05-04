@@ -316,403 +316,200 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
     document.getElementById('overlay').classList.remove('show-overlay');
     document.getElementById('privacy-panel').style.display = 'flex';
 }
-        const profiles = [
-            { id: 6, name: 'Zara', age: 23, loc: 'Delhi', bio: 'Architecture and minimalist design soul.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000' },
-            { id: 5, name: 'Mehak', age: 22, loc: 'Mumbai', bio: 'Classical dancer and travel enthusiast.', img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1000' },
-            { id: 4, name: 'Riya', age: 25, loc: 'Bangalore', bio: 'AI researcher looking for an elite connection.', img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1000' },
-            { id: 3, name: 'Sana', age: 21, loc: 'Patna', bio: 'Deep conversations over black coffee.', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1000' },
-            { id: 2, name: 'Ishani', age: 24, loc: 'Rohtas', bio: 'Art and life enthusiast.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000' },
-            { id: 1, name: 'Ananya', age: 22, loc: 'Gaya', bio: 'Pure intimacy and high-class vibe.', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000' }
-        ];
-        let currentIdx = profiles.length - 1;
-        let matchesCount = 0;
+    
+   <script>
+let profiles = [];
+let currentIdx = 0;
+let matchesCount = 0;
+let blockedUsers = JSON.parse(localStorage.getItem('blockedUsers')) || [];
+let currentViewingProfileId = null;
 
-        // REAL PERSISTENCE LOGIC
-        window.onload = function() {
-            const savedUser = localStorage.getItem('luvUser');
-            if (savedUser) {
-                const user = JSON.parse(savedUser);
-                setUserData(user.name);
-                document.getElementById('landing-page').style.display = 'none';
-                document.getElementById('swipe-section').classList.remove('hidden');
-                renderCards();
-            }
-        };
-
-        setInterval(() => { document.getElementById('server-time').innerText = new Date().toLocaleTimeString(); }, 1000);
-
-        function startOnboarding() { document.getElementById('landing-page').style.display = 'none'; document.getElementById('onboarding-screen').style.display = 'flex'; }
-        
-        function goToStep(step) {
-
-    if(step === 2) {
-        const dobValue = document.getElementById('user-dob').value;
-        const nameValue = document.getElementById('user-name').value;
-
-        if(!nameValue) {
-            alert("Please enter your name.");
-            return;
-        }
-
-        if(!dobValue) {
-            alert("Please enter your Date of Birth.");
-            return;
-        }
-
-        const dob = new Date(dobValue);
-        const today = new Date();
-        let age = today.getFullYear() - dob.getFullYear();
-        const monthDiff = today.getMonth() - dob.getMonth();
-
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-            age--;
-        }
-
-        if(age < 18) {
-            alert("You must be at least 18.");
-            return;
-        }
-
-        if(dob > today) {
-            alert("Invalid Date of Birth.");
-            return;
-        }
-    }
-
-    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active-step'));
-    document.getElementById('step-' + step).classList.add('active-step');
-    document.getElementById('step-indicator').innerText = "Step " + step + "/2";
-}
-
-        async function finalizeUser() {
-    const name = document.getElementById('user-name').value;
-    const dob = document.getElementById('user-dob').value;
-    const gender = document.getElementById('user-gender').value;
-    const bio = document.getElementById('user-bio').value;
-
-    if(!name || !dob || !gender || !bio){
-        alert("Please fill all details!");
-        return;
-    }
-
-    const userData = {
-        name: name,
-        dob: dob,
-        gender: gender,
-        bio: bio,
-        createdAt: new Date()
-    };
-
-    try {
-        const uid = auth.currentUser.uid;
-
-await window.setDoc(
-    window.doc(window.db, "users", uid),
-    userData
-);
-
-        localStorage.setItem('luvUser', JSON.stringify(userData));
-
-        setUserData(name);
-
-        document.getElementById('onboarding-screen').style.display = 'none';
+// ✅ AUTH STATE
+auth.onAuthStateChanged(async user => {
+    if (user) {
+        document.getElementById('landing-page').style.display = 'none';
         document.getElementById('swipe-section').classList.remove('hidden');
-
-        renderCards();
-
-        alert("User Saved to Firebase ✅");
-
-    } catch (error) {
-        console.error(error);
-        alert("Error saving user ❌");
+        await loadProfiles();
     }
+});
+
+// ✅ LOAD USERS
+async function loadProfiles() {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+
+    const snap = await getDocs(collection(db, "users"));
+
+    profiles = [];
+
+    snap.forEach(docSnap => {
+        if (docSnap.id !== currentUser.uid) {
+            profiles.push({
+                id: docSnap.id,
+                name: docSnap.data().name || "User",
+                age: 22,
+                loc: "India",
+                bio: docSnap.data().bio || "",
+                img: "https://i.pravatar.cc/400?u=" + docSnap.id
+            });
+        }
+    });
+
+    renderCards();
 }
 
-        function setUserData(name) {
-            document.getElementById('display-name').innerText = name;
-            document.getElementById('nav-initial').innerText = name[0].toUpperCase();
-            document.getElementById('menu-initial').innerText = name[0].toUpperCase();
-            document.getElementById('user-initial').innerText = name[0].toUpperCase();
-        }
-
-        function signOut() { localStorage.removeItem('luvUser'); location.reload(); }
-
-        function renderCards() {
+// ✅ RENDER CARDS
+function renderCards() {
     const stack = document.getElementById('card-stack');
     stack.innerHTML = "";
 
-    // NAYI LINE: Blocked logo ko hatane ke liye filter
     const visibleProfiles = profiles.filter(p => !blockedUsers.includes(p.id));
-    
+
     currentIdx = visibleProfiles.length - 1;
 
     if (currentIdx < 0) {
-        document.getElementById('card-stack').style.display = 'none';
-        document.getElementById('controls').style.display = 'none';
         document.getElementById('empty-state').classList.remove('hidden');
         return;
     }
 
-    // Ab 'profiles' ki jagah 'visibleProfiles' use hoga
     visibleProfiles.forEach((p, index) => {
         const card = document.createElement('div');
         card.className = 'swipe-card';
-        card.id = `card-${index}`;
-        card.innerHTML = `<div class="badge badge-like">LIKE</div><div class="badge badge-nope">NOPE</div><img src="${p.img}"><div class="card-info"><h3 class="text-3xl font-bold">${p.name}, ${p.age}</h3><p class="text-[10px] tracking-widest text-gray-500 uppercase mt-1">${p.loc} • Tap for details</p></div>`;
-        card.onclick = (e) => { e.stopPropagation(); openDetail(p); };
-        setupDraggable(card, index);
+
+        card.innerHTML = `
+        <img src="${p.img}">
+        <div class="card-info">
+            <h3>${p.name}</h3>
+            <p>${p.bio}</p>
+        </div>
+        `;
+
+        card.onclick = () => openDetail(p);
+        setupDraggable(card, index, visibleProfiles);
+
         stack.appendChild(card);
     });
 }
-        function setupDraggable(card, index) {
-            let startX, moveX = 0;
-            const lb = card.querySelector('.badge-like');
-            const nb = card.querySelector('.badge-nope');
-            card.addEventListener('mousedown', s => start(s));
-            card.addEventListener('touchstart', s => start(s));
-            function start(e) {
-                if(index !== currentIdx) return;
-                startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-                const moveFunc = (me) => {
-                    moveX = (me.type === 'touchmove' ? me.touches[0].clientX : me.clientX) - startX;
-                    card.style.transform = `translateX(${moveX}px) rotate(${moveX / 15}deg)`;
-                    lb.style.opacity = moveX > 20 ? (moveX / 100) : 0;
-                    nb.style.opacity = moveX < -20 ? (Math.abs(moveX) / 100) : 0;
-                };
-                const endFunc = () => {
-                    if (Math.abs(moveX) > 100) dismiss(card, moveX > 0 ? 'right' : 'left');
-                    else { card.style.transform = ''; lb.style.opacity = 0; nb.style.opacity = 0; }
-                    document.removeEventListener('mousemove', moveFunc);
-                    document.removeEventListener('touchmove', moveFunc);
-                };
-                document.addEventListener('mousemove', moveFunc);
-                document.addEventListener('touchmove', moveFunc);
-                document.addEventListener('mouseup', endFunc, {once: true});
-                document.addEventListener('touchend', endFunc, {once: true});
-            }
-        }
-        function dismiss(card, dir) {
-            card.style.transition = '0.5s';
-            card.style.transform = `translateX(${dir === 'right' ? 1000 : -1000}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
-            card.style.opacity = '0';
-            if(dir === 'right') {
-    const visibleProfiles = profiles.filter(p => !blockedUsers.includes(p.id));
-    const likedUser = visibleProfiles[currentIdx];
 
-    handleLike(likedUser.id, likedUser.img);
+// ✅ DRAG
+function setupDraggable(card, index, visibleProfiles) {
+    let startX = 0;
+
+    card.addEventListener('mousedown', e => {
+        startX = e.clientX;
+
+        document.onmousemove = ev => {
+            let moveX = ev.clientX - startX;
+            card.style.transform = `translateX(${moveX}px) rotate(${moveX/10}deg)`;
+        };
+
+        document.onmouseup = ev => {
+            let moveX = ev.clientX - startX;
+
+            if (moveX > 100) dismiss(card, 'right', visibleProfiles);
+            else if (moveX < -100) dismiss(card, 'left', visibleProfiles);
+            else card.style.transform = "";
+
+            document.onmousemove = null;
+        };
+    });
 }
-            currentIdx--;
-            if (currentIdx < 0) {
-                setTimeout(() => { document.getElementById('card-stack').style.display='none'; document.getElementById('controls').style.display='none'; document.getElementById('empty-state').classList.remove('hidden'); }, 400);
-            }
-        }
-        // Is poore block ko replace karo
+
+// ✅ SWIPE
+function dismiss(card, dir, visibleProfiles) {
+    card.remove();
+
+    if (dir === 'right') {
+        const likedUser = visibleProfiles[currentIdx];
+        handleLike(likedUser.id, likedUser.img);
+    }
+
+    currentIdx--;
+}
+
+// ✅ LIKE SYSTEM
+async function handleLike(targetUserId, targetUserImg) {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const myId = user.uid;
+
+    await addDoc(collection(db, "likes"), {
+        from: myId,
+        to: targetUserId,
+        createdAt: new Date()
+    });
+
+    const q = query(
+        collection(db, "likes"),
+        where("from", "==", targetUserId),
+        where("to", "==", myId)
+    );
+
+    const snap = await getDocs(q);
+
+    if (!snap.empty) {
+        await setDoc(doc(db, "matches", myId + "_" + targetUserId), {
+            users: [myId, targetUserId]
+        });
+
+        matchesCount++;
+        document.getElementById('match-count').innerText = matchesCount + " Matches";
+
+        alert("🔥 It's a Match!");
+    }
+}
+
+// ✅ DETAIL VIEW
 function openDetail(p) {
-    currentViewingProfileId = p.id; // Yeh line id save karegi block karne ke liye
-    document.getElementById('det-name').innerText = p.name + ', ' + p.age;
-    document.getElementById('det-loc').innerText = p.loc + ' • Elite Member';
+    currentViewingProfileId = p.id;
+    document.getElementById('det-name').innerText = p.name;
     document.getElementById('det-bio').innerText = p.bio;
     document.getElementById('detail-panel').classList.add('detail-open');
-    document.getElementById('overlay').classList.add('show-overlay');
 }
 
-// Yeh ek ekdum naya function hai, ise openDetail ke neeche paste kar do
+// ✅ BLOCK USER
 function blockCurrentProfile() {
     if (!currentViewingProfileId) return;
-    const confirmBlock = confirm("Are you sure you want to block this user?");
-    if (confirmBlock) {
+
+    if (!blockedUsers.includes(currentViewingProfileId)) {
         blockedUsers.push(currentViewingProfileId);
-        localStorage.setItem('blockedUsers', JSON.stringify(blockedUsers));
-        alert("User blocked.");
-        closeDetail();
-        renderCards(); // Yeh swipe list refresh kar dega
-    }
-}
-        function closeDetail() { document.getElementById('detail-panel').classList.remove('detail-open'); document.getElementById('overlay').classList.remove('show-overlay'); }
-        function addToMatchList(img) {
-            const list = document.getElementById('match-list');
-            const imgEl = document.createElement('img');
-            imgEl.className = 'match-avatar'; imgEl.src = img; list.appendChild(imgEl);
-        }
-        function triggerMatchUI(imgSrc) { document.getElementById('matched-img').src = imgSrc; document.getElementById('match-screen').style.display = 'flex'; }
-        function manualSwipe(dir) { const card = document.querySelectorAll('.swipe-card')[currentIdx]; if(card) dismiss(card, dir); }
-        function toggleMenu() { document.getElementById('side-menu').classList.toggle('menu-open'); document.getElementById('overlay').classList.toggle('show-overlay'); }
-        function openLuxe() { document.getElementById('luxe-panel').style.display = 'flex'; }
-        function closeLuxe() { document.getElementById('luxe-panel').style.display = 'none'; }
-        function openMatches() { document.getElementById('matches-panel').style.display = 'flex'; loadMatches(); // 👈 ADD THIS
-}
-        function closeMatches() { document.getElementById('matches-panel').style.display = 'none'; }
-        function closeMatch() { document.getElementById('match-screen').style.display = 'none'; }
-        function shareApp() {
-            if (navigator.share) navigator.share({ title: 'Luvantrely', text: 'Join the circle.', url: window.location.href });
-            else alert("URL: " + window.location.href);
-        }
-        async function handleLike(targetUserId, targetUserImg) {
-    try {
-        const currentUser = auth.currentUser;
-        if (!currentUser) return alert("Login required");
-
-        const myId = currentUser.uid;
-
-        // ✅ STEP 1: LIKE SAVE KAR
-        await window.addDoc(
-            window.collection(window.db, "likes"),
-            {
-                from: myId,
-                to: targetUserId.toString(),
-                createdAt: new Date()
-            }
-        );
-
-        // ✅ STEP 2: CHECK karo saamne wale ne like kiya ya nahi
-        const q = window.query(
-            window.collection(window.db, "likes"),
-            window.where("from", "==", targetUserId.toString()),
-            window.where("to", "==", myId)
-        );
-
-        const snap = await window.getDocs(q);
-
-        // ✅ STEP 3: AGAR mutual hai → MATCH
-        if (!snap.empty) {
-
-            const matchId = [myId, targetUserId.toString()].sort().join("_");
-
-            await window.setDoc(
-                window.doc(window.db, "matches", matchId),
-                {
-                    users: [myId.toString(), targetUserId.toString()],
-                    createdAt: new Date()
-                }
-            );
-
-            matchesCount++;
-            document.getElementById('match-count').innerText = matchesCount + ' Matches';
-
-            triggerMatchUI(targetUserImg);
-        }
-
-    } catch (err) {
-        console.error(err);
-        alert("Error liking user");
-    }
-}
-        function googleLogin() {
-  const provider = new GoogleAuthProvider();
-
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
-
-      // user save
-      localStorage.setItem('luvUser', JSON.stringify({
-        name: user.displayName,
-        email: user.email
-      }));
-
-      // landing hide
-      document.getElementById('landing-page').style.display = 'none';
-
-      // onboarding open
-      document.getElementById('onboarding-screen').style.display = 'flex';
-
-      // 👇 NAME AUTO FILL
-      document.getElementById('user-name').value = user.displayName;
-
-      alert("Login Successful ✅");
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("Login Failed ❌");
-    });
-}
-        function openBlocked() {
-    document.getElementById('blocked-panel').style.display = 'flex';
-    renderBlockedUsers();
-}
-
-function closeBlocked() {
-    document.getElementById('blocked-panel').style.display = 'none';
-}
-        function renderBlockedUsers() {
-    const list = document.getElementById('blocked-list');
-    list.innerHTML = "";
-
-    if (blockedUsers.length === 0) {
-        list.innerHTML = "<p style='color:gray'>No blocked users</p>";
-        return;
     }
 
-    blockedUsers.forEach(id => {
-        const user = profiles.find(p => p.id === id);
-
-        if (!user) return;
-
-        const div = document.createElement('div');
-        div.style.display = "flex";
-        div.style.justifyContent = "space-between";
-        div.style.marginBottom = "10px";
-        div.style.background = "#111";
-        div.style.padding = "10px";
-        div.style.borderRadius = "10px";
-
-        div.innerHTML = `
-            <span>${user.name}</span>
-            <button onclick="unblockUser(${user.id})" style="color:red">Unblock</button>
-        `;
-
-        list.appendChild(div);
-    });
-}
-        function unblockUser(id) {
-    blockedUsers = blockedUsers.filter(u => u !== id);
     localStorage.setItem('blockedUsers', JSON.stringify(blockedUsers));
 
-    renderBlockedUsers();
+    alert("User Blocked");
     renderCards();
-
-    alert("User unblocked");
 }
-        async function loadMatches() {
-    const currentUser = auth.currentUser;
-    if (!currentUser) return;
 
-    const myId = currentUser.uid;
+// ✅ LOGIN
+function googleLogin() {
+    const provider = new GoogleAuthProvider();
 
-    const q = window.query(
-        window.collection(window.db, "matches"),
-        window.where("users", "array-contains", myId)
-    );
-
-    const snap = await window.getDocs(q);
-
-    const list = document.getElementById('match-list');
-    list.innerHTML = "";
-
-    const seen = new Set(); // duplicate rokne ke liye
-
-    snap.forEach(doc => {
-        const data = doc.data();
-        const otherUserId = data.users.find(u => u !== myId);
-
-        if (seen.has(otherUserId)) return;
-        seen.add(otherUserId);
-
-        const img = document.createElement('img');
-        img.className = 'match-avatar';
-        img.src = "https://i.pravatar.cc/150?u=" + otherUserId;
-
-        list.appendChild(img);
+    signInWithPopup(auth, provider)
+    .then(res => {
+        document.getElementById('landing-page').style.display = 'none';
+        document.getElementById('onboarding-screen').style.display = 'flex';
     });
 }
-    const q = window.query(
-        window.where("users", "array-contains", myId)
-    );
 
-    const snap = await window.getDocs(q);
+// ✅ SAVE USER
+async function finalizeUser() {
+    const user = auth.currentUser;
 
-    const list = document.getElementById('match-list');
-    list.innerHTML = "";
+    const data = {
+        name: document.getElementById('user-name').value,
+        bio: document.getElementById('user-bio').value,
+        createdAt: new Date()
+    };
+
+    await setDoc(doc(db, "users", user.uid), data);
+
+    document.getElementById('onboarding-screen').style.display = 'none';
+
+    await loadProfiles();
+}
+</script>     
 
 
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
