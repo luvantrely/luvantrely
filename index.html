@@ -680,7 +680,6 @@ function closeBlocked() {
     const myId = currentUser.uid;
 
     const q = window.query(
-        window.collection(window.db, "matches"),
         window.where("users", "array-contains", myId)
     );
 
