@@ -678,7 +678,21 @@ function closeBlocked() {
     if (!currentUser) return;
 
     const myId = currentUser.uid;
+    const seen = new Set(); // 👈 sirf ek baar
 
+snap.forEach(doc => {
+    const data = doc.data();
+    const otherUserId = data.users.find(u => u !== myId);
+
+    if (seen.has(otherUserId)) return;
+    seen.add(otherUserId);
+
+    const img = document.createElement('img');
+    img.className = 'match-avatar';
+    img.src = "https://i.pravatar.cc/150?u=" + otherUserId;
+
+    list.appendChild(img);
+});
     const q = window.query(
         window.where("users", "array-contains", myId)
     );
@@ -688,20 +702,7 @@ function closeBlocked() {
     const list = document.getElementById('match-list');
     list.innerHTML = "";
 
-    snap.forEach(doc => {
-        const data = doc.data();
 
-        // doosra user nikaal
-        const otherUserId = data.users.find(u => u !== myId);
-
-        // dummy image (abhi ke liye)
-        const img = document.createElement('img');
-        img.className = 'match-avatar';
-        img.src = "https://i.pravatar.cc/150?u=" + otherUserId;
-
-        list.appendChild(img);
-    });
-}
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
         document.getElementById('discovery-panel').style.display='none';
     </script>
