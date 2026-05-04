@@ -678,21 +678,33 @@ function closeBlocked() {
     if (!currentUser) return;
 
     const myId = currentUser.uid;
-    const seen = new Set(); // 👈 sirf ek baar
 
-snap.forEach(doc => {
-    const data = doc.data();
-    const otherUserId = data.users.find(u => u !== myId);
+    const q = window.query(
+        window.collection(window.db, "matches"),
+        window.where("users", "array-contains", myId)
+    );
 
-    if (seen.has(otherUserId)) return;
-    seen.add(otherUserId);
+    const snap = await window.getDocs(q);
 
-    const img = document.createElement('img');
-    img.className = 'match-avatar';
-    img.src = "https://i.pravatar.cc/150?u=" + otherUserId;
+    const list = document.getElementById('match-list');
+    list.innerHTML = "";
 
-    list.appendChild(img);
-});
+    const seen = new Set(); // duplicate rokne ke liye
+
+    snap.forEach(doc => {
+        const data = doc.data();
+        const otherUserId = data.users.find(u => u !== myId);
+
+        if (seen.has(otherUserId)) return;
+        seen.add(otherUserId);
+
+        const img = document.createElement('img');
+        img.className = 'match-avatar';
+        img.src = "https://i.pravatar.cc/150?u=" + otherUserId;
+
+        list.appendChild(img);
+    });
+}
     const q = window.query(
         window.where("users", "array-contains", myId)
     );
