@@ -317,7 +317,6 @@ let currentViewingProfileId = null; // To track which profile is open in detail 
     document.getElementById('privacy-panel').style.display = 'flex';
 }
     
-   <script>
 let profiles = [];
 let currentIdx = 0;
 let matchesCount = 0;
@@ -508,8 +507,7 @@ async function finalizeUser() {
     document.getElementById('onboarding-screen').style.display = 'none';
 
     await loadProfiles();
-}
-</script>     
+}    
 
 
         function closeAll() { document.getElementById('side-menu').classList.remove('menu-open'); document.getElementById('overlay').classList.remove('show-overlay'); closeLuxe(); closeMatches(); closeDetail(); }
