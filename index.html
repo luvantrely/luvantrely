@@ -550,17 +550,15 @@ function blockCurrentProfile() {
     const currentUser = auth.currentUser;
     if (!currentUser) return alert("Login required");
 
-    const myId = currentUser.uid;
+    const matchId = [myId, targetUserId.toString()].sort().join("_");
 
-    try {
-        await window.addDoc(
-            window.collection(window.db, "likes"),
-            {
-                from: myId,
-                to: targetUserId.toString(), // 👈 FIXED
-                createdAt: new Date()
-            }
-        );
+await window.setDoc(
+    window.doc(window.db, "matches", matchId),
+    {
+        users: [myId.toString(), targetUserId.toString()],
+        createdAt: new Date()
+    }
+);
 
         const q = window.query(
             window.collection(window.db, "likes"),
